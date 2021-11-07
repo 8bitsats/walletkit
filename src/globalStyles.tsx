@@ -11,7 +11,7 @@ export const globalStyles = (
           ${tw`antialiased`}
         }
         body {
-          ${tw`bg-skin-200 font-display`};
+          ${tw`font-sans bg-skin-200`};
         }
         [data-reach-dialog-overlay] {
           z-index: 999 !important;

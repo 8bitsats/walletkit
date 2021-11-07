@@ -43,13 +43,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        serif: ["TiemposHeadline", "serif"],
-        display: ["TiemposText", "serif"],
-        sans: ["'Krona One'", "sans-serif"],
-      },
-      fontSize: {
-        xs: "0.8125rem",
-        "3xl": "1.75rem",
+        sans: ["Inter", "sans-serif"],
       },
       colors: {
         skin,
@@ -63,17 +57,14 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
-            fontFamily: "TiemposText, serif",
             color: textColor.DEFAULT,
             strong: {
               color: textColor.secondary,
             },
             h1: {
-              fontFamily: "TiemposHeadline, serif",
               color: textColor.secondary,
             },
             h2: {
-              fontFamily: "TiemposHeadline, serif",
               color: textColor.secondary,
             },
           },

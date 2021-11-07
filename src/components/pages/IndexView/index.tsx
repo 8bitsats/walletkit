@@ -1,5 +1,4 @@
 import { Module } from "../../common/Module";
-import { ReactComponent as Badge } from "../../common/svgs/Badge.svg";
 
 /**
  * https://www.typewolf.com/lookbooks
@@ -9,8 +8,7 @@ export const IndexView: React.FC = () => {
     <div tw="grid gap-4 w-[704px] max-w-full mx-auto justify-between">
       <Module>
         <div tw="prose">
-          <Badge tw="hidden text-skin-400 mx-auto md:(block w-60 h-60)" />
-          <h1 tw="font-serif text-6xl! font-bold mb-0!">Arrow Protocol</h1>
+          <h1 tw="font-serif text-6xl! font-bold mb-0!">Goki Protocol</h1>
           <p tw="text-3xl! text-secondary! leading-9 my-4!">
             Launch staking derivatives for the protocols you're already
             integrating with, redirecting yield to a different address.
