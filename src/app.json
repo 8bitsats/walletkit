@@ -1,0 +1,17 @@
+{
+  "name": "Goki",
+  "fullName": "Goki Smart Wallet",
+  "description": "A multisig wallet and auditable timelock on Solana.",
+  "url": "https://goki.so",
+  "image": "https://goki.so/images/og-image.png",
+  "imageAlt": "A multisig wallet and auditable timelock on Solana.",
+  "themeColor": "#192908",
+  "socials": {
+    "twitter": "GokiProtocol",
+    "medium": "GokiProtocol",
+    "github": "GokiProtocol",
+    "discord": "",
+    "keybase": "gokihelp"
+  },
+  "code": "https://github.com/GokiProtocol/goki"
+}

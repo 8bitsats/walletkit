@@ -1,0 +1,36 @@
+name: Deploy Master to Production
+
+on:
+  push:
+    branches: [master]
+
+env:
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  SENTRY_RELEASE: gh-${{ github.sha }}
+  GIT_COMMIT_SHA: ${{ github.sha }}
+  REACT_APP_SENTRY_RELEASE: gh-${{ github.sha }}
+
+jobs:
+  deploy-dist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          always-auth: true
+          node-version: "16"
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-${{ hashFiles('./**/*.js') }}
+          path: ./.yarn
+      - run: yarn install
+      - run: yarn build:production
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.DIST_DEPLOY_KEY }}
+          external_repository: ${{ github.repository }}-dist
+          publish_branch: master
+          publish_dir: ./build/

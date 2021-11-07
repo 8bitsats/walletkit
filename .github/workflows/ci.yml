@@ -1,0 +1,29 @@
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  GH_PACKAGE_REGISTRY_PAT: ${{ secrets.GH_PACKAGE_REGISTRY_PAT }}
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          always-auth: true
+          node-version: "16"
+          registry-url: "https://npm.pkg.github.com"
+      - name: Yarn Cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-${{ hashFiles('./.yarn/**/*.js') }}
+          path: ./.yarn
+      - name: Install Yarn dependencies
+        run: yarn install
+      - run: yarn typecheck
+      - run: yarn lint
