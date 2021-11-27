@@ -2393,7 +2393,7 @@ __metadata:
     "@simbathesailor/babel-plugin-use-what-changed": ^2.1.0
     "@simbathesailor/use-what-changed": ^2.0.0
     "@solana/spl-token": ^0.1.8
-    "@solana/spl-token-registry": ^0.2.471
+    "@solana/spl-token-registry": ^0.2.474
     "@solana/web3.js": ^1.31.0
     "@sunnyag/react-coingecko": ^2.1.0
     "@tailwindcss/aspect-ratio": ^0.3.0
@@ -3972,12 +3972,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solana/spl-token-registry@npm:^0.2.469, @solana/spl-token-registry@npm:^0.2.471":
+"@solana/spl-token-registry@npm:^0.2.469":
   version: 0.2.471
   resolution: "@solana/spl-token-registry@npm:0.2.471"
   dependencies:
     cross-fetch: 3.0.6
   checksum: 50f99760d780d771f753b10b53706914354dba9b458c43025cd3f389f943489b266627b2a2b352a4a77451e1812cd52cd4c19220b09ce116eb338b82912e9e34
+  languageName: node
+  linkType: hard
+
+"@solana/spl-token-registry@npm:^0.2.474":
+  version: 0.2.474
+  resolution: "@solana/spl-token-registry@npm:0.2.474"
+  dependencies:
+    cross-fetch: 3.0.6
+  checksum: a3676ef71ed8e72acc2b8012a6ccfc072747ff41662a597973210ee7e2bbc6fb6e891df2e1f3659d0fcfb930d22d9ea6623acbe54f4b756e5739c14dd1e0d14f
   languageName: node
   linkType: hard
 
