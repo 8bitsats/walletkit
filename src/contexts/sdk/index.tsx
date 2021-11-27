@@ -1,5 +1,4 @@
-import type { ARROW_ADDRESSES } from "@arrowprotocol/arrow";
-import { Arrow } from "@arrowprotocol/arrow";
+import { GokiSDK, GOKI_ADDRESSES } from "@gokiprotocol/client";
 import { Wallet } from "@project-serum/anchor";
 import { useNativeAccount } from "@saberhq/sail";
 import { SolanaProvider } from "@saberhq/solana-contrib";
@@ -10,11 +9,11 @@ import { Keypair } from "@solana/web3.js";
 import { useMemo } from "react";
 import { createContainer } from "unstated-next";
 
-export type ProgramKey = keyof typeof ARROW_ADDRESSES;
+export type ProgramKey = keyof typeof GOKI_ADDRESSES;
 
 export const useSDKInternal = (): {
-  sdk: Arrow;
-  sdkMut: Arrow | null;
+  sdk: GokiSDK;
+  sdkMut: GokiSDK | null;
   owner: PublicKey | null;
   nativeBalance?: TokenAmount;
 } => {
@@ -31,7 +30,7 @@ export const useSDKInternal = (): {
       },
     });
     return {
-      sdk: Arrow.init(provider),
+      sdk: GokiSDK.load({ provider }),
     };
   }, [connection, sendConnection]);
 
@@ -48,7 +47,7 @@ export const useSDKInternal = (): {
       },
     });
     return {
-      sdkMut: Arrow.init(provider),
+      sdkMut: GokiSDK.load({ provider }),
     };
   }, [connection, sendConnection, wallet]);
 

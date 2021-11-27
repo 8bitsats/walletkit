@@ -1,4 +1,4 @@
-import type { Arrow } from "@arrowprotocol/arrow";
+import type { GokiSDK } from "@gokiprotocol/client";
 import { useWalletKit } from "@gokiprotocol/walletkit";
 import React from "react";
 
@@ -7,7 +7,7 @@ import { Button } from "./Button";
 
 interface IProps
   extends Omit<React.ComponentPropsWithRef<typeof Button>, "onClick"> {
-  onClick?: (sdkMut: Arrow) => Promise<void> | void;
+  onClick?: (sdkMut: GokiSDK) => Promise<void> | void;
   connectWalletOverride?: string;
 }
 

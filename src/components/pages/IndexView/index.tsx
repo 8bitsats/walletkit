@@ -8,7 +8,7 @@ export const IndexView: React.FC = () => {
     <div tw="grid gap-4 w-[704px] max-w-full mx-auto justify-between">
       <Module>
         <div tw="prose">
-          <h1 tw="font-serif text-6xl! font-bold mb-0!">Goki Protocol</h1>
+          <h1 tw="text-6xl! font-bold mb-0!">Goki Protocol</h1>
           <p tw="text-3xl! text-secondary! leading-9 my-4!">
             Launch staking derivatives for the protocols you're already
             integrating with, redirecting yield to a different address.

@@ -1,8 +1,8 @@
 import "react-app-polyfill/stable";
 
-import { ARROW_ADDRESSES, ArrowSunnyJSON } from "@arrowprotocol/arrow";
 import { ThemeProvider } from "@emotion/react";
-import { QUARRY_ADDRESSES, QUARRY_IDLS } from "@quarryprotocol/quarry-sdk";
+import { GOKI_ADDRESSES, SmartWalletJSON } from "@gokiprotocol/client";
+import { QUARRY_IDLS } from "@quarryprotocol/quarry-sdk";
 import type {
   SailError,
   SailGetMultipleAccountsError,
@@ -16,7 +16,6 @@ import { mapValues } from "lodash";
 import React from "react";
 
 import { App } from "./App";
-import { ArrowProvider } from "./contexts/arrow";
 import { ConfigProvider } from "./contexts/config";
 import { QuarryInterfaceProvider } from "./contexts/quarry";
 import type { ProgramKey } from "./contexts/sdk";
@@ -30,15 +29,14 @@ import { parseIdlErrors, ProgramError } from "./utils/programError";
 
 const programErrors = mapValues(
   {
-    ArrowSunny: ArrowSunnyJSON,
+    SmartWallet: SmartWalletJSON,
     ...QUARRY_IDLS,
   },
   (prog) => parseIdlErrors(prog)
 );
 
 const programIDs = Object.entries({
-  ...ARROW_ADDRESSES,
-  ...QUARRY_ADDRESSES,
+  ...GOKI_ADDRESSES,
 }).reduce(
   (acc, [name, prog]: [name: string, prog: PublicKey]) => ({
     ...acc,
@@ -166,11 +164,9 @@ export const AppWithProviders: React.FC = () => {
             <SailProvider initialState={{ onTxSend, onSailError }}>
               <QuarryInterfaceProvider>
                 <SDKProvider>
-                  <ArrowProvider>
-                    <SettingsProvider>
-                      <App />
-                    </SettingsProvider>
-                  </ArrowProvider>
+                  <SettingsProvider>
+                    <App />
+                  </SettingsProvider>
                 </SDKProvider>
               </QuarryInterfaceProvider>
             </SailProvider>
