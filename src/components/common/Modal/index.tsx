@@ -7,6 +7,7 @@ import { animated, useSpring, useTransition } from "@react-spring/web";
 import React from "react";
 import { isMobile } from "react-device-detect";
 import { useGesture } from "react-use-gesture";
+import tw from "twin.macro";
 
 export interface ModalProps {
   children: React.ReactNode;
@@ -58,7 +59,6 @@ export const Modal: React.FC<ModalProps> = ({
               isOpen={isOpen || props.opacity.get() !== 0}
               onDismiss={onDismiss}
               darkenOverlay={darkenOverlay}
-              dangerouslyBypassScrollLock={topMargin !== undefined}
             >
               <ModalWrapper
                 topMargin={topMargin}
@@ -86,12 +86,7 @@ export const Modal: React.FC<ModalProps> = ({
 const ModalWrapper = styled(animated(DialogContent), {
   shouldForwardProp: (prop) => prop !== "topMargin",
 })<{ topMargin?: number }>`
-  box-shadow: ${({ theme }) => theme.modalshadow};
-  width: 100%;
-  max-width: 480px;
-  padding: 24px;
-  border-radius: 8px;
-  background: ${({ theme }) => theme.colors.modal.base.default};
+  ${tw`shadow-2xl w-full max-w-lg p-6 rounded-lg relative`}
   ${({ topMargin }) =>
     topMargin !== undefined &&
     css`
@@ -106,13 +101,6 @@ const StyledDialogOverlay = styled(animated(DialogOverlay), {
 }>`
   &[data-reach-dialog-overlay] {
     z-index: 11;
-    ${({ dangerouslyBypassScrollLock }) =>
-      // this means that the modal is acting like a dropdown
-      dangerouslyBypassScrollLock === true &&
-      css`
-        position: absolute;
-        overflow: unset;
-      `}
   }
   ${({ darkenOverlay }) =>
     darkenOverlay

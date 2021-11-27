@@ -1,4 +1,5 @@
 import type { IdlAccountItem } from "@project-serum/anchor/dist/esm/idl";
+import { startCase } from "lodash";
 
 interface Props {
   accountItems: IdlAccountItem[];
@@ -14,7 +15,7 @@ export const AccountsForm: React.FC<Props> = ({
   onChange,
 }: Props) => {
   return (
-    <div tw="grid gap-1">
+    <div tw="grid gap-2">
       {accountItems.map((account) =>
         "accounts" in account ? (
           <div tw="border p-4">
@@ -29,11 +30,23 @@ export const AccountsForm: React.FC<Props> = ({
             </div>
           </div>
         ) : (
-          <div tw="grid gap-1">
-            <span>{account.name}</span>
+          <div tw="grid gap-1 grid-cols-2">
+            <div tw="flex items-center gap-2">
+              <span>{startCase(account.name)}</span>
+              {account.isMut && (
+                <span tw="rounded bg-primary text-white px-1 py-0.5">
+                  writable
+                </span>
+              )}
+              {account.isSigner && (
+                <span tw="rounded bg-accent text-white px-1 py-0.5">
+                  signer
+                </span>
+              )}
+            </div>
             <input
               key={account.name}
-              type="string"
+              type="text"
               placeholder={account.name}
               value={accountsStrs[`${prefix}${account.name}`] ?? ""}
               onChange={(e) => {
