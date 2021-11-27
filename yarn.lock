@@ -16,25 +16,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arrowprotocol/arrow@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "@arrowprotocol/arrow@npm:0.1.4"
-  dependencies:
-    tiny-invariant: ^1.2.0
-    tslib: ^2.3.1
-  peerDependencies:
-    "@project-serum/anchor": ^0.17.1-beta.1
-    "@quarryprotocol/quarry-sdk": ^1.9.1
-    "@saberhq/anchor-contrib": ^1.3.18
-    "@saberhq/solana-contrib": ^1.3.18
-    "@saberhq/token-utils": ^1.3.18
-    "@solana/spl-token-registry": ^0.2.286
-    "@solana/web3.js": ^1.29.2
-    bn.js: "*"
-  checksum: 368b5d75b8e504dec772ea63ab10f89cc689834cf12e4b21e73ed8da95a4c7ea4365817334c64e2da33f9ea625f2ddf633fdc7eefbb13dd05cbc3b7f3acd0e1c
-  languageName: node
-  linkType: hard
-
 "@babel/code-frame@npm:7.10.4":
   version: 7.10.4
   resolution: "@babel/code-frame@npm:7.10.4"
@@ -2376,7 +2357,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@gokiprotocol/goki-interface@workspace:."
   dependencies:
-    "@arrowprotocol/arrow": ^0.1.4
     "@babel/core": ^7.16.0
     "@babel/preset-react": ^7.16.0
     "@craco/craco": ^6.4.2
@@ -2443,7 +2423,6 @@ __metadata:
     eslint: ^8.3.0
     eslint-import-resolver-node: ^0.3.6
     eslint-plugin-import: ^2.25.3
-    eslint-plugin-jsx-a11y: ^6.5.1
     favicons: ^6.2.2
     favicons-webpack-plugin: ^4.2.0
     formik: ^2.2.9

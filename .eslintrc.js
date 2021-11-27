@@ -12,7 +12,7 @@ module.exports = {
     jest: true,
   },
   ignorePatterns: ["*.js"],
-  extends: ["@saberhq/eslint-config-react", "plugin:jsx-a11y/recommended"],
+  extends: ["@saberhq/eslint-config-react"],
   parserOptions: {
     project: "tsconfig.json",
   },
