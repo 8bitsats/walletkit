@@ -49,7 +49,7 @@ export const AccountPopover: React.FC<Props> = ({ close }: Props) => {
 
   return (
     <div tw="w-screen max-w-[378px]">
-      <div tw="w-11/12 md:w-full bg-gray-100 rounded-lg border">
+      <div tw="w-11/12 md:w-full bg-white rounded-lg border">
         <div tw="flex items-center justify-between p-7 border-b">
           <div tw="grid gap-2 text-base">
             <div tw="flex gap-1 items-center">

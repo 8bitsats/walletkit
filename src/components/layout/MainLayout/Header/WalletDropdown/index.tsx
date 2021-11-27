@@ -25,7 +25,7 @@ export const WalletDropdown: React.FC = () => {
         <>
           <button
             css={[
-              tw`font-medium bg-gray-100 flex items-center gap-2.5 py-2 hover:text-primary`,
+              tw`font-medium bg-primary text-white flex items-center gap-2.5 py-2 hover:bg-primary-300 transition-colors`,
               tw`border px-4 rounded`,
             ]}
             ref={setTargetRef}

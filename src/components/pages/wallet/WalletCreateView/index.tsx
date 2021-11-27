@@ -59,7 +59,7 @@ interface CreateFormValues {
   delay?: number;
 }
 
-export const MultisigCreateView: React.FC = () => {
+export const WalletCreateView: React.FC = () => {
   const { handleTX } = useSail();
   const { sdkMut } = useSDK();
   const initialBaseKP = useMemo(
