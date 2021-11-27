@@ -17,8 +17,8 @@ const makeStyledLink = styled(Link);
 
 const StyledNavLink = makeStyledLink(({ active }: { active?: boolean }) => [
   tw`font-sans uppercase relative text-DEFAULT text-xl px-3 rounded-xl`,
-  tw`hover:text-brand`,
-  active && tw`text-brand-800 pb-0 md:bg-transparent`,
+  tw`hover:text-primary`,
+  active && tw`text-primary-800 pb-0 md:bg-transparent`,
   tw`border-transparent`,
 ]);
 

@@ -49,7 +49,7 @@ export const AccountPopover: React.FC<Props> = ({ close }: Props) => {
 
   return (
     <div tw="w-screen max-w-[378px]">
-      <div tw="w-11/12 md:w-full bg-skin-100 rounded-lg border">
+      <div tw="w-11/12 md:w-full bg-gray-100 rounded-lg border">
         <div tw="flex items-center justify-between p-7 border-b">
           <div tw="grid gap-2 text-base">
             <div tw="flex gap-1 items-center">
@@ -136,6 +136,6 @@ const WalletIconWrapper = styled.div`
 
 const MenuItem = styled.button(() => [
   tw`h-10 appearance-none w-full rounded border-none outline-none bg-none`,
-  tw`hover:(bg-skin-200)`,
+  tw`hover:(bg-gray-200)`,
   tw`flex items-center gap-3 text-base p-3 cursor-pointer leading-4`,
 ]);

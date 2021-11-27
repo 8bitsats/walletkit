@@ -60,6 +60,7 @@
     "tailwindcss": "^2.2.19",
     "tiny-invariant": "^1.2.0",
     "tslib": "^2.3.1",
+    "typewriter-effect": "^2.18.2",
     "unstated-next": "^1.1.0",
     "use-debounce": "^7.0.1",
     "yup": "^0.32.11"

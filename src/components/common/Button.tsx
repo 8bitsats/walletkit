@@ -88,14 +88,14 @@ export const Button: React.FC<ButtonProps> = ({
 export const StyledButton = styled.button<AdditionalButtonProps>(
   ({ size = "sm", variant = "primary", icon }) => [
     tw`flex flex-row items-center justify-center  leading-normal`,
-    tw`rounded-2xl`,
+    tw`rounded-sm`,
     tw`text-sm font-semibold`,
     tw`transform active:scale-98 text-DEFAULT hover:bg-opacity-90`,
     tw`transition-transform`,
 
-    variant === "outline" && tw`border border-skin-700 hover:border-brand`,
-    variant === "primary" && tw`text-white bg-brand shadow`,
-    variant === "muted" && tw`text-skin-200 bg-skin-700 hover:bg-skin-500`,
+    variant === "outline" && tw`border border-gray-700 hover:border-gray`,
+    variant === "primary" && tw`text-white bg-primary shadow`,
+    variant === "muted" && tw`text-gray-200 bg-gray-700 hover:bg-gray-500`,
 
     variant === "danger" && tw`bg-red-500 text-black font-bold`,
 

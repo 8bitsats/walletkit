@@ -1,4 +1,5 @@
-import { GokiSDK, GOKI_ADDRESSES } from "@gokiprotocol/client";
+import type { GOKI_ADDRESSES } from "@gokiprotocol/client";
+import { GokiSDK } from "@gokiprotocol/client";
 import { Wallet } from "@project-serum/anchor";
 import { useNativeAccount } from "@saberhq/sail";
 import { SolanaProvider } from "@saberhq/solana-contrib";

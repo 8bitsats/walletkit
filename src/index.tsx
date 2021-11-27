@@ -1,4 +1,3 @@
-import "./index.css";
 import "react-app-polyfill/stable";
 
 import React from "react";

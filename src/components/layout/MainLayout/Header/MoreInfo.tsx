@@ -56,7 +56,7 @@ export const MoreInfo: React.FC = () => {
         onDismiss={() => setShow(false)}
         target={targetRef.current}
       >
-        <div tw="flex flex-col flex-nowrap p-2 bg-skin-100 rounded-lg">
+        <div tw="flex flex-col flex-nowrap p-2 bg-gray-100 rounded-lg">
           {MORE_ITEMS.map((item) => (
             <a
               href={item.href}
@@ -64,7 +64,7 @@ export const MoreInfo: React.FC = () => {
               key={item.slug}
               target="_blank"
               rel="noopener noreferrer"
-              tw="space-x-3 text-skin-900 hover:text-brand p-2 font-medium flex items-center appearance-none"
+              tw="space-x-3 text-gray-900 hover:text-primary p-2 font-medium flex items-center appearance-none"
             >
               <div>{item.icon}</div>
               <div>{item.label}</div>
