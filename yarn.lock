@@ -2392,7 +2392,6 @@ __metadata:
     "@sentry/webpack-plugin": ^1.18.3
     "@simbathesailor/babel-plugin-use-what-changed": ^2.1.0
     "@simbathesailor/use-what-changed": ^2.0.0
-    "@solana/spl-token": ^0.1.8
     "@solana/spl-token-registry": ^0.2.474
     "@solana/web3.js": ^1.31.0
     "@sunnyag/react-coingecko": ^2.1.0

@@ -4,7 +4,7 @@ import type { TransactionEnvelope } from "@saberhq/solana-contrib";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
+} from "@saberhq/token-utils";
 import type { PublicKey, TransactionInstruction } from "@solana/web3.js";
 
 import type { ProgramKey } from "../contexts/sdk";
