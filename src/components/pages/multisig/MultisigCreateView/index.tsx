@@ -3,7 +3,7 @@ import { Keypair, PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 import { useFormik } from "formik";
 import { useMemo } from "react";
-import { FaPlus, FaQuestionCircle } from "react-icons/fa";
+import { FaPlus, FaQuestionCircle, FaTrash } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import invariant from "tiny-invariant";
 import * as Yup from "yup";
@@ -12,10 +12,9 @@ import { useSDK } from "../../../../contexts/sdk";
 import { useKeypair } from "../../../../hooks/useKeypair";
 import { handleException } from "../../../../utils/error";
 import { notify } from "../../../../utils/notifications";
-import { AsyncButton } from "../../../common/AsyncButton";
+import { AddressLink } from "../../../common/AddressLink";
 import { AttributeList } from "../../../common/AttributeList";
 import { Button } from "../../../common/Button";
-import { Module } from "../../../common/Module";
 import { MouseoverTooltip } from "../../../common/MouseoverTooltip";
 
 const CreateFormSchema = Yup.object().shape({
@@ -35,14 +34,14 @@ const CreateFormSchema = Yup.object().shape({
       }
       return true;
     }),
-  mintKP: Yup.string()
+  baseKP: Yup.string()
     .required("Required")
     .test("keypair", "Invalid keypair JSON", (str) => {
       if (!str) {
         return false;
       }
       try {
-        Keypair.fromSecretKey(Uint8Array.from(JSON.parse(str)));
+        Keypair.fromSecretKey(Uint8Array.from(JSON.parse(str) as number[]));
         return true;
       } catch (e) {
         return false;
@@ -75,13 +74,14 @@ export const MultisigCreateView: React.FC = () => {
       threshold: 1,
       maxOwners: 10,
       baseKP: initialBaseKP,
+      delay: 0,
     },
     validationSchema: CreateFormSchema,
     onSubmit: async (values) => {
       try {
         invariant(sdkMut, "sdk");
         const baseKP = Keypair.fromSecretKey(
-          Uint8Array.from(JSON.parse(values.baseKP))
+          Uint8Array.from(JSON.parse(values.baseKP) as number[])
         );
         const { tx, smartWalletWrapper } = await sdkMut.newSmartWallet({
           owners: values.owners.map((owner) => new PublicKey(owner)),
@@ -112,17 +112,43 @@ export const MultisigCreateView: React.FC = () => {
   const keypair = useKeypair(formik.values.baseKP);
 
   return (
-    <div tw="grid gap-12 w-full max-w-[780px] mx-auto">
-      <Module>
-        <div tw="prose">
-          <h1>Create a Multisig</h1>
+    <div tw="grid gap-12 w-full max-w-sm mx-auto">
+      <div>
+        <div tw="mb-8">
+          <h1 tw="font-bold text-3xl mb-4">Let's create a wallet</h1>
+          <h2 tw="text-secondary font-medium text-sm">
+            Goki Smart Wallet is a secure multisig wallet for managing funds and
+            admin privileges.
+          </h2>
         </div>
-        <div tw="border rounded p-4 mt-12">
+        <div tw="">
           <form tw="grid grid-cols-1 gap-6" onSubmit={formik.handleSubmit}>
-            <label>
+            <label htmlFor="nextOwner">
               <span>Owners</span>
+              {formik.values.owners.length > 0 && (
+                <div>
+                  {formik.values.owners.map((owner, i) => (
+                    <div key={owner} tw="flex items-center justify-between">
+                      <span>
+                        <AddressLink address={new PublicKey(owner)} showCopy />
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const nextOwners = formik.values.owners.slice();
+                          nextOwners.splice(i, 1);
+                          void formik.setFieldValue("owners", nextOwners);
+                        }}
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
               <div tw="flex gap-1">
                 <input
+                  id="nextOwner"
                   name="nextOwner"
                   type="text"
                   tw="mt-1 w-full"
@@ -131,17 +157,51 @@ export const MultisigCreateView: React.FC = () => {
                   onBlur={formik.handleBlur}
                   value={formik.values.nextOwner}
                 />
-                <Button tw="mt-1" variant="muted">
+                <Button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const { nextOwner } = formik.values;
+
+                    if (formik.values.owners.includes(nextOwner)) {
+                      formik.setFieldError(
+                        "nextOwner",
+                        "Owner already in list"
+                      );
+                      return;
+                    }
+
+                    try {
+                      new PublicKey(nextOwner);
+                    } catch (e) {
+                      formik.setFieldError("nextOwner", "Invalid public key");
+                      return;
+                    }
+                    void formik.setFieldValue("owners", [
+                      ...formik.values.owners,
+                      formik.values.nextOwner,
+                    ]);
+                    void formik.setFieldValue("nextOwner", "");
+                  }}
+                  tw="mt-1"
+                  variant="muted"
+                >
                   <FaPlus />
                 </Button>
               </div>
               {formik.touched.owners && formik.errors.owners && (
                 <div tw="text-red-500 text-sm mt-2">{formik.errors.owners}</div>
               )}
+              {formik.touched.nextOwner && formik.errors.nextOwner && (
+                <div tw="text-red-500 text-sm mt-2">
+                  {formik.errors.nextOwner}
+                </div>
+              )}
             </label>
             <label>
               <div tw="flex items-center gap-2">
-                <span>Threshold</span>
+                <span>Minimum Signer Threshold</span>
                 <MouseoverTooltip
                   text={
                     <div tw="max-w-sm">
@@ -153,7 +213,7 @@ export const MultisigCreateView: React.FC = () => {
                   }
                   placement="bottom-start"
                 >
-                  <FaQuestionCircle tw="pb-1 cursor-pointer" />
+                  <FaQuestionCircle tw="h-3 cursor-pointer" />
                 </MouseoverTooltip>
               </div>
               <input
@@ -190,7 +250,7 @@ export const MultisigCreateView: React.FC = () => {
                   }
                   placement="bottom-start"
                 >
-                  <FaQuestionCircle tw="pb-1 cursor-pointer" />
+                  <FaQuestionCircle tw="h-3 cursor-pointer" />
                 </MouseoverTooltip>
               </div>
               <input
@@ -224,7 +284,7 @@ export const MultisigCreateView: React.FC = () => {
                   }
                   placement="bottom-start"
                 >
-                  <FaQuestionCircle tw="pb-1 cursor-pointer" />
+                  <FaQuestionCircle tw="h-3 cursor-pointer" />
                 </MouseoverTooltip>
               </div>
               <textarea
@@ -253,7 +313,7 @@ export const MultisigCreateView: React.FC = () => {
                   }
                   placement="bottom-start"
                 >
-                  <FaQuestionCircle tw="pb-1 cursor-pointer" />
+                  <FaQuestionCircle tw="h-3 cursor-pointer" />
                 </MouseoverTooltip>
               </div>
               <input
@@ -279,17 +339,17 @@ export const MultisigCreateView: React.FC = () => {
               />
             </div>
             <div>
-              <AsyncButton
+              <Button
                 type="submit"
                 size="md"
-                disabled={formik.isSubmitting}
+                disabled={formik.isSubmitting || !formik.isValid}
               >
-                Create (there will be multiple transactions)
-              </AsyncButton>
+                Confirm
+              </Button>
             </div>
           </form>
         </div>
-      </Module>
+      </div>
     </div>
   );
 };

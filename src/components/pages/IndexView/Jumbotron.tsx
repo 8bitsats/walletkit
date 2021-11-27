@@ -1,4 +1,5 @@
 import { FaArrowRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 import { Button } from "../../common/Button";
 
@@ -13,13 +14,15 @@ export const Jumbotron: React.FC = () => {
         Goki allows you to create, manage, and audit multisig wallets with
         transparency.
       </p>
-      <Button
-        variant="primary"
-        tw="flex items-center gap-4 h-12 w-[200px] mt-6"
-      >
-        <span>Get Started</span>
-        <FaArrowRight />
-      </Button>
+      <Link to="/wallet/new">
+        <Button
+          variant="primary"
+          tw="flex items-center gap-4 h-12 w-[200px] mt-6"
+        >
+          <span>Get Started</span>
+          <FaArrowRight />
+        </Button>
+      </Link>
     </header>
   );
 };
