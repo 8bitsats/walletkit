@@ -23,7 +23,7 @@ interface UseEnvironment {
   endpoint: string;
 
   tokens: readonly Token[];
-  tokenMap: Map<string, Token> | null;
+  tokenMap: Record<string, Token> | null;
   chainId: ChainId | null;
   environments: { [N in Network]: IEnvironment };
 }
@@ -45,29 +45,22 @@ const useEnvironmentInternal = (): UseEnvironment => {
     [data.tokens]
   );
 
-  const tokenMap: Map<string, Token> | null = useMemo(() => {
+  const tokenMap: Record<string, Token> | null = useMemo(() => {
     if (!tokenList) {
       return null;
     }
     const nextTokenMap = tokenList.reduce((map, item) => {
-      map.set(item.address, item);
+      map[item.address] = item;
       return map;
-    }, new Map<string, Token>());
+    }, {} as Record<string, Token>);
     return nextTokenMap;
   }, [tokenList]);
-
-  const tokens: Token[] = useMemo(() => {
-    if (!tokenMap) {
-      return [];
-    }
-    return [...tokenMap.values()];
-  }, [tokenMap]);
 
   return {
     loading: false,
     name: environment.name,
     endpoint: environment.endpoint,
-    tokens,
+    tokens: tokenList,
     tokenMap,
     chainId,
     environments,
