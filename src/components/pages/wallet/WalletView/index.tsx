@@ -2,8 +2,10 @@ import { usePubkey } from "@saberhq/sail";
 import { Route, Switch, useParams } from "react-router-dom";
 
 import { SmartWalletProvider } from "../../../../hooks/useSmartWallet";
+import { WalletLayout } from "../../../layout/WalletLayout";
 import { WalletIndexView } from "../WalletIndexView";
 import { WalletTXCreateView } from "../WalletTXCreateView";
+import { WalletTXListView } from "../WalletTXListView";
 
 export const WalletView: React.FC = () => {
   const { walletKey: walletKeyStr } = useParams<{ walletKey: string }>();
@@ -13,13 +15,19 @@ export const WalletView: React.FC = () => {
   }
   return (
     <SmartWalletProvider initialState={walletKey}>
-      <Switch>
-        <Route
-          path="/wallets/:walletKey/tx/new"
-          component={WalletTXCreateView}
-        />
-        <Route path="/wallets/:walletKey" component={WalletIndexView} />
-      </Switch>
+      <WalletLayout>
+        <Switch>
+          <Route
+            path="/wallets/:walletKey/tx/all"
+            component={WalletTXListView}
+          />
+          <Route
+            path="/wallets/:walletKey/tx/new"
+            component={WalletTXCreateView}
+          />
+          <Route path="/wallets/:walletKey" component={WalletIndexView} />
+        </Switch>
+      </WalletLayout>
     </SmartWalletProvider>
   );
 };

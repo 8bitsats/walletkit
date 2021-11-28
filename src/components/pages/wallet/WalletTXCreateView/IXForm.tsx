@@ -58,7 +58,10 @@ const makeIX = ({
     accounts,
   });
 
-  const formatted = formatTxInstruction({ program, txInstruction });
+  const formatted = formatTxInstruction({
+    coder: program.coder,
+    txInstruction,
+  });
   return {
     txInstruction,
     formatted,

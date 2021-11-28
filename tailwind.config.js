@@ -27,21 +27,22 @@ const accent = {
 };
 
 const grays = {
-  DEFAULT: "#696969",
-  50: "#C5C5C5",
-  100: "#BBBBBB",
-  200: "#A6A6A6",
-  300: "#929292",
-  400: "#7D7D7D",
-  500: "#696969",
-  600: "#4D4D4D",
-  700: "#313131",
-  800: "#151515",
-  900: "#000000",
+  DEFAULT: "#6e7582",
+  50: "#f9fafb",
+  100: "#f0f1f3",
+  150: "#eff1f4",
+  200: "#d9dbdf",
+  300: "#b7bbc2",
+  400: "#8f959f",
+  500: "#6e7582",
+  600: "#555e6e",
+  700: "#3e4859",
+  800: "#283242",
+  900: "#131f30",
 };
 
 const textColor = {
-  DEFAULT: grays[900],
+  DEFAULT: grays[800],
   secondary: grays[500],
 };
 
@@ -69,6 +70,9 @@ module.exports = {
       scale: {
         98: ".98",
         102: "1.02",
+      },
+      borderColor: {
+        DEFAULT: grays[150],
       },
       typography: {
         DEFAULT: {

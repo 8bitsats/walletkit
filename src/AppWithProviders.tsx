@@ -14,6 +14,7 @@ import * as Sentry from "@sentry/react";
 import type { PublicKey } from "@solana/web3.js";
 import { mapValues } from "lodash";
 import React from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import { App } from "./App";
 import { ConfigProvider } from "./contexts/config";
@@ -155,6 +156,8 @@ const onSailError = (err: SailError) => {
   }
 };
 
+const queryClient = new QueryClient();
+
 export const AppWithProviders: React.FC = () => {
   return (
     <React.StrictMode>
@@ -165,7 +168,9 @@ export const AppWithProviders: React.FC = () => {
               <QuarryInterfaceProvider>
                 <SDKProvider>
                   <SettingsProvider>
-                    <App />
+                    <QueryClientProvider client={queryClient}>
+                      <App />
+                    </QueryClientProvider>
                   </SettingsProvider>
                 </SDKProvider>
               </QuarryInterfaceProvider>

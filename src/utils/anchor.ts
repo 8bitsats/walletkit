@@ -1,4 +1,4 @@
-import type { Program } from "@project-serum/anchor";
+import type { Coder } from "@project-serum/anchor";
 import type { InstructionDisplay } from "@project-serum/anchor/dist/cjs/coder/instruction";
 import type { IdlType } from "@project-serum/anchor/dist/esm/idl";
 import { QUARRY_ADDRESSES } from "@quarryprotocol/quarry-sdk";
@@ -44,24 +44,27 @@ export const formatIdlType = (idlType: IdlType): string => {
   throw new Error(`Unknown IDL type: ${JSON.stringify(idlType)}`);
 };
 
+export type InstructionFmt = InstructionDisplay & {
+  name: string;
+};
 /**
  * Parses and formats a raw transaction instruction.
  * @returns
  */
 export const formatTxInstruction = ({
-  program,
+  coder,
   txInstruction,
 }: {
-  program: Program;
+  coder: Coder;
   txInstruction: TransactionInstruction;
-}): InstructionDisplay => {
-  const decoded = program.coder.instruction.decode(txInstruction.data);
+}): InstructionFmt => {
+  const decoded = coder.instruction.decode(txInstruction.data);
   if (!decoded) {
     throw new Error("could not decode ix data");
   }
-  const fmt = program.coder.instruction.format(decoded, txInstruction.keys);
+  const fmt = coder.instruction.format(decoded, txInstruction.keys);
   if (!fmt) {
     throw new Error("invalid instruction");
   }
-  return fmt;
+  return { ...fmt, name: decoded.name };
 };
