@@ -1,3 +1,5 @@
+import { Toaster } from "react-hot-toast";
+
 import { Sidebar } from "./Sidebar";
 
 interface Props {
@@ -9,6 +11,7 @@ export const WalletLayout: React.FC = ({ children }: Props) => {
     <div tw="flex w-screen">
       <Sidebar />
       <div tw="flex-grow">{children}</div>
+      <Toaster />
     </div>
   );
 };

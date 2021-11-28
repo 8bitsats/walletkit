@@ -4,6 +4,7 @@ import type { PublicKey } from "@solana/web3.js";
 import copy from "copy-to-clipboard";
 import React from "react";
 import { FaRegCopy } from "react-icons/fa";
+import tw from "twin.macro";
 
 import { notify } from "../../utils/notifications";
 import { shortenAddress } from "../../utils/utils";
@@ -25,6 +26,7 @@ export const AddressLink: React.FC<Props> = ({
   return (
     <Wrapper className={className}>
       <a
+        tw="text-gray-800 hover:text-primary"
         href={`https://explorer.solana.com/address/${address.toString()}?cluster=${
           network?.toString() ?? ""
         }`}
@@ -47,15 +49,9 @@ export const AddressLink: React.FC<Props> = ({
   );
 };
 const Wrapper = styled.div`
-  display: inline-flex;
-  align-items: center;
+  ${tw`inline-flex items-center`}
 `;
 
 const CopyIcon = styled(FaRegCopy)`
-  margin-left: 4px;
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.text.default};
-  &:hover {
-    color: ${({ theme }) => theme.colors.text.bold};
-  }
+  ${tw`ml-1 cursor-pointer text-gray-800 hover:text-primary`}
 `;

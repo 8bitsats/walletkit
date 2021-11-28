@@ -1,6 +1,8 @@
 import formatDistance from "date-fns/formatDistance";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { LoadingPage } from "../../../../common/LoadingPage";
+import { TXLink } from "../../../../common/TXLink";
 import { useTransaction } from "../context";
 import { TXEvent } from "./TXEvent";
 
@@ -27,6 +29,9 @@ export const TXActivity: React.FC = () => {
                     { addSuffix: true }
                   )}
                 </span>
+                <TXLink txSig={tx.sig} tw="text-primary hover:text-primary-300">
+                  <FaExternalLinkAlt />
+                </TXLink>
               </div>
             );
           })}
