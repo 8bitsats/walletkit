@@ -28,7 +28,7 @@ const decodeTransaction = (data: KeyedAccountInfo) =>
     data.accountInfo.data
   );
 
-interface ParsedTX {
+export interface ParsedTX {
   tx: ParsedAccountDatum<SmartWalletTransactionData>;
   parsed?: InstructionFmt | null;
 }
@@ -36,6 +36,7 @@ interface ParsedTX {
 const useSmartWalletInner = (
   key?: PublicKey
 ): {
+  key: PublicKey;
   smartWallet: SmartWalletWrapper | null;
   parsedTXs: ParsedTX[];
 } => {
@@ -117,7 +118,7 @@ const useSmartWalletInner = (
     });
   }, [idls, programIDsToFetch, txs]);
 
-  return { smartWallet, parsedTXs };
+  return { key, smartWallet, parsedTXs };
 };
 
 export const { useContainer: useSmartWallet, Provider: SmartWalletProvider } =

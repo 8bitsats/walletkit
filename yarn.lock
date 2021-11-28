@@ -2336,9 +2336,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gokiprotocol/client@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "@gokiprotocol/client@npm:0.3.1"
+"@gokiprotocol/client@npm:^0.3.2":
+  version: 0.3.2
+  resolution: "@gokiprotocol/client@npm:0.3.2"
   dependencies:
     lodash.mapvalues: ^4.6.0
     tiny-invariant: ^1.2.0
@@ -2349,7 +2349,7 @@ __metadata:
     "@saberhq/token-utils": ^1.3.15
     "@solana/web3.js": ^1.29.2
     bn.js: ^5
-  checksum: 2d40ffa30470d321d6423711533a6616dda99e932c7535764f20658b86e9be8ee7daaa3a4955712451d3489b08230d38bef13e94959e7575f7e1e617d3817c9e
+  checksum: c3c91c76b87c6d5256d5f85624aa043f76c74292bb2ae5c3cae642cb60cd7bd3eba65a03a35b97a8f40ed17756d9f105ce3255b0d0cb75d4be850242fb301b03
   languageName: node
   linkType: hard
 
@@ -2365,7 +2365,7 @@ __metadata:
     "@emotion/core": ^11.0.0
     "@emotion/react": ^11.7.0
     "@emotion/styled": ^11.6.0
-    "@gokiprotocol/client": ^0.3.1
+    "@gokiprotocol/client": ^0.3.2
     "@gokiprotocol/walletkit": ^1.5.1
     "@highlight-run/react": ^1.0.5
     "@popperjs/core": ^2.11.0
@@ -2381,7 +2381,7 @@ __metadata:
     "@saberhq/eslint-config-react": ^1.9.0
     "@saberhq/sail": ^2.8.0
     "@saberhq/solana-contrib": ^1.9.0
-    "@saberhq/spl-token-icons": ^0.1.93
+    "@saberhq/spl-token-icons": ^0.1.94
     "@saberhq/stableswap-sdk": ^1.9.0
     "@saberhq/token-utils": ^1.9.0
     "@saberhq/use-solana": ^1.9.0
@@ -3716,13 +3716,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@saberhq/spl-token-icons@npm:^0.1.93":
-  version: 0.1.93
-  resolution: "@saberhq/spl-token-icons@npm:0.1.93"
+"@saberhq/spl-token-icons@npm:^0.1.94":
+  version: 0.1.94
+  resolution: "@saberhq/spl-token-icons@npm:0.1.94"
   dependencies:
-    "@solana/spl-token-registry": ^0.2.469
+    "@solana/spl-token-registry": ^0.2.485
     tslib: ^2.3.1
-  checksum: 92b2acf6683adb4753f037f668516216491e59137a6468b63f390ffe1659aed0c47e766a652fc05fe587c96977903b45a13d8a2b13e0c3f15ee566b9a2d954fd
+  checksum: 36665d78a3d8adf75933ba7c0e2578490443166d6c904a0f33832809e91c26ec6549a1014de78c0a116c67136221f2aa3a9b8cdd087e1980d06fe15a04a49a5e
   languageName: node
   linkType: hard
 
@@ -3972,21 +3972,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solana/spl-token-registry@npm:^0.2.469":
-  version: 0.2.471
-  resolution: "@solana/spl-token-registry@npm:0.2.471"
-  dependencies:
-    cross-fetch: 3.0.6
-  checksum: 50f99760d780d771f753b10b53706914354dba9b458c43025cd3f389f943489b266627b2a2b352a4a77451e1812cd52cd4c19220b09ce116eb338b82912e9e34
-  languageName: node
-  linkType: hard
-
 "@solana/spl-token-registry@npm:^0.2.484":
   version: 0.2.484
   resolution: "@solana/spl-token-registry@npm:0.2.484"
   dependencies:
     cross-fetch: 3.0.6
   checksum: 3874d2d778886e928437160bc09e534019b37c70aff4d0b1e8613c92733fcaf9bd83705618eddccaa9962adc494aca7bb527c06dae094a11d811c716c23236ba
+  languageName: node
+  linkType: hard
+
+"@solana/spl-token-registry@npm:^0.2.485":
+  version: 0.2.486
+  resolution: "@solana/spl-token-registry@npm:0.2.486"
+  dependencies:
+    cross-fetch: 3.0.6
+  checksum: ebd6120b5030aa1f9136f044bb2d3f48c265069034370bb772e08e8073eaf5cccc1f8ae6da480babe78a42bcaa01149758121bfd903d432710fc17906607c021
   languageName: node
   linkType: hard
 
