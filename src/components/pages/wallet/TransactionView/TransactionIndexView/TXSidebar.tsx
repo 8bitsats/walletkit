@@ -6,7 +6,7 @@ import { useTransaction } from "../context";
 
 export const TXSidebar: React.FC = () => {
   const { smartWallet } = useSmartWallet();
-  const { tx, title } = useTransaction();
+  const { tx, title, executedAt, eta } = useTransaction();
   return (
     <>
       <div tw="text-xs font-semibold text-gray-500 border-b pb-2">{title}</div>
@@ -18,8 +18,12 @@ export const TXSidebar: React.FC = () => {
           </span>
         </div>
         <div tw="flex mb-4">
-          <span tw="text-secondary w-[90px]">Status</span>
-          <span>{tx.accountInfo.data.executedAt.toNumber()}</span>
+          <span tw="text-secondary w-[90px]">ETA</span>
+          <span>
+            {eta?.toLocaleString(undefined, {
+              timeZoneName: "short",
+            }) ?? "--"}
+          </span>
         </div>
         <div tw="flex mb-4">
           <span tw="text-secondary w-[90px]">Signers</span>
@@ -47,6 +51,22 @@ export const TXSidebar: React.FC = () => {
             <AddressLink address={tx.accountInfo.data.proposer} showCopy />
           </span>
         </div>
+        <div tw="flex mb-4">
+          <span tw="text-secondary w-[90px]">Executed At</span>
+          <span>
+            {executedAt?.toLocaleString(undefined, {
+              timeZoneName: "short",
+            }) ?? "--"}
+          </span>
+        </div>
+        {executedAt && (
+          <div tw="flex mb-4">
+            <span tw="text-secondary w-[90px]">Executor</span>
+            <span>
+              <AddressLink address={tx.accountInfo.data.executor} showCopy />
+            </span>
+          </div>
+        )}
       </div>
     </>
   );

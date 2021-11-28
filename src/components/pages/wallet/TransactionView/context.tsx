@@ -22,6 +22,8 @@ export interface DetailedTransaction extends LoadedTransaction {
   index: number;
   title: string;
   historicalTXs?: HistoricalTX[];
+  eta: Date | null;
+  executedAt: Date | null;
 }
 
 export interface HistoricalTX extends TransactionResponse {
@@ -39,6 +41,14 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
   const { connection } = useSolana();
   const index = tx.tx.accountInfo.data.index.toNumber();
   const title = `TX-${index}`;
+
+  const { data: txData } = tx.tx.accountInfo;
+
+  const etaRaw = txData.eta.toNumber();
+  const eta = etaRaw === -1 ? null : new Date(etaRaw * 1_000);
+  const executedAtNum = tx.tx.accountInfo.data.executedAt.toNumber();
+  const executedAt =
+    executedAtNum === -1 ? null : new Date(executedAtNum * 1_000);
 
   const [historicalTXs, setHistoricalTXs] = useState<
     HistoricalTX[] | undefined
@@ -86,7 +96,7 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
     })();
   }, [connection, tx.tx.accountId]);
 
-  return { ...tx, index, title, historicalTXs };
+  return { ...tx, index, title, historicalTXs, eta, executedAt };
 };
 
 export const { useContainer: useTransaction, Provider: TransactionProvider } =
