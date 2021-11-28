@@ -1,21 +1,10 @@
 import { useMemo } from "react";
 import { Route, Switch, useParams } from "react-router-dom";
-import { createContainer } from "unstated-next";
 
-import type { ParsedTX } from "../../../../hooks/useSmartWallet";
 import { useSmartWallet } from "../../../../hooks/useSmartWallet";
+import { TransactionProvider } from "./context";
 import { TransactionIndexView } from "./TransactionIndexView";
 import { TransactionSignView } from "./TransactionSignView";
-
-const useTransactionInner = (tx?: ParsedTX) => {
-  if (!tx) {
-    throw new Error(`missing tx`);
-  }
-  return tx;
-};
-
-export const { useContainer: useTransaction, Provider: TransactionProvider } =
-  createContainer(useTransactionInner);
 
 export const TransactionView: React.FC = () => {
   const { parsedTXs } = useSmartWallet();
@@ -32,8 +21,8 @@ export const TransactionView: React.FC = () => {
       <h1 tw="text-3xl font-bold pb-2 border-b mb-4">
         Transaction TX-{transactionSeq}
       </h1>
-      {parsedTX && (
-        <TransactionProvider initialState={parsedTX}>
+      {parsedTX && parsedTX.tx && (
+        <TransactionProvider initialState={{ ...parsedTX, tx: parsedTX.tx }}>
           <Switch>
             <Route
               path="/wallets/:walletKey/tx/:transactionSeq/sign"

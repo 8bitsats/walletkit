@@ -2418,6 +2418,7 @@ __metadata:
     babel-plugin-twin: ^1.0.2
     bn.js: ^5.2.0
     copy-to-clipboard: ^3.3.1
+    date-fns: ^2.26.0
     deepmerge: ^4.2.2
     eslint: ^8.3.0
     eslint-import-resolver-node: ^0.3.6
@@ -8609,6 +8610,13 @@ __metadata:
   version: 2.0.0
   resolution: "dataloader@npm:2.0.0"
   checksum: 9f10b9d2e35225b08a72435facfe40c0c124e329f43bd0fe4d67411ee667d12145f7ce63f9b74f73af8556dc6a98bae59147a5cca2171315dc1de509d4db04c0
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^2.26.0":
+  version: 2.26.0
+  resolution: "date-fns@npm:2.26.0"
+  checksum: 49ad59bc788134a6552ef4e4af0d18792001c1ca0070d543de4f36aba5761058b6e6a57b8ca51dd3b0f07f3bd55376b8bc69602bd7940648ba3869c5253c6ae8
   languageName: node
   linkType: hard
 

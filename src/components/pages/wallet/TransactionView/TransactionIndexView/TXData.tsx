@@ -1,4 +1,4 @@
-import { useTransaction } from "..";
+import { useTransaction } from "../context";
 
 export const TXData: React.FC = () => {
   const { parsed } = useTransaction();

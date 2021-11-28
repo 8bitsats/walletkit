@@ -1,7 +1,8 @@
-import type { SmartWalletTransactionData } from "@gokiprotocol/client";
-import { SmartWalletJSON } from "@gokiprotocol/client";
-import type { SmartWalletWrapper } from "@gokiprotocol/client/dist/cjs/wrappers/smartWallet";
-import { findTransactionAddress } from "@gokiprotocol/client/dist/cjs/wrappers/smartWallet";
+import type {
+  SmartWalletTransactionData,
+  SmartWalletWrapper,
+} from "@gokiprotocol/client";
+import { findTransactionAddress, SmartWalletJSON } from "@gokiprotocol/client";
 import { Coder } from "@project-serum/anchor";
 import type { ParsedAccountDatum } from "@saberhq/sail";
 import { useParsedAccountsData } from "@saberhq/sail";
@@ -20,10 +21,10 @@ import type { InstructionFmt } from "../utils/anchor";
 import { formatTxInstruction } from "../utils/anchor";
 import { fetchIDL } from "../utils/fetchers";
 
-const smartWalletCoder = new Coder(SmartWalletJSON);
+export const SMART_WALLET_CODER = new Coder(SmartWalletJSON);
 
 const decodeTransaction = (data: KeyedAccountInfo) =>
-  smartWalletCoder.accounts.decode<SmartWalletTransactionData>(
+  SMART_WALLET_CODER.accounts.decode<SmartWalletTransactionData>(
     "Transaction",
     data.accountInfo.data
   );

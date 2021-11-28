@@ -10,18 +10,20 @@ import { shortenAddress } from "../../utils/utils";
 
 interface Props {
   address: PublicKey;
+  className?: string;
   showCopy?: boolean;
   children?: React.ReactNode;
 }
 
 export const AddressLink: React.FC<Props> = ({
   address,
+  className,
   showCopy = false,
   children,
 }: Props) => {
   const { network } = useConnectionContext();
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <a
         href={`https://explorer.solana.com/address/${address.toString()}?cluster=${
           network?.toString() ?? ""
