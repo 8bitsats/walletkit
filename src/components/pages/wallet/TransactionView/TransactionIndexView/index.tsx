@@ -1,9 +1,10 @@
-import { TXAccounts } from "./TXAccounts";
+import { useTransaction } from "../context";
+import { InstructionDisplay } from "./InstructionDisplay";
 import { TXActivity } from "./TXActivity";
-import { TXData } from "./TXData";
 import { TXSidebar } from "./TXSidebar";
 
 export const TransactionIndexView: React.FC = () => {
+  const { instructions } = useTransaction();
   return (
     <div tw="flex w-full py-2">
       <div tw="grid gap-4 flex-grow[2] flex-basis[760px]">
@@ -12,8 +13,16 @@ export const TransactionIndexView: React.FC = () => {
             Transaction Details
           </h2>
           <div tw="grid gap-4 border-b pb-4">
-            <TXData />
-            <TXAccounts />
+            {instructions?.map((instruction, i) => (
+              <div tw="grid border" key={`ix_${i}`}>
+                <h2 tw="font-semibold text-sm text-gray-800 p-4">
+                  Instruction #{i}
+                </h2>
+                <div tw="p-4 border-t">
+                  <InstructionDisplay instruction={instruction} />
+                </div>
+              </div>
+            ))}
           </div>
           <TXActivity />
         </div>

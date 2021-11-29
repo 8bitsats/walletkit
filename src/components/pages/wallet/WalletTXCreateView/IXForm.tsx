@@ -1,15 +1,12 @@
 import type { Accounts, Program } from "@project-serum/anchor";
 import type { InstructionDisplay } from "@project-serum/anchor/dist/cjs/coder/instruction";
 import type { IdlAccountItem } from "@project-serum/anchor/dist/esm/idl";
+import { formatIdlType, SuperCoder } from "@saberhq/anchor-contrib";
 import type { TransactionInstruction } from "@solana/web3.js";
 import { set, startCase } from "lodash";
 import { useMemo, useState } from "react";
 
-import {
-  COMMON_ACCOUNTS,
-  formatIdlType,
-  formatTxInstruction,
-} from "../../../../utils/anchor";
+import { COMMON_ACCOUNTS } from "../../../../utils/anchor";
 import { Button } from "../../../common/Button";
 import type { InstructionInfo } from ".";
 import { AccountsForm } from "./AccountsForm";
@@ -58,10 +55,8 @@ const makeIX = ({
     accounts,
   });
 
-  const formatted = formatTxInstruction({
-    coder: program.coder,
-    txInstruction,
-  });
+  const coder = new SuperCoder(program.programId, program.idl);
+  const formatted = coder.parseInstruction(txInstruction);
   return {
     txInstruction,
     formatted,
@@ -113,7 +108,7 @@ export const IXForm: React.FC<Props> = ({ ix, program }: Props) => {
       {builtIX && (
         <PreviewIXModal
           ix={ix}
-          txInstruction={builtIX.txInstruction}
+          txInstructions={[builtIX.txInstruction]}
           formatted={builtIX.formatted}
           isOpen={showPreview}
           onDismiss={() => {

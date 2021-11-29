@@ -1,6 +1,7 @@
 import { usePubkey } from "@saberhq/sail";
 import { useParams } from "react-router-dom";
 
+import { SmartWalletProvider } from "../../../../hooks/useSmartWallet";
 import { SmartWalletInner } from "./SmartWalletInner";
 
 export const WalletIndexView: React.FC = () => {
@@ -11,5 +12,9 @@ export const WalletIndexView: React.FC = () => {
     return <div>Invalid wallet key</div>;
   }
 
-  return <SmartWalletInner walletKey={walletKey} />;
+  return (
+    <SmartWalletProvider initialState={walletKey}>
+      <SmartWalletInner />
+    </SmartWalletProvider>
+  );
 };

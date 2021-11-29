@@ -1,8 +1,13 @@
-import { AddressLink } from "../../../../common/AddressLink";
-import { useTransaction } from "../context";
+import type { ParsedInstruction } from "../../../../../../hooks/useSmartWallet";
+import { AddressLink } from "../../../../../common/AddressLink";
 
-export const TXAccounts: React.FC = () => {
-  const { parsed } = useTransaction();
+interface Props {
+  instruction: ParsedInstruction;
+}
+
+export const IXAccounts: React.FC<Props> = ({
+  instruction: { parsed },
+}: Props) => {
   return (
     <div tw="border rounded text-sm">
       <h2 tw="px-6 py-2 font-semibold text-gray-800">

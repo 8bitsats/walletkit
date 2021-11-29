@@ -1,9 +1,15 @@
 import type {
   SmartWalletTransactionData,
+  SmartWalletTypes,
   SmartWalletWrapper,
 } from "@gokiprotocol/client";
-import { findTransactionAddress, SmartWalletJSON } from "@gokiprotocol/client";
-import { Coder } from "@project-serum/anchor";
+import {
+  findTransactionAddress,
+  GOKI_ADDRESSES,
+  SmartWalletJSON,
+} from "@gokiprotocol/client";
+import type { InstructionParsed } from "@saberhq/anchor-contrib";
+import { SuperCoder } from "@saberhq/anchor-contrib";
 import type { ParsedAccountDatum } from "@saberhq/sail";
 import { useParsedAccountsData } from "@saberhq/sail";
 import type {
@@ -17,21 +23,24 @@ import { useQueries } from "react-query";
 import { createContainer } from "unstated-next";
 
 import { useSDK } from "../contexts/sdk";
-import type { InstructionFmt } from "../utils/anchor";
-import { formatTxInstruction } from "../utils/anchor";
 import { fetchIDL } from "../utils/fetchers";
 
-export const SMART_WALLET_CODER = new Coder(SmartWalletJSON);
+export const SMART_WALLET_CODER = new SuperCoder<SmartWalletTypes>(
+  GOKI_ADDRESSES.SmartWallet,
+  SmartWalletJSON
+);
 
 const decodeTransaction = (data: KeyedAccountInfo) =>
-  SMART_WALLET_CODER.accounts.decode<SmartWalletTransactionData>(
-    "Transaction",
-    data.accountInfo.data
-  );
+  SMART_WALLET_CODER.accountParsers.transaction(data.accountInfo.data);
+
+export interface ParsedInstruction {
+  ix: TransactionInstruction;
+  parsed?: InstructionParsed | null;
+}
 
 export interface ParsedTX {
   tx: ParsedAccountDatum<SmartWalletTransactionData>;
-  parsed?: InstructionFmt | null;
+  instructions?: ParsedInstruction[];
 }
 
 const useSmartWalletInner = (
@@ -80,7 +89,11 @@ const useSmartWalletInner = (
     () =>
       uniq(
         txs
-          .map((tx) => tx?.accountInfo.data.instruction.programId.toString())
+          .flatMap((tx) =>
+            tx?.accountInfo.data.instructions.map((ix) =>
+              ix.programId.toString()
+            )
+          )
           .filter((x): x is string => !!x)
       ),
     [txs]
@@ -98,24 +111,28 @@ const useSmartWalletInner = (
       if (!tx) {
         return { tx };
       }
-      const txInstruction: TransactionInstruction = {
-        ...tx.accountInfo.data.instruction,
-        data: Buffer.from(tx.accountInfo.data.instruction.data as Uint8Array),
-      };
-      const idlIndex = programIDsToFetch.findIndex(
-        (pid) => pid === txInstruction.programId.toString()
-      );
-      const idl = idls[idlIndex]?.data;
-      if (idl) {
-        return {
-          tx,
-          parsed: formatTxInstruction({
-            coder: new Coder(idl),
-            txInstruction,
-          }),
+      const instructions: {
+        ix: TransactionInstruction;
+        parsed?: InstructionParsed | null;
+      }[] = tx.accountInfo.data.instructions.map((ix) => {
+        const theData = {
+          ...ix,
+          data: Buffer.from(ix.data as Uint8Array),
         };
-      }
-      return { tx };
+        const idlIndex = programIDsToFetch.findIndex(
+          (pid) => pid === theData.programId.toString()
+        );
+        const idl = idls[idlIndex]?.data;
+        if (idl) {
+          const superCoder = new SuperCoder(theData.programId, idl);
+          return {
+            ix: theData,
+            parsed: superCoder.parseInstruction(theData),
+          };
+        }
+        return { ix: theData };
+      });
+      return { tx, instructions };
     });
   }, [idls, programIDsToFetch, txs]);
 

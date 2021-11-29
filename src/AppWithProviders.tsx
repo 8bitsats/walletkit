@@ -60,8 +60,9 @@ const onTxError = (error: SailTransactionError) => {
   const { tx } = error;
   if (err.toString().includes(": custom program error:")) {
     // todo: figure out the duplicates
-    const inspectLink = tx.generateInspectLink();
-    console.error(`TX`, inspectLink);
+    if (error.network !== "localnet") {
+      console.error(`TX`, tx.generateInspectLink(error.network));
+    }
     const progError = ProgramError.parse(err, tx, programIDs, programErrors);
     if (progError) {
       const message = err.message.split(":")[1] ?? "Transaction failed";
@@ -113,8 +114,9 @@ const onTxError = (error: SailTransactionError) => {
       type: "error",
     });
     const { tx } = error;
-    const inspectLink = tx.generateInspectLink();
-    console.error(`TX`, inspectLink);
+    if (error.network !== "localnet") {
+      console.error(`TX`, tx.generateInspectLink(error.network));
+    }
   }
   const sentryArgs = {
     tags: {

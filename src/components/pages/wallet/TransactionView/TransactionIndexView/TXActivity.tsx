@@ -18,7 +18,10 @@ export const TXActivity: React.FC = () => {
         <div tw="text-xs">
           {txsWithEvents.map(({ tx, event }) => {
             return (
-              <div key={tx.sig} tw="text-gray-500 flex items-center gap-4">
+              <div
+                key={tx.sig}
+                tw="text-gray-500 inline-flex items-center gap-4"
+              >
                 <span>
                   <TXEvent event={event} />
                 </span>

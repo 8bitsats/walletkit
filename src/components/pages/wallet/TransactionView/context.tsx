@@ -2,20 +2,17 @@ import type {
   SmartWalletEvents,
   SmartWalletTransactionData,
 } from "@gokiprotocol/client";
-import { GOKI_ADDRESSES } from "@gokiprotocol/client";
-import { EventParser } from "@project-serum/anchor";
 import type { ParsedAccountInfo } from "@saberhq/sail";
 import { useSolana } from "@saberhq/use-solana";
 import type { TransactionResponse } from "@solana/web3.js";
 import { useEffect, useState } from "react";
 import { createContainer } from "unstated-next";
 
+import type { ParsedTX } from "../../../../hooks/useSmartWallet";
 import { SMART_WALLET_CODER } from "../../../../hooks/useSmartWallet";
-import type { InstructionFmt } from "../../../../utils/anchor";
 
-interface LoadedTransaction {
+interface LoadedTransaction extends ParsedTX {
   tx: ParsedAccountInfo<SmartWalletTransactionData>;
-  parsed?: InstructionFmt | null;
 }
 
 export interface DetailedTransaction extends LoadedTransaction {
@@ -29,7 +26,7 @@ export interface DetailedTransaction extends LoadedTransaction {
 export interface HistoricalTX extends TransactionResponse {
   sig: string;
   date: Date | null | undefined;
-  events: SmartWalletEvent[];
+  events: readonly SmartWalletEvent[];
 }
 
 export type SmartWalletEvent = SmartWalletEvents[keyof SmartWalletEvents];
@@ -68,25 +65,21 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
                 .getTransaction(sig.signature, {
                   commitment: "confirmed",
                 })
-                .then((resp) => {
+                .then((resp): HistoricalTX | null => {
                   if (!resp) {
                     return null;
                   }
-                  const parser = new EventParser(
-                    GOKI_ADDRESSES.SmartWallet,
-                    SMART_WALLET_CODER
-                  );
-                  const events: SmartWalletEvent[] = [];
-                  parser.parseLogs(resp.meta?.logMessages ?? [], (event) =>
-                    events.push(event as SmartWalletEvent)
+                  const events = SMART_WALLET_CODER.parseProgramLogEvents(
+                    resp.meta?.logMessages ?? []
                   );
                   return {
                     ...resp,
                     events,
                     sig: sig.signature,
-                    date: resp.blockTime
-                      ? new Date(resp.blockTime * 1_000)
-                      : resp.blockTime,
+                    date:
+                      typeof resp.blockTime === "number"
+                        ? new Date(resp.blockTime * 1_000)
+                        : resp.blockTime,
                   };
                 })
             )

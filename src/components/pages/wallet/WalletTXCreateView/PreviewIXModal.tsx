@@ -20,7 +20,7 @@ import type { InstructionInfo } from ".";
 
 interface Props {
   ix: InstructionInfo;
-  txInstruction: TransactionInstruction;
+  txInstructions: TransactionInstruction[];
   formatted: InstructionDisplay;
   isOpen: boolean;
   onDismiss: () => void;
@@ -28,7 +28,7 @@ interface Props {
 
 export const PreviewIXModal: React.FC<Props> = ({
   ix,
-  txInstruction,
+  txInstructions,
   formatted,
   isOpen,
   onDismiss,
@@ -42,10 +42,10 @@ export const PreviewIXModal: React.FC<Props> = ({
       return;
     }
     const theTX = new Transaction();
-    theTX.instructions = [txInstruction];
+    theTX.instructions = txInstructions;
     theTX.feePayer = smartWallet.provider.wallet.publicKey;
-    return new TransactionEnvelope(smartWallet.provider, [txInstruction]);
-  }, [smartWallet, txInstruction]);
+    return new TransactionEnvelope(smartWallet.provider, txInstructions);
+  }, [smartWallet, txInstructions]);
   const [result, setResult] = useState<SimulatedTransactionResponse | null>(
     null
   );
@@ -128,7 +128,7 @@ export const PreviewIXModal: React.FC<Props> = ({
             onClick={async () => {
               invariant(smartWallet, "smart wallet");
               const pendingTX = await smartWallet.newTransaction({
-                instruction: txInstruction,
+                instructions: txInstructions,
               });
               await handleTX(
                 pendingTX.tx,

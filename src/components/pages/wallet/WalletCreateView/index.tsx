@@ -100,7 +100,7 @@ export const WalletCreateView: React.FC = () => {
           message: `Wallet created successfully`,
           description: smartWalletWrapper.key.toString(),
         });
-        history.push(`/multisigs/${smartWalletWrapper.key.toString()}`);
+        history.push(`/wallets/${smartWalletWrapper.key.toString()}`);
       } catch (e) {
         handleException(e, {
           source: "create-multisig",

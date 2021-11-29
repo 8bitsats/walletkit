@@ -1,9 +1,6 @@
-import type { Coder } from "@project-serum/anchor";
-import type { InstructionDisplay } from "@project-serum/anchor/dist/cjs/coder/instruction";
-import type { IdlType } from "@project-serum/anchor/dist/esm/idl";
 import { QUARRY_ADDRESSES } from "@quarryprotocol/quarry-sdk";
 import { TOKEN_PROGRAM_ID } from "@saberhq/token-utils";
-import type { PublicKey, TransactionInstruction } from "@solana/web3.js";
+import type { PublicKey } from "@solana/web3.js";
 import {
   SystemProgram,
   SYSVAR_CLOCK_PUBKEY,
@@ -21,50 +18,4 @@ export const COMMON_ACCOUNTS: Record<string, PublicKey> = {
   quarryMineProgram: QUARRY_ADDRESSES.Mine,
   mineProgram: QUARRY_ADDRESSES.Mine,
   mintWrapperProgram: QUARRY_ADDRESSES.MintWrapper,
-};
-
-export const formatIdlType = (idlType: IdlType): string => {
-  if (typeof idlType === "string") {
-    return idlType as string;
-  }
-
-  if ("vec" in idlType) {
-    return `Vec<${formatIdlType(idlType.vec)}>`;
-  }
-  if ("option" in idlType) {
-    return `Option<${formatIdlType(idlType.option)}>`;
-  }
-  if ("defined" in idlType) {
-    return idlType.defined;
-  }
-  if ("array" in idlType) {
-    return `Array<${formatIdlType(idlType.array[0])}; ${idlType.array[1]}>`;
-  }
-
-  throw new Error(`Unknown IDL type: ${JSON.stringify(idlType)}`);
-};
-
-export type InstructionFmt = InstructionDisplay & {
-  name: string;
-};
-/**
- * Parses and formats a raw transaction instruction.
- * @returns
- */
-export const formatTxInstruction = ({
-  coder,
-  txInstruction,
-}: {
-  coder: Coder;
-  txInstruction: TransactionInstruction;
-}): InstructionFmt => {
-  const decoded = coder.instruction.decode(txInstruction.data);
-  if (!decoded) {
-    throw new Error("could not decode ix data");
-  }
-  const fmt = coder.instruction.format(decoded, txInstruction.keys);
-  if (!fmt) {
-    throw new Error("invalid instruction");
-  }
-  return { ...fmt, name: decoded.name };
 };
