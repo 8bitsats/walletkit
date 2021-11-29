@@ -17,7 +17,7 @@ import type {
   PublicKey,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { uniq } from "lodash";
+import { startCase, uniq } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { useQueries } from "react-query";
 import { createContainer } from "unstated-next";
@@ -36,6 +36,7 @@ const decodeTransaction = (data: KeyedAccountInfo) =>
 export interface ParsedInstruction {
   ix: TransactionInstruction;
   parsed?: InstructionParsed | null;
+  programName?: string;
 }
 
 export interface ParsedTX {
@@ -126,6 +127,7 @@ const useSmartWalletInner = (
         if (idl) {
           const superCoder = new SuperCoder(theData.programId, idl);
           return {
+            programName: startCase(idl.name),
             ix: theData,
             parsed: superCoder.parseInstruction(theData),
           };

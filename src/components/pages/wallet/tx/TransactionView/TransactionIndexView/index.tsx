@@ -2,6 +2,7 @@ import { useSolana } from "@saberhq/use-solana";
 import { startCase } from "lodash";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
+import { shortenAddress } from "../../../../../../utils/utils";
 import { AddressLink } from "../../../../../common/AddressLink";
 import { useTransaction } from "../context";
 import { InstructionDisplay } from "./InstructionDisplay";
@@ -10,15 +11,16 @@ import { TXSidebar } from "./TXSidebar";
 
 export const TransactionIndexView: React.FC = () => {
   const { network } = useSolana();
-  const { instructions, txEnv } = useTransaction();
+  const { instructions, txEnv, title, id } = useTransaction();
   return (
     <div tw="flex w-full py-2">
       <div tw="grid gap-4 flex-grow[2] flex-basis[760px]">
-        <div tw="w-full max-w-lg">
+        <div tw="w-full max-w-3xl mx-auto">
           <div tw="pb-16">
-            <h2 tw="border-b pb-2 text-gray-500 font-semibold mb-4">
-              Transaction Details
+            <h2 tw="border-b pb-2 text-gray-500 font-semibold text-sm mb-4">
+              Transactions › {id}
             </h2>
+            <h1 tw="font-medium text-2xl leading-relaxed my-4 py-2">{title}</h1>
             <div tw="grid gap-4">
               {instructions?.map((instruction, i) => (
                 <div tw="grid border" key={`ix_${i}`}>
@@ -32,7 +34,10 @@ export const TransactionIndexView: React.FC = () => {
                       <AddressLink
                         tw="font-semibold text-secondary"
                         address={instruction.ix.programId}
-                      />
+                      >
+                        {instruction.programName} (
+                        {shortenAddress(instruction.ix.programId.toString())})
+                      </AddressLink>
                     </p>
                   </div>
                   <div tw="p-4 border-t">

@@ -8,12 +8,12 @@ import { useTransaction } from "../context";
 
 export const TXSidebar: React.FC = () => {
   const { smartWallet } = useSmartWallet();
-  const { tx, title, executedAt, eta } = useTransaction();
+  const { tx, id, executedAt, eta } = useTransaction();
   return (
     <>
       <div tw="text-xs border-b pb-2">
         <div tw="flex">
-          <span tw="font-semibold text-secondary w-[90px]">{title}</span>
+          <span tw="font-semibold text-secondary w-[90px]">{id}</span>
           <div tw="text-secondary">
             <FaLink
               onClick={() => {

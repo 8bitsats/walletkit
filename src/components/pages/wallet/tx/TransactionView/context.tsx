@@ -11,6 +11,7 @@ import { createContainer } from "unstated-next";
 
 import type { ParsedTX } from "../../../../../hooks/useSmartWallet";
 import { SMART_WALLET_CODER } from "../../../../../hooks/useSmartWallet";
+import { shortenAddress } from "../../../../../utils/utils";
 
 interface LoadedTransaction extends ParsedTX {
   tx: ParsedAccountInfo<SmartWalletTransactionData>;
@@ -18,6 +19,7 @@ interface LoadedTransaction extends ParsedTX {
 
 export interface DetailedTransaction extends LoadedTransaction {
   index: number;
+  id: string;
   title: string;
   historicalTXs?: HistoricalTX[];
   eta: Date | null;
@@ -39,7 +41,19 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
   }
   const { connection, providerMut } = useSolana();
   const index = tx.tx.accountInfo.data.index.toNumber();
-  const title = `TX-${index}`;
+
+  const id = `TX-${index}`;
+  const title = `${
+    tx.instructions
+      ?.map(
+        (ix) =>
+          ix.parsed?.name?.toString() ??
+          `Interact with ${
+            ix.programName ?? shortenAddress(ix.ix.programId.toString())
+          }`
+      )
+      .join(", ") ?? "Unknown Trnasaction"
+  }`;
 
   const { data: txData } = tx.tx.accountInfo;
 
@@ -104,7 +118,7 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
     })();
   }, [connection, tx.tx.accountId]);
 
-  return { ...tx, index, title, historicalTXs, eta, executedAt, txEnv };
+  return { ...tx, id, index, title, historicalTXs, eta, executedAt, txEnv };
 };
 
 export const { useContainer: useTransaction, Provider: TransactionProvider } =

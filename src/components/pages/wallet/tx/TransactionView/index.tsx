@@ -18,22 +18,21 @@ export const TransactionView: React.FC = () => {
   );
   return (
     <div tw="py-6 px-12">
-      <h1 tw="text-3xl font-bold pb-2 border-b mb-4">
-        Transaction TX-{transactionSeq}
-      </h1>
       {parsedTX && parsedTX.tx && (
-        <TransactionProvider initialState={{ ...parsedTX, tx: parsedTX.tx }}>
-          <Switch>
-            <Route
-              path="/wallets/:walletKey/tx/:transactionSeq/sign"
-              component={TransactionSignView}
-            />
-            <Route
-              path="/wallets/:walletKey/tx/:transactionSeq"
-              component={TransactionIndexView}
-            />
-          </Switch>
-        </TransactionProvider>
+        <>
+          <TransactionProvider initialState={{ ...parsedTX, tx: parsedTX.tx }}>
+            <Switch>
+              <Route
+                path="/wallets/:walletKey/tx/:transactionSeq/sign"
+                component={TransactionSignView}
+              />
+              <Route
+                path="/wallets/:walletKey/tx/:transactionSeq"
+                component={TransactionIndexView}
+              />
+            </Switch>
+          </TransactionProvider>
+        </>
       )}
     </div>
   );
