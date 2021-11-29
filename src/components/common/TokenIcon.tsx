@@ -39,7 +39,7 @@ const Wrapper = styled.div<{ size: number }>`
     height: 100%;
     width: 100%;
   }
-  ${tw`rounded-full`}
+  ${tw`rounded-full overflow-hidden`}
 `;
 
 const Placeholder = styled.div`
