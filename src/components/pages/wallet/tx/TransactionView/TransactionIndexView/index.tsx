@@ -5,6 +5,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { shortenAddress } from "../../../../../../utils/utils";
 import { AddressLink } from "../../../../../common/AddressLink";
 import { useTransaction } from "../context";
+import { Actions } from "./Actions";
 import { InstructionDisplay } from "./InstructionDisplay";
 import { TXActivity } from "./TXActivity";
 import { TXSidebar } from "./TXSidebar";
@@ -21,6 +22,7 @@ export const TransactionIndexView: React.FC = () => {
               Transactions › {id}
             </h2>
             <h1 tw="font-medium text-2xl leading-relaxed my-4 py-2">{title}</h1>
+            <Actions />
             <div tw="grid gap-4">
               {instructions?.map((instruction, i) => (
                 <div tw="grid border" key={`ix_${i}`}>

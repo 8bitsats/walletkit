@@ -15,7 +15,7 @@ export const TXActivity: React.FC = () => {
     <div>
       <h2 tw="mt-8 text-gray-800 font-semibold mb-4">Activity</h2>
       {txsWithEvents ? (
-        <div tw="text-xs">
+        <div tw="text-xs flex flex-col gap-4">
           {txsWithEvents.map(({ tx, event }) => {
             return (
               <div

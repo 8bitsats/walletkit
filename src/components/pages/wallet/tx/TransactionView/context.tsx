@@ -10,7 +10,10 @@ import { useEffect, useMemo, useState } from "react";
 import { createContainer } from "unstated-next";
 
 import type { ParsedTX } from "../../../../../hooks/useSmartWallet";
-import { SMART_WALLET_CODER } from "../../../../../hooks/useSmartWallet";
+import {
+  SMART_WALLET_CODER,
+  useSmartWallet,
+} from "../../../../../hooks/useSmartWallet";
 import { shortenAddress } from "../../../../../utils/utils";
 
 interface LoadedTransaction extends ParsedTX {
@@ -25,6 +28,8 @@ export interface DetailedTransaction extends LoadedTransaction {
   eta: Date | null;
   executedAt: Date | null;
   txEnv: TransactionEnvelope | null;
+  state: "stale" | "active" | "approved" | "executed";
+  numSigned: number;
 }
 
 export interface HistoricalTX extends TransactionResponse {
@@ -39,6 +44,7 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
   if (!tx) {
     throw new Error(`missing tx`);
   }
+  const { smartWallet } = useSmartWallet();
   const { connection, providerMut } = useSolana();
   const index = tx.tx.accountInfo.data.index.toNumber();
 
@@ -118,7 +124,33 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
     })();
   }, [connection, tx.tx.accountId]);
 
-  return { ...tx, id, index, title, historicalTXs, eta, executedAt, txEnv };
+  const numSigned = (
+    (tx?.tx.accountInfo.data.signers ?? []) as boolean[]
+  ).filter((x) => !!x).length;
+
+  const isOwnerSetValid =
+    tx.tx.accountInfo.data.ownerSetSeqno === smartWallet?.data?.ownerSetSeqno;
+  const threshold = smartWallet ? smartWallet.data?.threshold.toNumber() : null;
+  const state = executedAt
+    ? "executed"
+    : !isOwnerSetValid
+    ? "stale"
+    : typeof threshold === "number" && numSigned >= threshold
+    ? "approved"
+    : "active";
+
+  return {
+    ...tx,
+    id,
+    index,
+    title,
+    historicalTXs,
+    eta,
+    executedAt,
+    txEnv,
+    state,
+    numSigned,
+  };
 };
 
 export const { useContainer: useTransaction, Provider: TransactionProvider } =

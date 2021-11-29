@@ -21,7 +21,6 @@ export const AsyncButton: React.FC<IProps> = ({
   const { sdkMut } = useSDK();
   return sdkMut !== null ? (
     <Button
-      size="md"
       onClick={
         onClick
           ? async () => {
@@ -34,7 +33,7 @@ export const AsyncButton: React.FC<IProps> = ({
       {children}
     </Button>
   ) : (
-    <Button size="md" variant="muted" {...rest} onClick={() => connect()}>
+    <Button variant="muted" {...rest} onClick={() => connect()}>
       {connectWalletOverride ?? "Connect Wallet"}
     </Button>
   );

@@ -37,6 +37,23 @@ export const TXEvent: React.FC<Props> = ({ event }: Props) => {
           <span>executed the transaction.</span>
         </>
       );
+    case "WalletSetOwnersEvent":
+      return (
+        <>
+          <span>The owners of the wallet were changed to</span>{" "}
+          {event.data.owners.map((owner, i) => (
+            <>
+              {i !== 0 && <span>, </span>}
+              <AddressLink
+                key={i}
+                tw="text-gray-800 font-medium"
+                address={owner}
+              />
+            </>
+          ))}
+          .
+        </>
+      );
     default:
       return <>unknown</>;
   }
