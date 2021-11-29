@@ -7,6 +7,7 @@ import { TransactionView } from "../tx/TransactionView";
 import { WalletTXCreateView } from "../txs/WalletTXCreateView";
 import { WalletTXListView } from "../txs/WalletTXListView";
 import { WalletIndexView } from "../WalletIndexView";
+import { WalletSettingsView } from "../WalletSettingsView";
 
 export const WalletView: React.FC = () => {
   const { walletKey: walletKeyStr } = useParams<{ walletKey: string }>();
@@ -29,6 +30,10 @@ export const WalletView: React.FC = () => {
           <Route
             path="/wallets/:walletKey/tx/:transactionSeq"
             component={TransactionView}
+          />
+          <Route
+            path="/wallets/:walletKey/settings"
+            component={WalletSettingsView}
           />
           <Route path="/wallets/:walletKey" component={WalletIndexView} />
         </Switch>

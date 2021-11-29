@@ -14,15 +14,15 @@ export interface ModalProps {
   isOpen: boolean;
   onDismiss: () => void;
   darkenOverlay?: boolean;
-  topMargin?: number;
+  className?: string;
 }
 
 export const Modal: React.FC<ModalProps> = ({
+  className,
   children,
   isOpen,
   onDismiss,
   darkenOverlay = true,
-  topMargin,
 }: ModalProps) => {
   const fadeTransition = useTransition(isOpen, {
     config: { duration: 150 },
@@ -61,7 +61,7 @@ export const Modal: React.FC<ModalProps> = ({
               darkenOverlay={darkenOverlay}
             >
               <ModalWrapper
-                topMargin={topMargin}
+                className={className}
                 aria-label="dialog content"
                 {...(isMobile
                   ? {
@@ -83,15 +83,8 @@ export const Modal: React.FC<ModalProps> = ({
   );
 };
 
-const ModalWrapper = styled(animated(DialogContent), {
-  shouldForwardProp: (prop) => prop !== "topMargin",
-})<{ topMargin?: number }>`
+const ModalWrapper = styled(animated(DialogContent))`
   ${tw`shadow-2xl w-full max-w-lg p-6 rounded-lg relative`}
-  ${({ topMargin }) =>
-    topMargin !== undefined &&
-    css`
-      margin-top: ${topMargin}px;
-    `}
 `;
 
 const StyledDialogOverlay = styled(animated(DialogOverlay), {

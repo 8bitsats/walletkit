@@ -49,7 +49,7 @@ export const TXSidebar: React.FC = () => {
               const currSigner = smartWallet?.data?.owners?.[i];
               if (currSigner) {
                 return (
-                  <div tw="flex items-center gap-2">
+                  <div tw="flex items-center gap-2" key={i}>
                     <AddressLink address={currSigner} />
                     {signer ? (
                       <FaCheckCircle tw="text-primary" />

@@ -93,15 +93,17 @@ export const StyledButton = styled.button<AdditionalButtonProps>(
     tw`transform active:scale-98 text-DEFAULT hover:bg-opacity-90`,
     tw`transition-transform`,
 
-    variant === "outline" && tw`border border-gray-700 hover:border-gray`,
-    variant === "primary" && tw`text-white bg-primary shadow`,
+    variant === "outline" &&
+      tw`border hover:border-gray-200 transition-colors text-gray-800`,
+    variant === "primary" &&
+      tw`text-white bg-primary shadow border border-primary-600`,
     variant === "muted" && tw`text-gray-200 bg-gray-700 hover:bg-gray-500`,
 
     variant === "danger" && tw`bg-red-500 text-black font-bold`,
 
     tw`disabled:(bg-gray-400 text-gray-600 cursor-not-allowed)`,
 
-    size === "sm" && tw`py-1.5 px-2 text-base`,
+    size === "sm" && tw`py-1.5 px-2 h-8 text-sm font-medium`,
     size === "md" && tw`py-3 px-5 text-base`,
 
     icon && tw`rounded-full w-7 h-7 p-0!`,

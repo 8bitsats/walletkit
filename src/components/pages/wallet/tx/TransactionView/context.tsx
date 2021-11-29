@@ -3,9 +3,10 @@ import type {
   SmartWalletTransactionData,
 } from "@gokiprotocol/client";
 import type { ParsedAccountInfo } from "@saberhq/sail";
+import { TransactionEnvelope } from "@saberhq/solana-contrib";
 import { useSolana } from "@saberhq/use-solana";
 import type { TransactionResponse } from "@solana/web3.js";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createContainer } from "unstated-next";
 
 import type { ParsedTX } from "../../../../../hooks/useSmartWallet";
@@ -21,6 +22,7 @@ export interface DetailedTransaction extends LoadedTransaction {
   historicalTXs?: HistoricalTX[];
   eta: Date | null;
   executedAt: Date | null;
+  txEnv: TransactionEnvelope | null;
 }
 
 export interface HistoricalTX extends TransactionResponse {
@@ -35,11 +37,24 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
   if (!tx) {
     throw new Error(`missing tx`);
   }
-  const { connection } = useSolana();
+  const { connection, providerMut } = useSolana();
   const index = tx.tx.accountInfo.data.index.toNumber();
   const title = `TX-${index}`;
 
   const { data: txData } = tx.tx.accountInfo;
+
+  const txEnv = useMemo(() => {
+    if (!providerMut) {
+      return null;
+    }
+    return new TransactionEnvelope(
+      providerMut,
+      tx.tx.accountInfo.data.instructions.map((ix) => ({
+        ...ix,
+        data: Buffer.from(ix.data as Uint8Array),
+      }))
+    );
+  }, [providerMut, tx.tx.accountInfo.data.instructions]);
 
   const etaRaw = txData.eta.toNumber();
   const eta = etaRaw === -1 ? null : new Date(etaRaw * 1_000);
@@ -89,7 +104,7 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
     })();
   }, [connection, tx.tx.accountId]);
 
-  return { ...tx, index, title, historicalTXs, eta, executedAt };
+  return { ...tx, index, title, historicalTXs, eta, executedAt, txEnv };
 };
 
 export const { useContainer: useTransaction, Provider: TransactionProvider } =

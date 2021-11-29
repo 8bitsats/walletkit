@@ -1,9 +1,28 @@
-import { NavLink } from "react-router-dom";
-import tw, { css } from "twin.macro";
+import { AiOutlineBank } from "react-icons/ai";
+import { FaInbox, FaWrench } from "react-icons/fa";
 
 import { useSmartWallet } from "../../../../hooks/useSmartWallet";
 import { ReactComponent as GokiLogo } from "../../../common/svgs/logo-dark.svg";
 import { WalletDropdownMini } from "../WalletDropdownMini";
+import { SidebarNavLink } from "./SidebarNavLink";
+
+const MAIN_LINKS = [
+  {
+    icon: <FaInbox />,
+    title: "Inbox",
+    href: "/inbox",
+  },
+  {
+    icon: <AiOutlineBank />,
+    title: "Treasury",
+    href: "/treasury",
+  },
+  {
+    icon: <FaWrench />,
+    title: "Settings",
+    href: "/settings",
+  },
+];
 
 const NAV_LINKS = [
   {
@@ -28,25 +47,36 @@ export const Sidebar: React.FC = () => {
         <GokiLogo tw="h-5 w-min text-primary-800 hover:(text-primary -rotate-3) transition-all" />
         <WalletDropdownMini />
       </div>
-      <div tw="flex flex-col px-4 mb-0.5">
-        <h3 tw="text-xs font-medium text-gray-500 mb-1">Transactions</h3>
-        {NAV_LINKS.map(({ title, href }) => {
-          return (
-            <NavLink
-              key={href}
-              to={`/wallets/${key.toString()}${href}`}
-              tw="text-gray-700 text-sm font-medium h-7 flex items-center px-2.5 rounded cursor-pointer hover:(bg-gray-100)"
-              activeClassName="is-active"
-              css={css`
-                &.is-active {
-                  ${tw`bg-gray-100`}
-                }
-              `}
-            >
-              {title}
-            </NavLink>
-          );
-        })}
+      <div tw="flex flex-col px-4 mb-0.5 gap-7">
+        <div tw="flex flex-col">
+          {MAIN_LINKS.map(({ title, href, icon }) => {
+            return (
+              <SidebarNavLink
+                key={href}
+                to={`/wallets/${key.toString()}${href}`}
+                tw="px-2"
+              >
+                <div tw="flex items-center gap-2">
+                  {icon}
+                  {title}
+                </div>
+              </SidebarNavLink>
+            );
+          })}
+        </div>
+        <div tw="flex flex-col">
+          <h3 tw="text-xs font-medium text-gray-500 mb-1 px-2">Transactions</h3>
+          {NAV_LINKS.map(({ title, href }) => {
+            return (
+              <SidebarNavLink
+                key={href}
+                to={`/wallets/${key.toString()}${href}`}
+              >
+                {title}
+              </SidebarNavLink>
+            );
+          })}
+        </div>
       </div>
     </nav>
   );

@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import type { Network } from "@saberhq/solana-contrib";
 import React from "react";
-import ReactDOMServer from "react-dom/server";
 import type { ToastPosition } from "react-hot-toast";
 import { toast } from "react-hot-toast";
 
@@ -27,23 +26,16 @@ export function notify({
   // log for Sentry and other debug purposes
   const logLevel =
     type === "warn" ? "warn" : type === "error" ? "error" : "info";
-  console[logLevel](
-    `Notify: ${message ?? "<no message>"} -- ${
-      typeof description === "string"
-        ? description
-        : ReactDOMServer.renderToStaticMarkup(<>{description}</>)
-    }`,
-    {
-      env,
-      txid,
-      txids,
-      type,
-    }
-  );
-
   if (txids?.length === 1) {
     txid = txids[0];
   }
+  console[logLevel](`Notify: ${message ?? "<no message>"}`, description, {
+    env,
+    txid,
+    txids,
+    type,
+  });
+
   if (txid) {
     description = (
       <div>
