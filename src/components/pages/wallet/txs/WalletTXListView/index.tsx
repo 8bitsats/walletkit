@@ -1,8 +1,8 @@
 import { startCase } from "lodash";
 import { Link, useParams } from "react-router-dom";
 
-import type { ParsedTX } from "../../../../hooks/useSmartWallet";
-import { useSmartWallet } from "../../../../hooks/useSmartWallet";
+import type { ParsedTX } from "../../../../../hooks/useSmartWallet";
+import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 
 interface TXList {
   title: string;

@@ -1,9 +1,9 @@
 import copyToClipboard from "copy-to-clipboard";
 import { FaCheckCircle, FaLink, FaQuestionCircle } from "react-icons/fa";
 
-import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
-import { notify } from "../../../../../utils/notifications";
-import { AddressLink } from "../../../../common/AddressLink";
+import { useSmartWallet } from "../../../../../../hooks/useSmartWallet";
+import { notify } from "../../../../../../utils/notifications";
+import { AddressLink } from "../../../../../common/AddressLink";
 import { useTransaction } from "../context";
 
 export const TXSidebar: React.FC = () => {

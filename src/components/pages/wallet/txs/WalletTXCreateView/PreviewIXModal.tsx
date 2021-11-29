@@ -12,10 +12,10 @@ import { useEffect, useMemo, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import invariant from "tiny-invariant";
 
-import { useSmartWallet } from "../../../../hooks/useSmartWallet";
-import { AsyncButton } from "../../../common/AsyncButton";
-import { AttributeList } from "../../../common/AttributeList";
-import { Modal } from "../../../common/Modal";
+import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
+import { AsyncButton } from "../../../../common/AsyncButton";
+import { AttributeList } from "../../../../common/AttributeList";
+import { Modal } from "../../../../common/Modal";
 import type { InstructionInfo } from ".";
 
 interface Props {

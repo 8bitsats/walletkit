@@ -1,8 +1,8 @@
 import formatDistance from "date-fns/formatDistance";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-import { LoadingPage } from "../../../../common/LoadingPage";
-import { TXLink } from "../../../../common/TXLink";
+import { LoadingPage } from "../../../../../common/LoadingPage";
+import { TXLink } from "../../../../../common/TXLink";
 import { useTransaction } from "../context";
 import { TXEvent } from "./TXEvent";
 

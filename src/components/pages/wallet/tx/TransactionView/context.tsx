@@ -8,8 +8,8 @@ import type { TransactionResponse } from "@solana/web3.js";
 import { useEffect, useState } from "react";
 import { createContainer } from "unstated-next";
 
-import type { ParsedTX } from "../../../../hooks/useSmartWallet";
-import { SMART_WALLET_CODER } from "../../../../hooks/useSmartWallet";
+import type { ParsedTX } from "../../../../../hooks/useSmartWallet";
+import { SMART_WALLET_CODER } from "../../../../../hooks/useSmartWallet";
 
 interface LoadedTransaction extends ParsedTX {
   tx: ParsedAccountInfo<SmartWalletTransactionData>;

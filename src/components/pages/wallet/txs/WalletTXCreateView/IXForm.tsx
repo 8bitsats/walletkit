@@ -6,8 +6,8 @@ import type { TransactionInstruction } from "@solana/web3.js";
 import { set, startCase } from "lodash";
 import { useMemo, useState } from "react";
 
-import { COMMON_ACCOUNTS } from "../../../../utils/anchor";
-import { Button } from "../../../common/Button";
+import { COMMON_ACCOUNTS } from "../../../../../utils/anchor";
+import { Button } from "../../../../common/Button";
 import type { InstructionInfo } from ".";
 import { AccountsForm } from "./AccountsForm";
 import { PreviewIXModal } from "./PreviewIXModal";

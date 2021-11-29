@@ -1,4 +1,4 @@
-import { AddressLink } from "../../../../common/AddressLink";
+import { AddressLink } from "../../../../../common/AddressLink";
 import type { SmartWalletEvent } from "../context";
 
 interface Props {

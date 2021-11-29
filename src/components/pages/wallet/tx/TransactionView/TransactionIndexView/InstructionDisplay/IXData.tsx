@@ -1,4 +1,4 @@
-import type { ParsedInstruction } from "../../../../../../hooks/useSmartWallet";
+import type { ParsedInstruction } from "../../../../../../../hooks/useSmartWallet";
 
 interface Props {
   instruction: ParsedInstruction;

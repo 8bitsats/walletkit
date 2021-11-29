@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Route, Switch, useParams } from "react-router-dom";
 
-import { useSmartWallet } from "../../../../hooks/useSmartWallet";
+import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 import { TransactionProvider } from "./context";
 import { TransactionIndexView } from "./TransactionIndexView";
 import { TransactionSignView } from "./TransactionSignView";

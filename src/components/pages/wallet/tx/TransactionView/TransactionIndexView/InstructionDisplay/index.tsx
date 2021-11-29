@@ -1,4 +1,4 @@
-import type { ParsedInstruction } from "../../../../../../hooks/useSmartWallet";
+import type { ParsedInstruction } from "../../../../../../../hooks/useSmartWallet";
 import { IXAccounts } from "./IXAccounts";
 import { IXData } from "./IXData";
 

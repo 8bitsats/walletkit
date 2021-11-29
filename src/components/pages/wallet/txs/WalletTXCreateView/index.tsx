@@ -7,7 +7,7 @@ import { Keypair, PublicKey } from "@solana/web3.js";
 import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 
-import { fetcher } from "../../../../utils/fetcher";
+import { fetcher } from "../../../../../utils/fetcher";
 import { IXForm } from "./IXForm";
 
 export type InstructionInfo = {

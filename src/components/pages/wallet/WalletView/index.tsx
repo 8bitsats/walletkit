@@ -3,10 +3,10 @@ import { Route, Switch, useParams } from "react-router-dom";
 
 import { SmartWalletProvider } from "../../../../hooks/useSmartWallet";
 import { WalletLayout } from "../../../layout/WalletLayout";
-import { TransactionView } from "../TransactionView";
+import { TransactionView } from "../tx/TransactionView";
+import { WalletTXCreateView } from "../txs/WalletTXCreateView";
+import { WalletTXListView } from "../txs/WalletTXListView";
 import { WalletIndexView } from "../WalletIndexView";
-import { WalletTXCreateView } from "../WalletTXCreateView";
-import { WalletTXListView } from "../WalletTXListView";
 
 export const WalletView: React.FC = () => {
   const { walletKey: walletKeyStr } = useParams<{ walletKey: string }>();
@@ -23,7 +23,7 @@ export const WalletView: React.FC = () => {
             component={WalletTXListView}
           />
           <Route
-            path="/wallets/:walletKey/tx/new"
+            path="/wallets/:walletKey/txs/new"
             component={WalletTXCreateView}
           />
           <Route

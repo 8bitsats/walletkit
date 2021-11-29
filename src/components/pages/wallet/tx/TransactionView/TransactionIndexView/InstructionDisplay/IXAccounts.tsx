@@ -1,5 +1,5 @@
-import type { ParsedInstruction } from "../../../../../../hooks/useSmartWallet";
-import { AddressLink } from "../../../../../common/AddressLink";
+import type { ParsedInstruction } from "../../../../../../../hooks/useSmartWallet";
+import { AddressLink } from "../../../../../../common/AddressLink";
 
 interface Props {
   instruction: ParsedInstruction;
