@@ -15,6 +15,7 @@ import type { PublicKey } from "@solana/web3.js";
 import { mapValues } from "lodash";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 import { App } from "./App";
 import { ConfigProvider } from "./contexts/config";
@@ -171,6 +172,7 @@ export const AppWithProviders: React.FC = () => {
                 <SDKProvider>
                   <SettingsProvider>
                     <QueryClientProvider client={queryClient}>
+                      <ReactQueryDevtools initialIsOpen={false} />
                       <App />
                     </QueryClientProvider>
                   </SettingsProvider>

@@ -11,13 +11,10 @@ type Variant =
   | "danger"
   | "primary"
   | "secondary"
-  | "notice"
-  | "cool"
   | "muted"
-  | "gray"
-  | "primary-inverse";
+  | "gray";
 
-type Size = "sm" | "small" | "md" | undefined;
+type Size = "sm" | "md" | undefined;
 
 interface AdditionalButtonProps {
   size?: Size;

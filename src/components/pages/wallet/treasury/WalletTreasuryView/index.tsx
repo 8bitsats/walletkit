@@ -1,5 +1,5 @@
-import { BasicPage } from "../../../common/page/BasicPage";
-import { BasicSection } from "../../../common/page/Section";
+import { BasicPage } from "../../../../common/page/BasicPage";
+import { BasicSection } from "../../../../common/page/Section";
 import { Tokens } from "./Tokens";
 
 export const WalletTreasuryView: React.FC = () => {

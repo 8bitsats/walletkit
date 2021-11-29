@@ -16,3 +16,7 @@ export const BANK_KEY = new PublicKey(
 export const SABER_REWARDER_KEY = new PublicKey(
   "rXhAofQCT7NN9TUqigyEAUzV1uLL4boeD8CRkNBSkYk"
 );
+
+export const MEMO_PROGRAM_ID = new PublicKey(
+  "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
+);

@@ -5,18 +5,18 @@ import React from "react";
 import { useSDK } from "../../contexts/sdk";
 import { Button } from "./Button";
 
-interface IProps
+interface Props
   extends Omit<React.ComponentPropsWithRef<typeof Button>, "onClick"> {
   onClick?: (sdkMut: GokiSDK) => Promise<void> | void;
   connectWalletOverride?: string;
 }
 
-export const AsyncButton: React.FC<IProps> = ({
+export const AsyncButton: React.FC<Props> = ({
   onClick,
   children,
   connectWalletOverride,
   ...rest
-}: IProps) => {
+}: Props) => {
   const { connect } = useWalletKit();
   const { sdkMut } = useSDK();
   return sdkMut !== null ? (
