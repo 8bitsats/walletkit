@@ -19,7 +19,7 @@ export const WalletView: React.FC = () => {
       <WalletLayout>
         <Switch>
           <Route
-            path="/wallets/:walletKey/tx/all"
+            path="/wallets/:walletKey/txs/:listId"
             component={WalletTXListView}
           />
           <Route

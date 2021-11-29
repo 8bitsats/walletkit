@@ -8,15 +8,15 @@ import { WalletDropdownMini } from "../WalletDropdownMini";
 const NAV_LINKS = [
   {
     title: "All",
-    href: "/tx/all",
+    href: "/txs/all",
   },
   {
     title: "Pending",
-    href: "/tx/pending",
+    href: "/txs/pending",
   },
   {
     title: "Executed",
-    href: "/tx/executed",
+    href: "/txs/executed",
   },
 ];
 
