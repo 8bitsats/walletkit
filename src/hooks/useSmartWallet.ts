@@ -1,4 +1,5 @@
 import type {
+  SmartWalletData,
   SmartWalletTransactionData,
   SmartWalletTypes,
   SmartWalletWrapper,
@@ -11,7 +12,7 @@ import {
 import type { InstructionParsed } from "@saberhq/anchor-contrib";
 import { SuperCoder } from "@saberhq/anchor-contrib";
 import type { ParsedAccountDatum } from "@saberhq/sail";
-import { useParsedAccountsData } from "@saberhq/sail";
+import { useParsedAccountData, useParsedAccountsData } from "@saberhq/sail";
 import type {
   KeyedAccountInfo,
   PublicKey,
@@ -33,6 +34,9 @@ export const SMART_WALLET_CODER = new SuperCoder<SmartWalletTypes>(
 const decodeTransaction = (data: KeyedAccountInfo) =>
   SMART_WALLET_CODER.accountParsers.transaction(data.accountInfo.data);
 
+const decodeSmartWallet = (data: KeyedAccountInfo) =>
+  SMART_WALLET_CODER.accountParsers.smartWallet(data.accountInfo.data);
+
 export interface ParsedInstruction {
   ix: TransactionInstruction;
   parsed?: InstructionParsed | null;
@@ -41,6 +45,7 @@ export interface ParsedInstruction {
 
 export interface ParsedTX {
   tx: ParsedAccountDatum<SmartWalletTransactionData>;
+  index?: number;
   instructions?: ParsedInstruction[];
 }
 
@@ -49,18 +54,49 @@ const useSmartWalletInner = (
 ): {
   key: PublicKey;
   smartWallet: SmartWalletWrapper | null;
+  smartWalletData: ParsedAccountDatum<SmartWalletData>;
   parsedTXs: ParsedTX[];
 } => {
   if (!key) {
     throw new Error("missing key");
   }
   const { sdkMut } = useSDK();
+
+  const { data: smartWalletData } = useParsedAccountData(
+    key,
+    decodeSmartWallet
+  );
   const [smartWallet, setSmartWallet] = useState<SmartWalletWrapper | null>(
     null
   );
 
   const [txAddrs, setTxAddrs] = useState<PublicKey[]>([]);
   const txs = useParsedAccountsData(txAddrs, decodeTransaction);
+
+  useEffect(() => {
+    if (!smartWalletData) {
+      setTxAddrs([]);
+      return;
+    }
+    void (async () => {
+      const numTransactions =
+        smartWalletData.accountInfo.data?.numTransactions.toNumber();
+      if (numTransactions) {
+        const txAddrs = await Promise.all(
+          Array(numTransactions)
+            .fill(null)
+            .map(async (_, i) => {
+              const [key] = await findTransactionAddress(
+                smartWalletData.accountId,
+                i
+              );
+              return key;
+            })
+        );
+        setTxAddrs(txAddrs);
+      }
+    })();
+  }, [key, smartWalletData]);
 
   useEffect(() => {
     if (!sdkMut) {
@@ -70,19 +106,6 @@ const useSmartWalletInner = (
     void (async () => {
       const sw = await sdkMut.loadSmartWallet(key);
       setSmartWallet(sw);
-
-      const numTransactions = sw.data?.numTransactions.toNumber();
-      if (numTransactions) {
-        const txAddrs = await Promise.all(
-          Array(numTransactions)
-            .fill(null)
-            .map(async (_, i) => {
-              const [key] = await findTransactionAddress(sw.key, i);
-              return key;
-            })
-        );
-        setTxAddrs(txAddrs);
-      }
     })();
   }, [key, sdkMut]);
 
@@ -108,37 +131,50 @@ const useSmartWalletInner = (
   );
 
   const parsedTXs = useMemo(() => {
-    return txs.map((tx): ParsedTX => {
-      if (!tx) {
-        return { tx };
-      }
-      const instructions: {
-        ix: TransactionInstruction;
-        parsed?: InstructionParsed | null;
-      }[] = tx.accountInfo.data.instructions.map((ix) => {
-        const theData = {
-          ...ix,
-          data: Buffer.from(ix.data as Uint8Array),
-        };
-        const idlIndex = programIDsToFetch.findIndex(
-          (pid) => pid === theData.programId.toString()
-        );
-        const idl = idls[idlIndex]?.data;
-        if (idl) {
-          const superCoder = new SuperCoder(theData.programId, idl);
-          return {
-            programName: startCase(idl.name),
-            ix: theData,
-            parsed: superCoder.parseInstruction(theData),
-          };
+    return txs
+      .map((tx): ParsedTX => {
+        if (!tx) {
+          return { tx };
         }
-        return { ix: theData };
+        const index = tx.accountInfo.data.index.toNumber();
+        const instructions: {
+          ix: TransactionInstruction;
+          parsed?: InstructionParsed | null;
+        }[] = tx.accountInfo.data.instructions.map((ix) => {
+          const theData = {
+            ...ix,
+            data: Buffer.from(ix.data as Uint8Array),
+          };
+          const idlIndex = programIDsToFetch.findIndex(
+            (pid) => pid === theData.programId.toString()
+          );
+          const idl = idls[idlIndex]?.data;
+          if (idl) {
+            const superCoder = new SuperCoder(theData.programId, idl);
+            return {
+              programName: startCase(idl.name),
+              ix: theData,
+              parsed: superCoder.parseInstruction(theData),
+            };
+          }
+          return { ix: theData };
+        });
+        return { tx, index, instructions };
+      })
+      .sort((a, b) => {
+        const aIndex = a.index;
+        const bIndex = b.index;
+        if (aIndex !== undefined && bIndex !== undefined) {
+          return aIndex < bIndex ? 1 : -1;
+        }
+        if (aIndex !== undefined && bIndex === undefined) {
+          return -1;
+        }
+        return 1;
       });
-      return { tx, instructions };
-    });
   }, [idls, programIDsToFetch, txs]);
 
-  return { key, smartWallet, parsedTXs };
+  return { key, smartWallet, smartWalletData, parsedTXs };
 };
 
 export const { useContainer: useSmartWallet, Provider: SmartWalletProvider } =

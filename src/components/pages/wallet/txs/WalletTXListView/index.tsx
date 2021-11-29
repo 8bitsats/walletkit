@@ -44,13 +44,13 @@ export const WalletTXListView: React.FC = () => {
         </div>
       </div>
       <div>
-        {parsedTXs.map(({ tx, instructions }, i) => {
+        {parsedTXs.map(({ tx, index, instructions }, i) => {
           const numSigned = (
             (tx?.accountInfo.data.signers ?? []) as boolean[]
           ).filter((x) => !!x).length;
           return (
             <Link
-              key={`tx_${i}`}
+              key={`tx_${index ?? `unknown_${i}`}`}
               to={`/wallets/${key.toString()}/tx/${
                 tx?.accountInfo.data.index.toNumber() ?? ""
               }`}

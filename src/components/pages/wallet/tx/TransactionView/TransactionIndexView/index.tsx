@@ -50,11 +50,11 @@ export const TransactionIndexView: React.FC = () => {
             </div>
           </div>
           <div tw="pb-4 border-b">
-            {network !== "localnet" && (
+            {txEnv && network !== "localnet" && (
               <div>
                 <a
                   tw="text-sm flex items-center gap-2 text-primary"
-                  href={txEnv?.generateInspectLink(network)}
+                  href={txEnv.generateInspectLink(network)}
                   target="_blank"
                   rel="noreferrer"
                 >
