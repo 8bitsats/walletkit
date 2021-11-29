@@ -6,8 +6,8 @@ import { Button } from "../../../../common/Button";
 import { AddSignerModal } from "./AddSignerModal";
 
 export const SignersSection: React.FC = () => {
-  const { smartWallet } = useSmartWallet();
-  const threshold = smartWallet?.data?.threshold.toNumber();
+  const { smartWalletData } = useSmartWallet();
+  const threshold = smartWalletData?.accountInfo?.data?.threshold.toNumber();
 
   const [showAddSignerModal, setShowAddSignerModal] = useState<boolean>(false);
 
@@ -35,7 +35,7 @@ export const SignersSection: React.FC = () => {
         </Button>
       </div>
       <div tw="text-sm">
-        {smartWallet?.data?.owners.map((owner, i) => {
+        {smartWalletData?.accountInfo?.data?.owners.map((owner, i) => {
           return (
             <div
               key={`owner_${i}`}
