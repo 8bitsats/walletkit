@@ -70,6 +70,7 @@ export const WalletTreasurySendView: React.FC = () => {
             currentAmount={
               selectedAccount
                 ? {
+                    label: "Treasury Balance",
                     amount: selectedAccount.balance,
                     allowSelect: true,
                   }

@@ -93,7 +93,7 @@ export const InputTokenAmount: React.FC<IProps> = ({
       </div>
       <div tw="flex gap-4">
         <TokenSelector
-          tw="bg-white shadow-xl rounded-xl flex-basis[200px]"
+          tw="bg-white border rounded-xl flex-basis[200px]"
           tokens={tokens}
           isLoading={isLoading}
           token={token}
