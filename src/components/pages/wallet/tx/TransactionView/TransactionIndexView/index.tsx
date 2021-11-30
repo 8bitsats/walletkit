@@ -16,7 +16,7 @@ export const TransactionIndexView: React.FC = () => {
   return (
     <div tw="flex w-full py-2">
       <div tw="grid gap-4 flex-grow[2] flex-basis[760px]">
-        <div tw="w-full max-w-3xl mx-auto">
+        <div tw="w-full px-6 max-w-3xl mx-auto">
           <div tw="pb-16">
             <h2 tw="border-b pb-2 text-gray-500 font-semibold text-sm mb-4">
               Transactions › {id}

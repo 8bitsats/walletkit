@@ -17,7 +17,7 @@ export const TransactionView: React.FC = () => {
     [parsedTXs, transactionSeq]
   );
   return (
-    <div tw="py-6 px-12">
+    <div tw="py-6">
       {parsedTX && parsedTX.tx && (
         <>
           <TransactionProvider initialState={{ ...parsedTX, tx: parsedTX.tx }}>
