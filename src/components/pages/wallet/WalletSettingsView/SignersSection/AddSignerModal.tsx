@@ -1,5 +1,6 @@
 import { usePubkey, useSail } from "@saberhq/sail";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import invariant from "tiny-invariant";
 
 import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
@@ -7,6 +8,7 @@ import { notify } from "../../../../../utils/notifications";
 import { shortenAddress } from "../../../../../utils/utils";
 import { AddressLink } from "../../../../common/AddressLink";
 import { AsyncButton } from "../../../../common/AsyncButton";
+import { InputText } from "../../../../common/inputs/InputText";
 import { Modal } from "../../../../common/Modal";
 
 interface Props {
@@ -18,10 +20,11 @@ export const AddSignerModal: React.FC<Props> = ({
   isOpen,
   onDismiss,
 }: Props) => {
-  const { smartWallet } = useSmartWallet();
+  const { smartWallet, key } = useSmartWallet();
   const [newOwner, setNewOwner] = useState<string>("");
   const newOwnerKey = usePubkey(newOwner);
   const { handleTX } = useSail();
+  const history = useHistory();
 
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} tw="p-0">
@@ -29,7 +32,7 @@ export const AddSignerModal: React.FC<Props> = ({
         <h1 tw="font-medium text-base">Add signer</h1>
       </div>
       <div tw="px-8 py-6 grid gap-6">
-        <input
+        <InputText
           type="text"
           placeholder="Address of signer"
           value={newOwner}
@@ -75,6 +78,7 @@ export const AddSignerModal: React.FC<Props> = ({
 
               setNewOwner("");
               onDismiss();
+              history.push(`/wallets/${key.toString()}/tx/${pendingTX.index}`);
             }}
           >
             Add signer

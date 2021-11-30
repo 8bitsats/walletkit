@@ -22,7 +22,6 @@ import { ConfigProvider } from "./contexts/config";
 import { QuarryInterfaceProvider } from "./contexts/quarry";
 import type { ProgramKey } from "./contexts/sdk";
 import { SDKProvider } from "./contexts/sdk";
-import { SettingsProvider } from "./contexts/settings";
 import { WalletConnectorProvider } from "./contexts/wallet";
 import { theme } from "./theme";
 import { describeRPCError, handleException } from "./utils/error";
@@ -170,12 +169,10 @@ export const AppWithProviders: React.FC = () => {
             <SailProvider initialState={{ onTxSend, onSailError }}>
               <QuarryInterfaceProvider>
                 <SDKProvider>
-                  <SettingsProvider>
-                    <QueryClientProvider client={queryClient}>
-                      <ReactQueryDevtools initialIsOpen={false} />
-                      <App />
-                    </QueryClientProvider>
-                  </SettingsProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                    <App />
+                  </QueryClientProvider>
                 </SDKProvider>
               </QuarryInterfaceProvider>
             </SailProvider>

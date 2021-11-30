@@ -62,6 +62,7 @@ const useSmartWalletInner = (
   smartWallet: SmartWalletWrapper | null;
   smartWalletData: ParsedAccountDatum<SmartWalletData>;
   parsedTXs: ParsedTX[];
+  threshold?: number;
 } => {
   if (!key) {
     throw new Error("missing key");
@@ -181,7 +182,9 @@ const useSmartWalletInner = (
       });
   }, [idls, programIDsToFetch, txs]);
 
-  return { key, smartWallet, smartWalletData, parsedTXs };
+  const threshold = smartWalletData?.accountInfo.data.threshold.toNumber();
+
+  return { key, smartWallet, smartWalletData, parsedTXs, threshold };
 };
 
 export const { useContainer: useSmartWallet, Provider: SmartWalletProvider } =

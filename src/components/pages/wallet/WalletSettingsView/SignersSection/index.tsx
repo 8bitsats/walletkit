@@ -4,19 +4,31 @@ import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 import { AddressLink } from "../../../../common/AddressLink";
 import { Button } from "../../../../common/Button";
 import { AddSignerModal } from "./AddSignerModal";
+import { UpdateThresholdModal } from "./UpdateThresholdModal";
+
+enum SignerModal {
+  UpdateThreshold,
+  AddSigner,
+}
 
 export const SignersSection: React.FC = () => {
   const { smartWalletData } = useSmartWallet();
   const threshold = smartWalletData?.accountInfo?.data?.threshold.toNumber();
 
-  const [showAddSignerModal, setShowAddSignerModal] = useState<boolean>(false);
+  const [signerModal, setSignerModal] = useState<SignerModal | null>(null);
 
   return (
     <div>
-      <AddSignerModal
-        isOpen={showAddSignerModal}
+      <UpdateThresholdModal
+        isOpen={signerModal === SignerModal.UpdateThreshold}
         onDismiss={() => {
-          setShowAddSignerModal(false);
+          setSignerModal(null);
+        }}
+      />
+      <AddSignerModal
+        isOpen={signerModal === SignerModal.AddSigner}
+        onDismiss={() => {
+          setSignerModal(null);
         }}
       />
       <h2 tw="text-xl font-medium mb-1">Signers</h2>
@@ -24,11 +36,19 @@ export const SignersSection: React.FC = () => {
         A proposed transaction may only be executed if {threshold} of these
         addresses approve it.
       </p>
-      <div tw="my-6">
+      <div tw="my-6 flex items-center gap-4">
         <Button
           variant="primary"
           onClick={() => {
-            setShowAddSignerModal(true);
+            setSignerModal(SignerModal.UpdateThreshold);
+          }}
+        >
+          Update Min. Signers Threshold
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => {
+            setSignerModal(SignerModal.AddSigner);
           }}
         >
           Add a signer
