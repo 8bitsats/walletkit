@@ -10,7 +10,7 @@ export const WalletLayout: React.FC = ({ children }: Props) => {
   return (
     <div tw="flex w-screen">
       <Sidebar />
-      <div tw="flex-grow">{children}</div>
+      <div tw="flex-grow h-screen overflow-y-scroll">{children}</div>
       <Toaster />
     </div>
   );
