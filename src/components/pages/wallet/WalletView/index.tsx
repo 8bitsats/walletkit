@@ -10,6 +10,7 @@ import { TransactionView } from "../tx/TransactionView";
 import { WalletTXCreateView } from "../txs/WalletTXCreateView";
 import { WalletTXListView } from "../txs/WalletTXListView";
 import { WalletIndexView } from "../WalletIndexView";
+import { WalletProgramsView } from "../WalletProgramsView";
 import { WalletSettingsView } from "../WalletSettingsView";
 
 export const WalletView: React.FC = () => {
@@ -41,6 +42,10 @@ export const WalletView: React.FC = () => {
           <Route
             path="/wallets/:walletKey/treasury/deposit"
             component={WalletTreasuryDepositView}
+          />
+          <Route
+            path="/wallets/:walletKey/programs"
+            component={WalletProgramsView}
           />
           <Route
             path="/wallets/:walletKey/treasury"

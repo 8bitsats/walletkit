@@ -13,21 +13,17 @@ import type { InstructionParsed } from "@saberhq/anchor-contrib";
 import { SuperCoder } from "@saberhq/anchor-contrib";
 import type { ParsedAccountDatum } from "@saberhq/sail";
 import { useParsedAccountData, useParsedAccountsData } from "@saberhq/sail";
-import type {
-  KeyedAccountInfo,
-  PublicKey,
-  TransactionInstruction,
-} from "@solana/web3.js";
+import type { KeyedAccountInfo, TransactionInstruction } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { startCase, uniq } from "lodash";
 import { useEffect, useMemo, useState } from "react";
-import { useQueries } from "react-query";
 import { createContainer } from "unstated-next";
 
 import { useSDK } from "../contexts/sdk";
-import { fetchIDL } from "../utils/fetchers";
 import type { ParsedNonAnchorInstruction } from "../utils/instructions/parseNonAnchorInstruction";
 import { parseNonAnchorInstruction } from "../utils/instructions/parseNonAnchorInstruction";
 import { programLabel } from "../utils/programs";
+import { useIDLs } from "./useIDLs";
 
 export const SMART_WALLET_CODER = new SuperCoder<SmartWalletTypes>(
   GOKI_ADDRESSES.SmartWallet,
@@ -130,12 +126,7 @@ const useSmartWalletInner = (
     [txs]
   );
 
-  const idls = useQueries(
-    programIDsToFetch.map((pid) => ({
-      queryKey: ["idl", pid],
-      queryFn: () => fetchIDL(pid),
-    }))
-  );
+  const idls = useIDLs(programIDsToFetch.map((p) => new PublicKey(p)));
 
   const parsedTXs = useMemo(() => {
     return txs
@@ -154,7 +145,7 @@ const useSmartWalletInner = (
               const idlIndex = programIDsToFetch.findIndex(
                 (pid) => pid === ix.programId.toString()
               );
-              const idl = idls[idlIndex]?.data;
+              const idl = idls[idlIndex]?.data?.idl;
               const label = programLabel(ix.programId.toString());
               if (idl) {
                 const superCoder = new SuperCoder(ix.programId, idl);

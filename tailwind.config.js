@@ -58,6 +58,9 @@ module.exports = {
       xl: "1220px",
     },
     extend: {
+      fontSize: {
+        sm: ".8125rem",
+      },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
       },

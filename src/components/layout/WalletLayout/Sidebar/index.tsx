@@ -1,5 +1,5 @@
 import { AiOutlineBank } from "react-icons/ai";
-import { FaInbox, FaWrench } from "react-icons/fa";
+import { FaCode, FaInbox, FaWrench } from "react-icons/fa";
 
 import { useSmartWallet } from "../../../../hooks/useSmartWallet";
 import { ReactComponent as GokiLogo } from "../../../common/svgs/logo-dark.svg";
@@ -16,6 +16,11 @@ const MAIN_LINKS = [
     icon: <AiOutlineBank />,
     title: "Treasury",
     href: "/treasury",
+  },
+  {
+    icon: <FaCode />,
+    title: "Programs",
+    href: "/programs",
   },
   {
     icon: <FaWrench />,

@@ -83,13 +83,15 @@ export const Button: React.FC<ButtonProps> = ({
 };
 
 export const StyledButton = styled.button<AdditionalButtonProps>(
-  ({ size = "sm", variant = "primary", icon }) => [
+  ({ size = "sm", variant = "default", icon }) => [
     tw`flex flex-row items-center justify-center  leading-normal`,
     tw`rounded-sm`,
     tw`text-sm font-semibold`,
     tw`transform active:scale-98 text-DEFAULT hover:bg-opacity-90`,
     tw`transition-transform`,
 
+    variant === "default" &&
+      tw`border border-gray-200 bg-white shadow-sm hover:(bg-gray-100 border-gray-300) transition-colors`,
     variant === "outline" &&
       tw`border hover:border-gray-200 transition-colors text-gray-800`,
     variant === "primary" &&
