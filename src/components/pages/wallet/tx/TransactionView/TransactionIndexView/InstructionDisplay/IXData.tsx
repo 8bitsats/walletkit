@@ -1,16 +1,16 @@
-import type { ParsedInstruction } from "../../../../../../../hooks/useSmartWallet";
+import type { InstructionParsed } from "@saberhq/anchor-contrib";
 
 interface Props {
-  instruction: ParsedInstruction;
+  parsed: InstructionParsed;
 }
 
-export const IXData: React.FC<Props> = ({ instruction: { parsed } }: Props) => {
+export const IXData: React.FC<Props> = ({ parsed }: Props) => {
   return (
     <div tw="border rounded text-sm">
       <h2 tw="px-6 py-2 font-semibold text-gray-800">
-        Arguments ({parsed?.args.length})
+        Arguments ({parsed.args.length})
       </h2>
-      {parsed?.args.map((arg, i) => {
+      {parsed.args.map((arg, i) => {
         return (
           <div
             key={`arg_${i}`}

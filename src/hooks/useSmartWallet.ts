@@ -25,6 +25,9 @@ import { createContainer } from "unstated-next";
 
 import { useSDK } from "../contexts/sdk";
 import { fetchIDL } from "../utils/fetchers";
+import type { ParsedNonAnchorInstruction } from "../utils/instructions/parseNonAnchorInstruction";
+import { parseNonAnchorInstruction } from "../utils/instructions/parseNonAnchorInstruction";
+import { programLabel } from "../utils/programs";
 
 export const SMART_WALLET_CODER = new SuperCoder<SmartWalletTypes>(
   GOKI_ADDRESSES.SmartWallet,
@@ -39,7 +42,10 @@ const decodeSmartWallet = (data: KeyedAccountInfo) =>
 
 export interface ParsedInstruction {
   ix: TransactionInstruction;
-  parsed?: InstructionParsed | null;
+  parsed?:
+    | ParsedNonAnchorInstruction
+    | ({ anchor: true } & InstructionParsed)
+    | null;
   programName?: string;
 }
 
@@ -137,28 +143,29 @@ const useSmartWalletInner = (
           return { tx };
         }
         const index = tx.accountInfo.data.index.toNumber();
-        const instructions: {
-          ix: TransactionInstruction;
-          parsed?: InstructionParsed | null;
-        }[] = tx.accountInfo.data.instructions.map((ix) => {
-          const theData = {
-            ...ix,
-            data: Buffer.from(ix.data as Uint8Array),
-          };
-          const idlIndex = programIDsToFetch.findIndex(
-            (pid) => pid === theData.programId.toString()
-          );
-          const idl = idls[idlIndex]?.data;
-          if (idl) {
-            const superCoder = new SuperCoder(theData.programId, idl);
-            return {
-              programName: startCase(idl.name),
-              ix: theData,
-              parsed: superCoder.parseInstruction(theData),
-            };
-          }
-          return { ix: theData };
-        });
+        const instructions: ParsedInstruction[] =
+          tx.accountInfo.data.instructions
+            .map((rawIx) => ({
+              ...rawIx,
+              data: Buffer.from(rawIx.data as Uint8Array),
+            }))
+            .map((ix) => {
+              const idlIndex = programIDsToFetch.findIndex(
+                (pid) => pid === ix.programId.toString()
+              );
+              const idl = idls[idlIndex]?.data;
+              const label = programLabel(ix.programId.toString());
+              if (idl) {
+                const superCoder = new SuperCoder(ix.programId, idl);
+                return {
+                  programName: label ?? startCase(idl.name),
+                  ix,
+                  parsed: { ...superCoder.parseInstruction(ix), anchor: true },
+                };
+              }
+              const parsedNonAnchor = parseNonAnchorInstruction(ix);
+              return { ix, programName: label, parsed: parsedNonAnchor };
+            });
         return { tx, index, instructions };
       })
       .sort((a, b) => {

@@ -69,9 +69,15 @@ export const Tokens: React.FC = () => {
               <TokenAmountDisplay amount={amount} />
             </div>
             <div>
-              <Button variant="primary" size="sm">
-                Send
-              </Button>
+              <Link
+                to={`/wallets/${key.toString()}/treasury/send/${
+                  amount.token.address
+                }`}
+              >
+                <Button variant="primary" size="sm">
+                  Send
+                </Button>
+              </Link>
             </div>
           </div>
         ))}

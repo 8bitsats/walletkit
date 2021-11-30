@@ -92,7 +92,6 @@ export const IXForm: React.FC<Props> = ({ ix, program }: Props) => {
   const builtIX = useMemo(() => {
     try {
       const resultIX = makeIX({ program, ix, rawArgs, accountsStrs });
-      console.log(resultIX);
       return resultIX;
     } catch (e) {
       console.error("ERROR", e);
