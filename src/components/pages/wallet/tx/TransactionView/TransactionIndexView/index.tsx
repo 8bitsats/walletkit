@@ -29,7 +29,11 @@ export const TransactionIndexView: React.FC = () => {
                   <div tw="text-sm p-4">
                     <h2 tw="font-semibold text-gray-800 mb-2">
                       Instruction #{i}:{" "}
-                      {startCase(instruction.parsed?.name ?? "Unknown")}
+                      {startCase(
+                        (instruction.parsed && "name" in instruction.parsed
+                          ? instruction.parsed.name
+                          : null) ?? "Unknown"
+                      )}
                     </h2>
                     <p tw="text-xs text-gray-500">
                       <span tw="font-medium">Program:</span>{" "}

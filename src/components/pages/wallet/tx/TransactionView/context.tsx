@@ -14,6 +14,7 @@ import {
   SMART_WALLET_CODER,
   useSmartWallet,
 } from "../../../../../hooks/useSmartWallet";
+import { displayAddress } from "../../../../../utils/programs";
 import { shortenAddress } from "../../../../../utils/utils";
 
 interface LoadedTransaction extends ParsedTX {
@@ -44,7 +45,7 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
   if (!tx) {
     throw new Error(`missing tx`);
   }
-  const { smartWallet } = useSmartWallet();
+  const { smartWalletData } = useSmartWallet();
   const { connection, providerMut } = useSolana();
   const index = tx.tx.accountInfo.data.index.toNumber();
 
@@ -53,7 +54,11 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
     tx.instructions
       ?.map(
         (ix) =>
-          ix.parsed?.name?.toString() ??
+          (ix.parsed && "name" in ix.parsed
+            ? `${
+                ix.programName ?? displayAddress(ix.ix.programId.toString())
+              }: ${ix.parsed.name.toString()}`
+            : null) ??
           `Interact with ${
             ix.programName ?? shortenAddress(ix.ix.programId.toString())
           }`
@@ -129,8 +134,11 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
   ).filter((x) => !!x).length;
 
   const isOwnerSetValid =
-    tx.tx.accountInfo.data.ownerSetSeqno === smartWallet?.data?.ownerSetSeqno;
-  const threshold = smartWallet ? smartWallet.data?.threshold.toNumber() : null;
+    tx.tx.accountInfo.data.ownerSetSeqno ===
+    smartWalletData?.accountInfo.data.ownerSetSeqno;
+  const threshold = smartWalletData
+    ? smartWalletData.accountInfo.data?.threshold.toNumber()
+    : null;
   const state = executedAt
     ? "executed"
     : !isOwnerSetValid

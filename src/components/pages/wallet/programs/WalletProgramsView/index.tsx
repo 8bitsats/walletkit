@@ -1,13 +1,12 @@
-import { PublicKey } from "@solana/web3.js";
-
-import { useAuthorityPrograms } from "../../../../hooks/useAuthorityPrograms";
-import { BasicPage } from "../../../common/page/BasicPage";
+import { useAuthorityPrograms } from "../../../../../hooks/useAuthorityPrograms";
+import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
+import { LoadingSpinner } from "../../../../common/LoadingSpinner";
+import { BasicPage } from "../../../../common/page/BasicPage";
 import { ProgramCard } from "./ProgramCard";
 
 export const WalletProgramsView: React.FC = () => {
-  const programs = useAuthorityPrograms(
-    new PublicKey("B8F6XMbcupoDoPX6Lwy4PdDEehaCJx5UZnyA8QUuf1Sc")
-  );
+  const { key } = useSmartWallet();
+  const programs = useAuthorityPrograms(key);
   return (
     <BasicPage
       title="Programs"
@@ -17,6 +16,7 @@ export const WalletProgramsView: React.FC = () => {
         {programs.map((program, i) => {
           return (
             <div key={program.data?.programID.toString() ?? `loading_${i}`}>
+              {program.isLoading && <LoadingSpinner />}
               {program.data && <ProgramCard program={program.data} />}
             </div>
           );

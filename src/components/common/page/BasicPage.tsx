@@ -1,3 +1,5 @@
+import { ErrorBoundary } from "@sentry/react";
+
 interface Props {
   title: string;
   description: string;
@@ -17,7 +19,13 @@ export const BasicPage: React.FC<Props> = ({
           <p tw="text-secondary text-sm font-medium">{description}</p>
         </div>
         <div tw="border-b w-full bg-gray-100 my-6" />
-        {children}
+        <ErrorBoundary
+          fallback={
+            <p tw="text-red-500">An error occurred while loading this page.</p>
+          }
+        >
+          {children ?? <div />}
+        </ErrorBoundary>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { FaRegCopy } from "react-icons/fa";
 import tw from "twin.macro";
 
 import { notify } from "../../utils/notifications";
+import { displayAddress } from "../../utils/programs";
 import { shortenAddress } from "../../utils/utils";
 
 interface Props {
@@ -14,12 +15,14 @@ interface Props {
   className?: string;
   showCopy?: boolean;
   children?: React.ReactNode;
+  showRaw?: boolean;
 }
 
 export const AddressLink: React.FC<Props> = ({
   address,
   className,
   showCopy = false,
+  showRaw = true,
   children,
 }: Props) => {
   const { network } = useConnectionContext();
@@ -33,7 +36,10 @@ export const AddressLink: React.FC<Props> = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        {children ?? shortenAddress(address.toString())}
+        {children ??
+          (showRaw
+            ? shortenAddress(address.toString())
+            : displayAddress(address.toString()))}
       </a>
       {showCopy && (
         <CopyIcon

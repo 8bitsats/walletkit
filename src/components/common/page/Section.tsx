@@ -11,8 +11,10 @@ export const BasicSection: React.FC<Props> = ({
 }: Props) => {
   return (
     <div>
-      <h2 tw="text-xl font-medium mb-1">{title}</h2>
-      {description && <p tw="text-secondary text-sm">{description}</p>}
+      <div tw="mb-2">
+        <h2 tw="text-xl font-medium mb-1">{title}</h2>
+        {description && <p tw="text-secondary text-sm">{description}</p>}
+      </div>
       {children}
     </div>
   );

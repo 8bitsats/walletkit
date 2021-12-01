@@ -43,7 +43,7 @@ export const IXAccounts: React.FC<Props> = ({ accounts }: Props) => {
               </div>
             </div>
             <div tw="text-gray-800 font-medium">
-              <AddressLink address={account.pubkey} />
+              <AddressLink address={account.pubkey} showCopy showRaw={false} />
             </div>
           </div>
         );

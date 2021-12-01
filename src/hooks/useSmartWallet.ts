@@ -20,9 +20,12 @@ import { useEffect, useMemo, useState } from "react";
 import { createContainer } from "unstated-next";
 
 import { useSDK } from "../contexts/sdk";
-import type { ParsedNonAnchorInstruction } from "../utils/instructions/parseNonAnchorInstruction";
+import type {
+  InstructionParseError,
+  ParsedNonAnchorInstruction,
+} from "../utils/instructions/parseNonAnchorInstruction";
 import { parseNonAnchorInstruction } from "../utils/instructions/parseNonAnchorInstruction";
-import { programLabel } from "../utils/programs";
+import { displayAddress, programLabel } from "../utils/programs";
 import { useIDLs } from "./useIDLs";
 
 export const SMART_WALLET_CODER = new SuperCoder<SmartWalletTypes>(
@@ -41,8 +44,10 @@ export interface ParsedInstruction {
   parsed?:
     | ParsedNonAnchorInstruction
     | ({ anchor: true } & InstructionParsed)
+    | { error: InstructionParseError }
     | null;
   programName?: string;
+  title: string;
 }
 
 export interface ParsedTX {
@@ -59,6 +64,7 @@ const useSmartWalletInner = (
   smartWalletData: ParsedAccountDatum<SmartWalletData>;
   parsedTXs: ParsedTX[];
   threshold?: number;
+  path: string;
 } => {
   if (!key) {
     throw new Error("missing key");
@@ -141,7 +147,7 @@ const useSmartWalletInner = (
               ...rawIx,
               data: Buffer.from(rawIx.data as Uint8Array),
             }))
-            .map((ix) => {
+            .map((ix): Omit<ParsedInstruction, "title"> => {
               const idlIndex = programIDsToFetch.findIndex(
                 (pid) => pid === ix.programId.toString()
               );
@@ -157,7 +163,18 @@ const useSmartWalletInner = (
               }
               const parsedNonAnchor = parseNonAnchorInstruction(ix);
               return { ix, programName: label, parsed: parsedNonAnchor };
-            });
+            })
+            .map(
+              (ix): ParsedInstruction => ({
+                ...ix,
+                title: `${
+                  ix.programName ?? displayAddress(ix.ix.programId.toString())
+                }: ${startCase(
+                  (ix.parsed && "name" in ix.parsed ? ix.parsed.name : null) ??
+                    "Unknown Instruction"
+                )}`,
+              })
+            );
         return { tx, index, instructions };
       })
       .sort((a, b) => {
@@ -175,7 +192,9 @@ const useSmartWalletInner = (
 
   const threshold = smartWalletData?.accountInfo.data.threshold.toNumber();
 
-  return { key, smartWallet, smartWalletData, parsedTXs, threshold };
+  const path = `/wallets/${key.toString()}`;
+
+  return { key, smartWallet, smartWalletData, parsedTXs, threshold, path };
 };
 
 export const { useContainer: useSmartWallet, Provider: SmartWalletProvider } =

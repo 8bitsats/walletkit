@@ -1,4 +1,5 @@
 import copyToClipboard from "copy-to-clipboard";
+import { startCase } from "lodash";
 import { FaCheckCircle, FaLink, FaQuestionCircle } from "react-icons/fa";
 
 import { useSmartWallet } from "../../../../../../hooks/useSmartWallet";
@@ -7,8 +8,8 @@ import { AddressLink } from "../../../../../common/AddressLink";
 import { useTransaction } from "../context";
 
 export const TXSidebar: React.FC = () => {
-  const { smartWallet } = useSmartWallet();
-  const { tx, id, executedAt, eta } = useTransaction();
+  const { smartWalletData } = useSmartWallet();
+  const { tx, id, executedAt, eta, state } = useTransaction();
   return (
     <>
       <div tw="text-xs border-b pb-2">
@@ -35,6 +36,10 @@ export const TXSidebar: React.FC = () => {
           </span>
         </div>
         <div tw="flex mb-4">
+          <span tw="text-secondary w-[90px]">State</span>
+          <span>{startCase(state)}</span>
+        </div>
+        <div tw="flex mb-4">
           <span tw="text-secondary w-[90px]">ETA</span>
           <span>
             {eta?.toLocaleString(undefined, {
@@ -46,7 +51,7 @@ export const TXSidebar: React.FC = () => {
           <span tw="text-secondary w-[90px]">Signers</span>
           <div tw="grid gap-1">
             {(tx.accountInfo.data.signers as boolean[]).map((signer, i) => {
-              const currSigner = smartWallet?.data?.owners?.[i];
+              const currSigner = smartWalletData?.accountInfo.data?.owners?.[i];
               if (currSigner) {
                 return (
                   <div tw="flex items-center gap-2" key={i}>

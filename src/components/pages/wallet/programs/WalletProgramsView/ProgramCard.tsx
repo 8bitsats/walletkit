@@ -1,21 +1,27 @@
 import { startCase } from "lodash";
+import { Link } from "react-router-dom";
 
-import type { ProgramInfo } from "../../../../hooks/useAuthorityPrograms";
-import { useIDL } from "../../../../hooks/useIDLs";
-import { programLabel } from "../../../../utils/programs";
-import { AddressLink } from "../../../common/AddressLink";
-import { Button } from "../../../common/Button";
-import { SlotLink } from "../../../common/SlotLink";
+import type { ProgramInfo } from "../../../../../hooks/useAuthorityPrograms";
+import { useIDL } from "../../../../../hooks/useIDLs";
+import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
+import { programLabel } from "../../../../../utils/programs";
+import { shortenAddress } from "../../../../../utils/utils";
+import { AddressLink } from "../../../../common/AddressLink";
+import { Button } from "../../../../common/Button";
+import { SlotLink } from "../../../../common/SlotLink";
 
 interface Props {
   program: ProgramInfo;
 }
 
 export const ProgramCard: React.FC<Props> = ({ program }: Props) => {
+  const { path } = useSmartWallet();
   const idl = useIDL(program.programID);
   const label =
     programLabel(program.programID.toString()) ??
-    (idl.data ? startCase(idl.data.idl.name) : program.programID.toString());
+    (idl.data
+      ? startCase(idl.data.idl.name)
+      : shortenAddress(program.programID.toString()));
   return (
     <div tw="flex items-center rounded bg-gray-50 border px-3 py-2 text-sm">
       <div tw="flex flex-grow">
@@ -34,7 +40,9 @@ export const ProgramCard: React.FC<Props> = ({ program }: Props) => {
         </div>
       </div>
       <div>
-        <Button>Upgrade</Button>
+        <Link to={`${path}/programs/${program.programID.toString()}/upgrade`}>
+          <Button>Upgrade</Button>
+        </Link>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-import type { Idl } from "@project-serum/anchor";
 import { Program, Provider } from "@project-serum/anchor";
 import type { IdlInstruction } from "@project-serum/anchor/dist/esm/idl";
 import { SignerWallet } from "@saberhq/solana-contrib";
@@ -7,6 +6,7 @@ import { Keypair, PublicKey } from "@solana/web3.js";
 import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 
+import { useIDL } from "../../../../../hooks/useIDLs";
 import { fetcher } from "../../../../../utils/fetcher";
 import { IXForm } from "./IXForm";
 
@@ -24,12 +24,8 @@ export const WalletTXCreateView: React.FC = () => {
     "https://raw.githubusercontent.com/GokiProtocol/anchor-idl-registry/main/data/mainnet-beta/index.json",
     fetcher
   );
-  const { data: idl } = useSWR<Idl>(
-    programID
-      ? `https://raw.githubusercontent.com/GokiProtocol/anchor-idl-registry/main/data/mainnet-beta/${programID.toString()}/idl.json`
-      : null,
-    fetcher
-  );
+  const { data: idlData } = useIDL(programID);
+  const idl = idlData?.idl;
 
   const ixs = useMemo((): InstructionInfo[] | undefined => {
     if (!idl) {

@@ -5,7 +5,7 @@ import { PublicKey } from "@solana/web3.js";
 import { useQueries, useQuery } from "react-query";
 import invariant from "tiny-invariant";
 
-const BPF_UPGRADEABLE_LOADER_ID = new PublicKey(
+export const BPF_UPGRADEABLE_LOADER_ID = new PublicKey(
   "BPFLoaderUpgradeab1e11111111111111111111111"
 );
 
@@ -39,16 +39,18 @@ export const useAuthorityPrograms = (address: PublicKey | null | undefined) => {
           filters: [
             {
               memcmp: {
-                offset: ACCOUNT_TYPE_SIZE + SLOT_SIZE,
+                offset: 0,
                 bytes: utils.bytes.bs58.encode(
-                  Buffer.from(new Uint8Array([1]))
+                  Buffer.from(new Uint8Array([3, 0, 0, 0]))
                 ),
               },
             },
             {
               memcmp: {
-                offset: ACCOUNT_TYPE_SIZE + SLOT_SIZE + OPTION_SIZE,
-                bytes: address.toBase58(),
+                offset: ACCOUNT_TYPE_SIZE + SLOT_SIZE,
+                bytes: utils.bytes.bs58.encode(
+                  Buffer.from(new Uint8Array([1, ...address.toBytes()]))
+                ),
               },
             },
           ],
@@ -127,3 +129,55 @@ export const useAuthorityPrograms = (address: PublicKey | null | undefined) => {
     ) ?? []
   );
 };
+
+export const useAuthorityBuffers = (address: PublicKey | null | undefined) => {
+  const { connection } = useSolana();
+  return useQuery(
+    ["programBuffersForAuthority", address?.toString()],
+    async () => {
+      invariant(address, "address");
+      // https://github.com/solana-labs/solana/blob/master/cli/src/program.rs#L1142
+      const raw = await connection.getProgramAccounts(
+        BPF_UPGRADEABLE_LOADER_ID,
+        {
+          filters: [
+            {
+              memcmp: {
+                offset: 0,
+                bytes: utils.bytes.bs58.encode(
+                  Buffer.from(
+                    new Uint8Array([1, 0, 0, 0, 1, ...address.toBytes()])
+                  )
+                ),
+              },
+            },
+          ],
+        }
+      );
+      return await Promise.all(
+        raw.map(({ pubkey, account }): ProgramDeployBuffer => {
+          const programDataOffset =
+            ACCOUNT_TYPE_SIZE + OPTION_SIZE + PUBKEY_LEN;
+          const dataLen = account.data.length - programDataOffset;
+          return {
+            pubkey,
+            lamports: account.lamports,
+            bufferAuthority: address,
+            dataLen,
+            executableData: account.data.slice(programDataOffset),
+          };
+        })
+      );
+    },
+    {
+      enabled: !!address,
+    }
+  );
+};
+export interface ProgramDeployBuffer {
+  pubkey: PublicKey;
+  lamports: number;
+  bufferAuthority: PublicKey;
+  dataLen: number;
+  executableData: Buffer;
+}

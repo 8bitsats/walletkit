@@ -78,17 +78,40 @@ module.exports = {
         DEFAULT: grays[150],
       },
       typography: {
-        DEFAULT: {
+        sm: {
           css: {
-            color: textColor.DEFAULT,
-            strong: {
-              color: textColor.secondary,
-            },
+            fontSize: ".8125rem",
             h1: {
-              color: textColor.secondary,
+              fontSize: ".8125rem",
             },
             h2: {
-              color: textColor.secondary,
+              fontSize: ".8125rem",
+            },
+            h3: {
+              fontSize: ".8125rem",
+            },
+          },
+        },
+        DEFAULT: {
+          css: {
+            color: grays[500],
+            strong: {
+              color: grays[800],
+            },
+            h1: {
+              color: grays[800],
+              fontWeight: 500,
+            },
+            h2: {
+              color: grays[800],
+              fontWeight: 500,
+            },
+            h3: {
+              color: grays[800],
+              fontWeight: 500,
+            },
+            code: {
+              color: grays[500],
             },
           },
         },

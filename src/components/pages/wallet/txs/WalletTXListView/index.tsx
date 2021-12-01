@@ -1,4 +1,3 @@
-import { startCase } from "lodash";
 import { Link, useParams } from "react-router-dom";
 
 import type { ParsedTX } from "../../../../../hooks/useSmartWallet";
@@ -61,11 +60,7 @@ export const WalletTXListView: React.FC = () => {
                   TX-{tx?.accountInfo.data.index.toNumber()}
                 </div>
                 <div tw="text-gray-800 font-medium">
-                  {instructions
-                    ?.map(({ parsed }) =>
-                      startCase(parsed?.name ?? "Unknown Instruction")
-                    )
-                    .join(", ") ?? "--"}
+                  {instructions?.map(({ title }) => title).join(", ") ?? "--"}
                 </div>
               </div>
               <div tw="flex items-center gap-4">

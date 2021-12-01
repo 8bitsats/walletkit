@@ -12,6 +12,8 @@ import {
   VOTE_PROGRAM_ID,
 } from "@solana/web3.js";
 
+import { shortenAddress } from "./utils";
+
 export type ProgramName =
   typeof PROGRAM_NAME_BY_ID[keyof typeof PROGRAM_NAME_BY_ID];
 
@@ -201,9 +203,6 @@ export function addressLabel(
   );
 }
 
-export function displayAddress(
-  address: string,
-  tokenRegistry: TokenInfoMap
-): string {
-  return addressLabel(address, tokenRegistry) || address;
+export function displayAddress(address: string): string {
+  return addressLabel(address) ?? shortenAddress(address);
 }
