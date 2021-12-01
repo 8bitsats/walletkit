@@ -10,7 +10,6 @@ import { ProgramCard } from "./ProgramCard";
 export const WalletProgramsView: React.FC = () => {
   const { key } = useSmartWallet();
   const { programs, programData } = useAuthorityPrograms(key);
-  console.log({ programs, programData });
   return (
     <BasicPage
       title="Programs"
