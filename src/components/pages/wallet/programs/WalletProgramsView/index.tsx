@@ -16,7 +16,7 @@ export const WalletProgramsView: React.FC = () => {
   return (
     <BasicPage
       title="Programs"
-      description="Manage the programs that are upgradeable by this wallet."
+      description="Manage the programs that this wallet can upgrade."
     >
       {programData.isLoading ? (
         <LoadingPage />
