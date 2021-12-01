@@ -23,9 +23,9 @@ export interface ProgramInfo {
 }
 
 export const useAuthorityPrograms = (address: PublicKey | null | undefined) => {
-  const { connection } = useSolana();
+  const { connection, network } = useSolana();
   const programData = useQuery(
-    ["programDataForAuthority", address?.toString()],
+    ["programDataForAuthority", network, address?.toString()],
     async () => {
       invariant(address, "address");
       // https://github.com/solana-labs/solana/blob/master/cli/src/program.rs#L1191
@@ -80,7 +80,7 @@ export const useAuthorityPrograms = (address: PublicKey | null | undefined) => {
     }
   );
 
-  return useQueries(
+  const programs = useQueries(
     programData.data?.map(
       ({
         pubkey,
@@ -88,7 +88,7 @@ export const useAuthorityPrograms = (address: PublicKey | null | undefined) => {
         lastDeploySlot,
         upgradeAuthority,
       }) => ({
-        queryKey: ["programForProgramData", pubkey.toString()],
+        queryKey: ["programForProgramData", network, pubkey.toString()],
         queryFn: async (): Promise<ProgramInfo | null> => {
           // https://github.com/solana-labs/solana/blob/master/cli/src/program.rs#L1191
           const raw = await connection.getProgramAccounts(
@@ -128,12 +128,16 @@ export const useAuthorityPrograms = (address: PublicKey | null | undefined) => {
       })
     ) ?? []
   );
+  return {
+    programs,
+    programData,
+  };
 };
 
 export const useAuthorityBuffers = (address: PublicKey | null | undefined) => {
-  const { connection } = useSolana();
+  const { connection, network } = useSolana();
   return useQuery(
-    ["programBuffersForAuthority", address?.toString()],
+    ["programBuffersForAuthority", network, address?.toString()],
     async () => {
       invariant(address, "address");
       // https://github.com/solana-labs/solana/blob/master/cli/src/program.rs#L1142

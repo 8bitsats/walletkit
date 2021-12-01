@@ -1,26 +1,25 @@
-import { useMemo } from "react";
 import { Route, Switch, useParams } from "react-router-dom";
 
+import { useParsedTX } from "../../../../../hooks/useParsedTX";
 import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
+import { LoadingPage } from "../../../../common/LoadingPage";
 import { TransactionProvider } from "./context";
 import { TransactionIndexView } from "./TransactionIndexView";
 import { TransactionSignView } from "./TransactionSignView";
 
 export const TransactionView: React.FC = () => {
-  const { parsedTXs } = useSmartWallet();
+  const { key } = useSmartWallet();
   const { transactionSeq } = useParams<{ transactionSeq: string }>();
-  const parsedTX = useMemo(
-    () =>
-      parsedTXs.find(
-        (t) => t.tx?.accountInfo.data.index.toString() == transactionSeq
-      ),
-    [parsedTXs, transactionSeq]
+  const { data: parsedTX, isLoading } = useParsedTX(
+    key,
+    parseInt(transactionSeq)
   );
   return (
     <div tw="py-6">
-      {parsedTX && parsedTX.tx && (
+      {isLoading && !parsedTX && <LoadingPage />}
+      {parsedTX && (
         <>
-          <TransactionProvider initialState={{ ...parsedTX, tx: parsedTX.tx }}>
+          <TransactionProvider initialState={parsedTX}>
             <Switch>
               <Route
                 path="/wallets/:walletKey/tx/:transactionSeq/sign"

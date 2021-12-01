@@ -23,9 +23,9 @@ export interface TokenAccountWithInfo {
  * @returns
  */
 export const useTokenAccounts = (address: PublicKey | null | undefined) => {
-  const { connection } = useSolana();
+  const { connection, network } = useSolana();
   const tokenAccountsRaw = useQuery(
-    ["tokenAccountsRaw", address?.toString()],
+    ["tokenAccountsRaw", network, address?.toString()],
     async () => {
       invariant(address, "address");
       const raw = await connection.getTokenAccountsByOwner(address, {
@@ -58,11 +58,14 @@ export const useTokenAccounts = (address: PublicKey | null | undefined) => {
     )
   );
   return useQuery(
-    ["tokenAccounts", address?.toString()],
+    ["tokenAccounts", network, address?.toString()],
     () => {
       invariant(address, "address");
       return tokenAccountsRaw.data?.map(({ mint, balance, ...taRest }) => {
-        const token = tokens.find((token) => token?.mintAccount.equals(mint));
+        const token = tokens.find(
+          (token) =>
+            token?.mintAccount.equals(mint) && token.network === network
+        );
         if (!token) {
           return null;
         }

@@ -6,9 +6,9 @@ import invariant from "tiny-invariant";
 export const useSignaturesForAddress = (
   address: PublicKey | null | undefined
 ) => {
-  const { connection } = useSolana();
+  const { connection, network } = useSolana();
   return useQuery(
-    ["signaturesForAddress", address?.toString()],
+    ["signaturesForAddress", network, address?.toString()],
     async () => {
       invariant(address);
       return await connection.getSignaturesForAddress(address);

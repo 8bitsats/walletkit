@@ -33,7 +33,7 @@ export const SMART_WALLET_CODER = new SuperCoder<SmartWalletTypes>(
   SmartWalletJSON
 );
 
-const decodeTransaction = (data: KeyedAccountInfo) =>
+export const decodeTransaction = (data: KeyedAccountInfo) =>
   SMART_WALLET_CODER.accountParsers.transaction(data.accountInfo.data);
 
 const decodeSmartWallet = (data: KeyedAccountInfo) =>
