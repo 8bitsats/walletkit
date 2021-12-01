@@ -1,5 +1,6 @@
 import { AiOutlineBank } from "react-icons/ai";
 import { FaCode, FaInbox, FaWrench } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 import { useSmartWallet } from "../../../../hooks/useSmartWallet";
 import { AddressLink } from "../../../common/AddressLink";
@@ -46,12 +47,14 @@ const NAV_LINKS = [
 ];
 
 export const Sidebar: React.FC = () => {
-  const { key } = useSmartWallet();
+  const { key, path } = useSmartWallet();
   return (
     <nav tw="w-[220px] max-w-[330px] h-screen border-r flex flex-col justify-between">
       <div>
         <div tw="px-5 py-3 grid gap-7">
-          <GokiLogo tw="h-5 w-min text-primary-800 hover:(text-primary -rotate-3) transition-all" />
+          <Link to={path}>
+            <GokiLogo tw="h-5 w-min text-primary-800 hover:(text-primary -rotate-3) transition-all" />
+          </Link>
           <div tw="border rounded px-3 py-2 text-sm flex items-center gap-1">
             <span>Wallet:</span>
             <AddressLink
