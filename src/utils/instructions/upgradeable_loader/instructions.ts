@@ -94,3 +94,55 @@ export const createUpgradeInstruction = async ({
     ],
   });
 };
+
+interface SetAuthority {
+  account: PublicKey;
+  authority: PublicKey;
+  nextAuthority: PublicKey;
+}
+
+export const findProgramDataAddress = (programID: PublicKey) =>
+  PublicKey.findProgramAddress(
+    [programID.toBuffer()],
+    BPF_UPGRADEABLE_LOADER_ID
+  );
+
+/**
+ * Set a new authority that is allowed to write the buffer or upgrade the
+ * program.  To permanently make the buffer immutable or disable program
+ * updates omit the new authority.
+ *
+ * # Account references
+ *   0. `[writable]` The Buffer or ProgramData account to change the
+ *      authority of.
+ *   1. `[signer]` The current authority.
+ *   2. `[]` The new authority, optional, if omitted then the program will
+ *      not be upgradeable.
+ */
+export const createSetAuthorityInstruction = ({
+  account,
+  authority,
+  nextAuthority,
+}: SetAuthority): TransactionInstruction => {
+  return new TransactionInstruction({
+    programId: BPF_UPGRADEABLE_LOADER_ID,
+    data: makeUpgradeableLoaderInstructionData("setAuthority"),
+    keys: [
+      {
+        pubkey: account,
+        isSigner: false,
+        isWritable: true,
+      },
+      {
+        pubkey: authority,
+        isSigner: true,
+        isWritable: false,
+      },
+      {
+        pubkey: nextAuthority,
+        isSigner: false,
+        isWritable: false,
+      },
+    ],
+  });
+};

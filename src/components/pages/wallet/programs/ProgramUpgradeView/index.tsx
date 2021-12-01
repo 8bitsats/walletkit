@@ -5,9 +5,9 @@ import { useParams } from "react-router";
 import { useAuthorityBuffers } from "../../../../../hooks/useAuthorityPrograms";
 import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 import { BPF_UPGRADEABLE_LOADER_ID } from "../../../../../utils/instructions/upgradeable_loader/instructions";
-import { Card } from "../../../../common/Card";
 import { ErrorMessage } from "../../../../common/ErrorMessage";
 import { LoadingPage } from "../../../../common/LoadingPage";
+import { Notice } from "../../../../common/Notice";
 import { BasicPage } from "../../../../common/page/BasicPage";
 import { BasicSection } from "../../../../common/page/Section";
 import { BufferCard } from "./BufferCard";
@@ -28,7 +28,7 @@ export const ProgramUpgradeView: React.FC = () => {
       title={`Upgrade Program`}
       description="Upgrade a program's code."
     >
-      <Card tw="mb-8" icon={<FaUpload />} title="How do I upgrade a program?">
+      <Notice tw="mb-8" icon={<FaUpload />} title="How do I upgrade a program?">
         <ol>
           <li>
             Ensure that the smart wallet is the upgrade authority. You may do
@@ -65,20 +65,20 @@ export const ProgramUpgradeView: React.FC = () => {
             transaction.
           </li>
         </ol>
-      </Card>
+      </Notice>
       <BasicSection title="Available Buffers">
         {(buffers.isLoading || program === undefined) && <LoadingPage />}
         {buffers.isError && <ErrorMessage error={buffers.error} />}
         {isProgram && programID && (
           <div>
             {buffers.data?.length === 0 && (
-              <Card>
+              <Notice>
                 <p>There are no buffers owned by this smart wallet.</p>
                 <p>
                   Follow the instructions above to upload the bytecode for a new
                   program upgrade.
                 </p>
-              </Card>
+              </Notice>
             )}
             {buffers.data?.map((buffer) => (
               <BufferCard

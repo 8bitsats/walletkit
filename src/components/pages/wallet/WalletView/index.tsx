@@ -3,6 +3,7 @@ import { Redirect, Route, Switch, useParams } from "react-router-dom";
 
 import { SmartWalletProvider } from "../../../../hooks/useSmartWallet";
 import { WalletLayout } from "../../../layout/WalletLayout";
+import { ProgramImportView } from "../programs/ProgramImportView";
 import { ProgramUpgradeView } from "../programs/ProgramUpgradeView";
 import { WalletProgramsView } from "../programs/WalletProgramsView";
 import { WalletTreasuryDepositView } from "../treasury/WalletTreasuryDepositView";
@@ -47,6 +48,10 @@ export const WalletView: React.FC = () => {
           <Route
             path="/wallets/:walletKey/programs/:programID/upgrade"
             component={ProgramUpgradeView}
+          />
+          <Route
+            path="/wallets/:walletKey/programs/import"
+            component={ProgramImportView}
           />
           <Route
             path="/wallets/:walletKey/programs"

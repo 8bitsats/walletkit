@@ -1,21 +1,18 @@
 import { startCase } from "lodash";
-import { Link } from "react-router-dom";
 
 import type { ProgramInfo } from "../../../../../hooks/useAuthorityPrograms";
 import { useIDL } from "../../../../../hooks/useIDLs";
-import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 import { programLabel } from "../../../../../utils/programs";
 import { shortenAddress } from "../../../../../utils/utils";
 import { AddressLink } from "../../../../common/AddressLink";
-import { Button } from "../../../../common/Button";
 import { SlotLink } from "../../../../common/SlotLink";
 
 interface Props {
   program: ProgramInfo;
+  actions?: React.ReactNode;
 }
 
-export const ProgramCard: React.FC<Props> = ({ program }: Props) => {
-  const { path } = useSmartWallet();
+export const ProgramCard: React.FC<Props> = ({ program, actions }: Props) => {
   const idl = useIDL(program.programID);
   const label =
     programLabel(program.programID.toString()) ??
@@ -39,11 +36,7 @@ export const ProgramCard: React.FC<Props> = ({ program }: Props) => {
           </span>
         </div>
       </div>
-      <div>
-        <Link to={`${path}/programs/${program.programID.toString()}/upgrade`}>
-          <Button>Upgrade</Button>
-        </Link>
-      </div>
+      <div>{actions}</div>
     </div>
   );
 };

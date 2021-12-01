@@ -1,4 +1,4 @@
-import { Card } from "../../../common/Card";
+import { Notice } from "../../../common/Notice";
 import { BasicPage } from "../../../common/page/BasicPage";
 
 const today = new Date().toLocaleDateString(undefined, {
@@ -10,7 +10,7 @@ const today = new Date().toLocaleDateString(undefined, {
 export const WalletInboxView: React.FC = () => {
   return (
     <BasicPage title="gm, Goki user" description={`Today is ${today}.`}>
-      <Card>Select an action on the left.</Card>
+      <Notice>Select an action on the left.</Notice>
     </BasicPage>
   );
 };

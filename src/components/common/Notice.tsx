@@ -7,7 +7,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export const Card: React.FC<Props> = ({
+export const Notice: React.FC<Props> = ({
   className,
   icon,
   title,

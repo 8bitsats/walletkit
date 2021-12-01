@@ -1,14 +1,17 @@
+import { Link } from "react-router-dom";
+
 import { useAuthorityPrograms } from "../../../../../hooks/useAuthorityPrograms";
 import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
-import { Card } from "../../../../common/Card";
+import { Button } from "../../../../common/Button";
 import { ErrorMessage } from "../../../../common/ErrorMessage";
 import { LoadingPage } from "../../../../common/LoadingPage";
 import { LoadingSpinner } from "../../../../common/LoadingSpinner";
+import { Notice } from "../../../../common/Notice";
 import { BasicPage } from "../../../../common/page/BasicPage";
 import { ProgramCard } from "./ProgramCard";
 
 export const WalletProgramsView: React.FC = () => {
-  const { key } = useSmartWallet();
+  const { key, path } = useSmartWallet();
   const { programs, programData } = useAuthorityPrograms(key);
   return (
     <BasicPage
@@ -20,9 +23,9 @@ export const WalletProgramsView: React.FC = () => {
       ) : (
         programs.length === 0 &&
         programData.data?.map((pdata) => (
-          <Card key={pdata.pubkey.toString()}>
+          <Notice key={pdata.pubkey.toString()}>
             <LoadingSpinner />
-          </Card>
+          </Notice>
         ))
       )}
       <div tw="flex flex-col gap-2">
@@ -31,10 +34,26 @@ export const WalletProgramsView: React.FC = () => {
             <div key={program.data?.programID.toString() ?? `loading_${i}`}>
               {program.isLoading && <LoadingSpinner />}
               {program.isError && <ErrorMessage error={program.error} />}
-              {program.data && <ProgramCard program={program.data} />}
+              {program.data && (
+                <ProgramCard
+                  program={program.data}
+                  actions={
+                    <Link
+                      to={`${path}/programs/${program.data.programID.toString()}/upgrade`}
+                    >
+                      <Button>Upgrade</Button>
+                    </Link>
+                  }
+                />
+              )}
             </div>
           );
         })}
+      </div>
+      <div tw="mt-6">
+        <Link to={`${path}/programs/import`}>
+          <Button>Import an existing program</Button>
+        </Link>
       </div>
     </BasicPage>
   );
