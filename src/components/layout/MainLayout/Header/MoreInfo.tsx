@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { FaCode, FaEllipsisH, FaTwitter } from "react-icons/fa";
-import { IoMdChatboxes } from "react-icons/io";
 
 import appInfo from "../../../../app.json";
 import { StyledButton } from "../../../common/Button";
@@ -22,12 +21,12 @@ export const MoreInfo: React.FC = () => {
       href: `https://twitter.com/${appInfo.socials.twitter}`,
       icon: <FaTwitter />,
     },
-    {
-      label: "Chat",
-      href: `https://keybase.io/team/${appInfo.socials.keybase}`,
-      slug: "chat",
-      icon: <IoMdChatboxes />,
-    },
+    // {
+    //   label: "Chat",
+    //   href: `https://keybase.io/team/${appInfo.socials.keybase}`,
+    //   slug: "chat",
+    //   icon: <IoMdChatboxes />,
+    // },
     {
       label: "Code",
       href: appInfo.code,

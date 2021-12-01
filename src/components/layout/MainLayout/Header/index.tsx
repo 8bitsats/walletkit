@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import { ReactComponent as Icon } from "../../../common/svgs/Icon.svg";
 import { ReactComponent as Logo } from "../../../common/svgs/logo-dark.svg";
 import { MoreInfo } from "./MoreInfo";
-import { WalletDropdown } from "./WalletDropdown";
 
 export const Header: React.FC = () => {
   return (
@@ -24,7 +23,6 @@ export const Header: React.FC = () => {
       </div>
 
       <div tw="flex justify-end items-center z-20 space-x-2">
-        <WalletDropdown />
         <MoreInfo />
       </div>
     </div>

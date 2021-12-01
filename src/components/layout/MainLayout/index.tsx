@@ -15,12 +15,14 @@ interface Props {
 export const MainLayout: React.FC<Props> = ({ children }: Props) => {
   return (
     <PageWrapper>
-      <Header />
+      <div tw="w-11/12 mx-auto">
+        <Header />
+      </div>
       <PageLayout>{children}</PageLayout>
     </PageWrapper>
   );
 };
 
 const PageWrapper = styled.div`
-  ${tw`relative w-11/12 mx-auto mb-12`}
+  ${tw`relative`}
 `;

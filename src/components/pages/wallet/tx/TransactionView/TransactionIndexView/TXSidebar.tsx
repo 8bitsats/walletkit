@@ -74,8 +74,8 @@ export const TXSidebar: React.FC = () => {
           </span>
         </div>
         <div tw="flex mb-4">
-          <span tw="text-secondary w-[90px]">Executed At</span>
-          <span>
+          <span tw="text-secondary w-[90px] flex-shrink-0">Executed At</span>
+          <span tw="flex-shrink">
             {executedAt?.toLocaleString(undefined, {
               timeZoneName: "short",
             }) ?? "--"}
