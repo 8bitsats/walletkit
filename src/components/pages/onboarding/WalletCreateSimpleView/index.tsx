@@ -3,7 +3,7 @@ import { Keypair } from "@solana/web3.js";
 import BN from "bn.js";
 import { useState } from "react";
 import { FaDice } from "react-icons/fa";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import invariant from "tiny-invariant";
 
 import { useSDK } from "../../../../contexts/sdk";
@@ -49,7 +49,7 @@ export const WalletCreateSimpleView: React.FC = () => {
               </Button>
             </div>
           </div>
-          <div tw="mx-auto">
+          <div tw="mx-auto flex flex-col items-center gap-6">
             <AsyncButton
               type="submit"
               tw="w-[200px]"
@@ -95,6 +95,15 @@ export const WalletCreateSimpleView: React.FC = () => {
             >
               Create Wallet
             </AsyncButton>
+            <span tw="text-sm">
+              Already have a wallet?{" "}
+              <Link
+                to="/user"
+                tw="text-primary hover:text-primary-300 transition-colors"
+              >
+                Select your wallet
+              </Link>
+            </span>
           </div>
         </div>
       </div>
