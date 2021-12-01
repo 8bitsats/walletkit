@@ -102,7 +102,7 @@ export const UpdateThresholdModal: React.FC<Props> = ({
               history.push(`/wallets/${key.toString()}/tx/${pendingTX.index}`);
             }}
           >
-            Add signer
+            Update threshold
           </AsyncButton>
         </div>
       </div>

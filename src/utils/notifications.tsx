@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import type { Network } from "@saberhq/solana-contrib";
 import React from "react";
-import type { ToastPosition } from "react-hot-toast";
 import { toast } from "react-hot-toast";
 
 interface INotifyArgs {
@@ -11,7 +10,6 @@ interface INotifyArgs {
   txids?: string[];
   env?: Network;
   type?: "success" | "error" | "info" | "warn";
-  placement?: ToastPosition;
 }
 
 export function notify({
@@ -21,7 +19,6 @@ export function notify({
   txids,
   env,
   type = "info",
-  placement = "bottom-left",
 }: INotifyArgs): void {
   // log for Sentry and other debug purposes
   const logLevel =
@@ -74,13 +71,10 @@ export function notify({
   }
 
   toast(
-    <div tw="flex flex-col">
-      <div>{message}</div>
-      <div tw="text-sm">{description}</div>
-    </div>,
-    {
-      position: placement,
-    }
+    <div tw="flex flex-col text-sm gap-1">
+      <div tw="font-medium">{message}</div>
+      <div tw="text-secondary">{description}</div>
+    </div>
   );
 }
 

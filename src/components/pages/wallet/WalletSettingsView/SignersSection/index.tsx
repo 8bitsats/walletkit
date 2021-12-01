@@ -43,7 +43,7 @@ export const SignersSection: React.FC = () => {
             setSignerModal(SignerModal.UpdateThreshold);
           }}
         >
-          Update Min. Signers Threshold
+          Update Minimum Signers Threshold
         </Button>
         <Button
           variant="primary"

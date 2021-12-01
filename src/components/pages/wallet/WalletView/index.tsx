@@ -1,5 +1,5 @@
 import { usePubkey } from "@saberhq/sail";
-import { Route, Switch, useParams } from "react-router-dom";
+import { Redirect, Route, Switch, useParams } from "react-router-dom";
 
 import { SmartWalletProvider } from "../../../../hooks/useSmartWallet";
 import { WalletLayout } from "../../../layout/WalletLayout";
@@ -11,7 +11,7 @@ import { WalletTreasuryView } from "../treasury/WalletTreasuryView";
 import { TransactionView } from "../tx/TransactionView";
 import { WalletTXCreateView } from "../txs/WalletTXCreateView";
 import { WalletTXListView } from "../txs/WalletTXListView";
-import { WalletIndexView } from "../WalletIndexView";
+import { WalletInboxView } from "../WalletInboxView";
 import { WalletSettingsView } from "../WalletSettingsView";
 
 export const WalletView: React.FC = () => {
@@ -60,7 +60,8 @@ export const WalletView: React.FC = () => {
             path="/wallets/:walletKey/settings"
             component={WalletSettingsView}
           />
-          <Route path="/wallets/:walletKey" component={WalletIndexView} />
+          <Route path="/wallets/:walletKey/inbox" component={WalletInboxView} />
+          <Redirect to="/wallets/:walletKey/inbox" />
         </Switch>
       </WalletLayout>
     </SmartWalletProvider>
