@@ -1,4 +1,5 @@
 import { GOKI_ADDRESSES } from "@gokiprotocol/client";
+import { ConnectWalletButton } from "@gokiprotocol/walletkit";
 import { useSolana } from "@saberhq/use-solana";
 import type { PublicKey } from "@solana/web3.js";
 import { useQueries } from "react-query";
@@ -6,7 +7,6 @@ import { Link } from "react-router-dom";
 import invariant from "tiny-invariant";
 
 import { displayAddress } from "../../../utils/programs";
-import { Card } from "../../common/Card";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 
 const AMOUNT_OFFSET_BYTES = 8 + 32 + 1 + 8 + 8 + 8 + 4 + 8 + 4;
@@ -58,15 +58,22 @@ export const UserView: React.FC = () => {
         (wallets.find((w) => w.isLoading) ? (
           <LoadingSpinner />
         ) : (
-          <Card>
-            <div>
-              <p>No wallets found.</p>
-              <span>
-                Would you like to{" "}
-                <Link to="/onboarding/new">create a wallet</Link>?
-              </span>
-            </div>
-          </Card>
+          <div tw="p-4 rounded border bg-gray-50 text-sm flex flex-col items-center gap-4">
+            {providerMut ? (
+              <>
+                <p>No wallets found.</p>
+                <span>
+                  Would you like to{" "}
+                  <Link to="/onboarding/new">create a wallet</Link>?
+                </span>
+              </>
+            ) : (
+              <>
+                <p>Connect your wallet to view your Goki smart wallets.</p>
+                <ConnectWalletButton />
+              </>
+            )}
+          </div>
         ))}
       <div tw="flex flex-col gap-2">
         {allWallets.map((wallet) => {
