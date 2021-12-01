@@ -11,7 +11,11 @@ export const useSignaturesForAddress = (
     ["signaturesForAddress", network, address?.toString()],
     async () => {
       invariant(address);
-      return await connection.getSignaturesForAddress(address);
+      return await connection.getSignaturesForAddress(
+        address,
+        undefined,
+        "confirmed"
+      );
     },
     {
       enabled: !!address,

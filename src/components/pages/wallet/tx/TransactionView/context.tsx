@@ -6,14 +6,16 @@ import type { ParsedAccountInfo } from "@saberhq/sail";
 import { TransactionEnvelope } from "@saberhq/solana-contrib";
 import { useSolana } from "@saberhq/use-solana";
 import type { TransactionResponse } from "@solana/web3.js";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { createContainer } from "unstated-next";
 
+import { useSignaturesForAddress } from "../../../../../hooks/useSignaturesForAddress";
 import type { ParsedTX } from "../../../../../hooks/useSmartWallet";
 import {
   SMART_WALLET_CODER,
   useSmartWallet,
 } from "../../../../../hooks/useSmartWallet";
+import { useTransactions } from "../../../../../hooks/useTransactions";
 import { displayAddress } from "../../../../../utils/programs";
 import { shortenAddress } from "../../../../../utils/utils";
 
@@ -46,7 +48,7 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
     throw new Error(`missing tx`);
   }
   const { smartWalletData } = useSmartWallet();
-  const { connection, providerMut } = useSolana();
+  const { providerMut } = useSolana();
   const index = tx.tx.accountInfo.data.index.toNumber();
 
   const id = `TX-${index}`;
@@ -87,47 +89,32 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
   const executedAt =
     executedAtNum === -1 ? null : new Date(executedAtNum * 1_000);
 
-  const [historicalTXs, setHistoricalTXs] = useState<
-    HistoricalTX[] | undefined
-  >(undefined);
-  useEffect(() => {
-    void (async () => {
-      const sigs = await connection.getSignaturesForAddress(
-        tx.tx.accountId,
-        undefined,
-        "confirmed"
-      );
-      setHistoricalTXs(
-        (
-          await Promise.all(
-            sigs.map((sig) =>
-              connection
-                .getTransaction(sig.signature, {
-                  commitment: "confirmed",
-                })
-                .then((resp): HistoricalTX | null => {
-                  if (!resp) {
-                    return null;
-                  }
-                  const events = SMART_WALLET_CODER.parseProgramLogEvents(
-                    resp.meta?.logMessages ?? []
-                  );
-                  return {
-                    ...resp,
-                    events,
-                    sig: sig.signature,
-                    date:
-                      typeof resp.blockTime === "number"
-                        ? new Date(resp.blockTime * 1_000)
-                        : resp.blockTime,
-                  };
-                })
-            )
-          )
-        ).filter((t): t is HistoricalTX => !!t)
-      );
-    })();
-  }, [connection, tx.tx.accountId]);
+  const sigs = useSignaturesForAddress(tx.tx.accountId);
+  const historicalTXsRaw = useTransactions(
+    sigs.data?.map((s) => s.signature) ?? []
+  );
+
+  const historicalTXs = useMemo(() => {
+    return historicalTXsRaw
+      .map(({ data: resp }): HistoricalTX | null => {
+        if (!resp) {
+          return null;
+        }
+        const events = SMART_WALLET_CODER.parseProgramLogEvents(
+          resp.tx.meta?.logMessages ?? []
+        );
+        return {
+          ...resp.tx,
+          events,
+          sig: resp.sig,
+          date:
+            typeof resp.tx.blockTime === "number"
+              ? new Date(resp.tx.blockTime * 1_000)
+              : resp.tx.blockTime,
+        };
+      })
+      .filter((t): t is HistoricalTX => !!t);
+  }, [historicalTXsRaw]);
 
   const numSigned = (
     (tx?.tx.accountInfo.data.signers ?? []) as boolean[]

@@ -31,6 +31,16 @@ export const ProgramUpgradeView: React.FC = () => {
       <Card tw="mb-8" icon={<FaUpload />} title="How do I upgrade a program?">
         <ol>
           <li>
+            Ensure that the smart wallet is the upgrade authority. You may do
+            this by running
+            <br />
+            <code>
+              solana program set-upgrade-authority {programIDStr}{" "}
+              --new-upgrade-authority {key.toString()}
+            </code>
+            .
+          </li>
+          <li>
             Build your program, ideally using{" "}
             <code>anchor build --verifiable</code>.
           </li>
@@ -38,6 +48,8 @@ export const ProgramUpgradeView: React.FC = () => {
             Upload your program's buffer via
             <br />
             <code>solana program write-buffer &lt;PROGRAM_FILEPATH&gt;</code>.
+            <br />
+            This will give you a buffer key. Keep track of this!
           </li>
           <li>
             Change the program's upgrade authority to this smart wallet via
@@ -48,6 +60,10 @@ export const ProgramUpgradeView: React.FC = () => {
             </code>
             .
           </li>
+          <li>
+            Use the tool below to select the buffer to upgrade, and propose the
+            transaction.
+          </li>
         </ol>
       </Card>
       <BasicSection title="Available Buffers">
@@ -55,6 +71,15 @@ export const ProgramUpgradeView: React.FC = () => {
         {buffers.isError && <ErrorMessage error={buffers.error} />}
         {isProgram && programID && (
           <div>
+            {buffers.data?.length === 0 && (
+              <Card>
+                <p>There are no buffers owned by this smart wallet.</p>
+                <p>
+                  Follow the instructions above to upload the bytecode for a new
+                  program upgrade.
+                </p>
+              </Card>
+            )}
             {buffers.data?.map((buffer) => (
               <BufferCard
                 key={buffer.pubkey.toString()}
