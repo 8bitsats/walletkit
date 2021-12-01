@@ -19,7 +19,7 @@ export const ProgramCard: React.FC<Props> = ({ program }: Props) => {
   const idl = useIDL(program.programID);
   const label =
     programLabel(program.programID.toString()) ??
-    (idl.data
+    (idl.data?.idl
       ? startCase(idl.data.idl.name)
       : shortenAddress(program.programID.toString()));
   return (

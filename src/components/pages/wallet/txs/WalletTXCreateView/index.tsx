@@ -29,7 +29,7 @@ export const WalletTXCreateView: React.FC = () => {
   const { data: idlData } = useIDL(programID);
   const idl = idlData?.idl;
 
-  const ixs = useMemo((): InstructionInfo[] | undefined => {
+  const ixs = useMemo((): InstructionInfo[] | null | undefined => {
     if (!idl) {
       return idl;
     }
