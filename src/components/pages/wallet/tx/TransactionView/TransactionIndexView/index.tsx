@@ -1,7 +1,10 @@
 import { useSolana } from "@saberhq/use-solana";
 import { startCase } from "lodash";
+import { useEffect } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
+import { useSmartWallet } from "../../../../../../hooks/useSmartWallet";
+import { displayAddress } from "../../../../../../utils/programs";
 import { shortenAddress } from "../../../../../../utils/utils";
 import { AddressLink } from "../../../../../common/AddressLink";
 import { useTransaction } from "../context";
@@ -11,8 +14,20 @@ import { TXActivity } from "./TXActivity";
 import { TXSidebar } from "./TXSidebar";
 
 export const TransactionIndexView: React.FC = () => {
+  const { key } = useSmartWallet();
   const { network } = useSolana();
   const { instructions, txEnv, title, id } = useTransaction();
+
+  useEffect(() => {
+    const prevTitle = document.title;
+    document.title = `[${id}] ${title} - ${displayAddress(
+      key.toString()
+    )} | Goki`;
+    return () => {
+      document.title = prevTitle;
+    };
+  });
+
   return (
     <div tw="flex w-full py-2">
       <div tw="grid gap-4 flex-grow[2] flex-basis[760px]">

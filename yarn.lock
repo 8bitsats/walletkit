@@ -2371,20 +2371,20 @@ __metadata:
     "@popperjs/core": ^2.11.0
     "@project-serum/anchor": ^0.18.2
     "@project-serum/serum": ^0.13.60
-    "@quarryprotocol/quarry-sdk": ^1.10.6
-    "@quarryprotocol/react-quarry": ^0.12.4
+    "@quarryprotocol/quarry-sdk": ^1.10.7
+    "@quarryprotocol/react-quarry": ^0.12.7
     "@reach/dialog": ^0.16.2
     "@reach/portal": ^0.16.2
     "@react-spring/web": ^9.3.1
     "@rushstack/eslint-patch": ^1.1.0
-    "@saberhq/anchor-contrib": ^1.10.3
-    "@saberhq/eslint-config-react": ^1.10.3
+    "@saberhq/anchor-contrib": ^1.10.4
+    "@saberhq/eslint-config-react": ^1.10.4
     "@saberhq/sail": ^2.8.0
-    "@saberhq/solana-contrib": ^1.10.3
-    "@saberhq/spl-token-icons": ^0.1.95
-    "@saberhq/stableswap-sdk": ^1.10.3
-    "@saberhq/token-utils": ^1.10.3
-    "@saberhq/use-solana": ^1.10.3
+    "@saberhq/solana-contrib": ^1.10.4
+    "@saberhq/spl-token-icons": ^0.1.97
+    "@saberhq/stableswap-sdk": ^1.10.4
+    "@saberhq/token-utils": ^1.10.4
+    "@saberhq/use-solana": ^1.10.4
     "@sentry/integrations": ^6.15.0
     "@sentry/react": ^6.15.0
     "@sentry/tracing": ^6.15.0
@@ -2393,7 +2393,7 @@ __metadata:
     "@simbathesailor/babel-plugin-use-what-changed": ^2.1.0
     "@simbathesailor/use-what-changed": ^2.0.0
     "@solana/buffer-layout": ^3.0.0
-    "@solana/spl-token-registry": ^0.2.518
+    "@solana/spl-token-registry": ^0.2.541
     "@solana/web3.js": ^1.31.0
     "@sunnyag/react-coingecko": ^2.1.0
     "@tailwindcss/aspect-ratio": ^0.3.0
@@ -2405,7 +2405,7 @@ __metadata:
     "@types/gtag.js": ^0.0.8
     "@types/jest": ^27.0.3
     "@types/lodash": ^4.14.177
-    "@types/node": ^16.11.10
+    "@types/node": ^16.11.11
     "@types/pluralize": ^0.0.29
     "@types/react": ^17.0.37
     "@types/react-dom": ^17.0.11
@@ -2420,7 +2420,7 @@ __metadata:
     babel-plugin-twin: ^1.0.2
     bn.js: ^5.2.0
     copy-to-clipboard: ^3.3.1
-    date-fns: ^2.26.0
+    date-fns: ^2.27.0
     deepmerge: ^4.2.2
     eslint: ^8.3.0
     eslint-import-resolver-node: ^0.3.6
@@ -2431,7 +2431,7 @@ __metadata:
     filesize: ^8.0.6
     formik: ^2.2.9
     fuse.js: ^6.4.6
-    highlight.run: ^2.8.3
+    highlight.run: ^2.8.4
     husky: ^7.0.4
     inter-ui: ^3.19.3
     jsbi: ^4.1.0
@@ -2449,13 +2449,13 @@ __metadata:
     react-hot-toast: ^2.1.1
     react-icons: ^4.3.1
     react-popper: ^2.2.5
-    react-query: ^3.33.7
+    react-query: ^3.34.0
     react-router: ^5.2.1
     react-router-dom: ^5.3.0
     react-scripts: ^4.0.3
     react-use-gesture: ^9.1.3
     superstruct: ^0.15.3
-    swr: ^1.0.1
+    swr: ^1.1.0
     tailwindcss: ^2.2.19
     tiny-invariant: ^1.2.0
     tslib: ^2.3.1
@@ -3418,9 +3418,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@quarryprotocol/quarry-sdk@npm:^1.10.6":
-  version: 1.10.6
-  resolution: "@quarryprotocol/quarry-sdk@npm:1.10.6"
+"@quarryprotocol/quarry-sdk@npm:^1.10.7":
+  version: 1.10.7
+  resolution: "@quarryprotocol/quarry-sdk@npm:1.10.7"
   dependencies:
     lodash.mapvalues: ^4.6.0
     tiny-invariant: ^1.2.0
@@ -3433,16 +3433,16 @@ __metadata:
     "@solana/web3.js": ">=1.29.2"
     bn.js: ^5.2.0
     jsbi: ^3 || ^4
-  checksum: 0d28815f1af38a2a28769a62d10076a65c50c1978862cdad4c45079fc207c4bba2983d9af43db41b2a0426d6f2c5baeb898e906a64a84d4ae6af961f1aab7733
+  checksum: 5edc8a110e42e5e3922bf9c011a6b3d3d45051cd298b6e160226d6232acb597310b7118426b081671a93efcc42cb0972f8425f4f8c79aa96d2cbe716b2a769fc
   languageName: node
   linkType: hard
 
-"@quarryprotocol/react-quarry@npm:^0.12.4":
-  version: 0.12.4
-  resolution: "@quarryprotocol/react-quarry@npm:0.12.4"
+"@quarryprotocol/react-quarry@npm:^0.12.7":
+  version: 0.12.7
+  resolution: "@quarryprotocol/react-quarry@npm:0.12.7"
   dependencies:
     lodash.zip: ^4.2.0
-    swr: ^1.0.1
+    swr: ^1.1.0
     tiny-invariant: ^1.2.0
     tslib: ^2.3.1
     unstated-next: ^1.1.0
@@ -3459,7 +3459,7 @@ __metadata:
     jsbi: "*"
     react: ^17.0.2
     react-dom: ^17.0.2
-  checksum: e7e8aaaa772aa04029a78c09ae4471b0e67f65c88d9a5e16925615769d8d5d59d29dcad9c42b2621fe9ba75586ae0a1a5d3b8f171fd58c042d9d52f31c4bfafc
+  checksum: 1bed210d1896c0ebebde860f26a653b837d3336ac86dbd9db4781644426172ab44297915a01d22aa2eb24b172f7adfc61856c0c12a7d2bc4b5d3582a18b125b5
   languageName: node
   linkType: hard
 
@@ -3635,11 +3635,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@saberhq/anchor-contrib@npm:^1.10.3":
-  version: 1.10.3
-  resolution: "@saberhq/anchor-contrib@npm:1.10.3"
+"@saberhq/anchor-contrib@npm:^1.10.4":
+  version: 1.10.4
+  resolution: "@saberhq/anchor-contrib@npm:1.10.4"
   dependencies:
-    "@saberhq/solana-contrib": ^1.10.3
+    "@saberhq/solana-contrib": ^1.10.4
     eventemitter3: ^4.0.7
     lodash.camelcase: ^4.3.0
     lodash.mapvalues: ^4.6.0
@@ -3647,27 +3647,27 @@ __metadata:
   peerDependencies:
     "@project-serum/anchor": ^0.17.0 || ^0.18.0
     "@solana/web3.js": ">=1.29.2"
-  checksum: 561adac5622fdb350ffbe006694bb0cb03604ff5c246120ad0f7cb6b45e7584eec51075507e7e0f312bac3518cfa50a0e38ec06effb743e41e08dea92cf99046
+  checksum: 4ab604b5831b82e71efce333b9a8e32eb4fbba790df84e78d294ddfbb52d108e2aff6e89a81433d0989562485a589716567f13b46bf214b8d2616c3f9f512804
   languageName: node
   linkType: hard
 
-"@saberhq/eslint-config-react@npm:^1.10.3":
-  version: 1.10.3
-  resolution: "@saberhq/eslint-config-react@npm:1.10.3"
+"@saberhq/eslint-config-react@npm:^1.10.4":
+  version: 1.10.4
+  resolution: "@saberhq/eslint-config-react@npm:1.10.4"
   dependencies:
-    "@saberhq/eslint-config": ^1.10.3
+    "@saberhq/eslint-config": ^1.10.4
     eslint-plugin-jsx-a11y: ^6.5.1
     eslint-plugin-react: ^7.27.1
     eslint-plugin-react-hooks: ^4.3.0
   peerDependencies:
     eslint: ">=7"
-  checksum: ed8a224d21b552b95fc08dcd65c6e3a60b89d7fed8b831784b87014d6c7c3d9228d1639659a8c14ad8949dd74c7f653b30f830e55cb4fb959f7ed00801c96407
+  checksum: 80adc94405f185866f76d5fdbb5e39941163676fb6450d5f11544224e267587caf21a71e5a77a76a00feb95f47c6c59e5c6b91b9329c2f84dfb5222cdeac4c28
   languageName: node
   linkType: hard
 
-"@saberhq/eslint-config@npm:^1.10.3":
-  version: 1.10.3
-  resolution: "@saberhq/eslint-config@npm:1.10.3"
+"@saberhq/eslint-config@npm:^1.10.4":
+  version: 1.10.4
+  resolution: "@saberhq/eslint-config@npm:1.10.4"
   dependencies:
     "@typescript-eslint/eslint-plugin": ^5.4.0
     "@typescript-eslint/parser": ^5.4.0
@@ -3680,7 +3680,7 @@ __metadata:
     prettier: ^2.5.0
   peerDependencies:
     eslint: ">=7"
-  checksum: 29cb9ba3fa3c6e9aabad7e059886df7ad939cf5608cb8a22b6e39b055c589ca8dac7a37c0ab25e48cc95d8530f1da7cad32f7569da49b81bd9e8930fe499f84f
+  checksum: a15b7507056d8fcfd4ac3a61867cc123d13fb4dfa5ec89fa688646259029f9963cdbaad7c0ae3b92c1c041325f4336dbecb79f816a10cfb6c716ee972f7d5685
   languageName: node
   linkType: hard
 
@@ -3710,9 +3710,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@saberhq/solana-contrib@npm:^1.10.3":
-  version: 1.10.3
-  resolution: "@saberhq/solana-contrib@npm:1.10.3"
+"@saberhq/solana-contrib@npm:^1.10.4":
+  version: 1.10.4
+  resolution: "@saberhq/solana-contrib@npm:1.10.4"
   dependencies:
     "@types/promise-retry": ^1.1.3
     "@types/retry": ^0.12.1
@@ -3722,26 +3722,26 @@ __metadata:
     tslib: ^2.3.1
   peerDependencies:
     "@solana/web3.js": ^1.29.2
-  checksum: 03db9ef7756ab28061bf264c437404888538c801311e0be7b5b78749b5f2f11829db07878b65b5a301610f544738c108c0e24240a083488e1daf40f8b0eb4047
+  checksum: 91030b7e62f2fae439bf5e06279588b68e209b3210909dec98df67b866a1bac6e9a1fe86914580fcfb089a4221359ef52262c939c79f3d9e946e2a2576fab9a9
   languageName: node
   linkType: hard
 
-"@saberhq/spl-token-icons@npm:^0.1.95":
-  version: 0.1.95
-  resolution: "@saberhq/spl-token-icons@npm:0.1.95"
+"@saberhq/spl-token-icons@npm:^0.1.97":
+  version: 0.1.97
+  resolution: "@saberhq/spl-token-icons@npm:0.1.97"
   dependencies:
-    "@solana/spl-token-registry": ^0.2.499
+    "@solana/spl-token-registry": ^0.2.535
     tslib: ^2.3.1
-  checksum: f8994e46c547f528aee7e99f5190077cf9ce82d7f11d50aea15d83cd615e92aa85f604e9d2237b77f29eed8fc37ffd54edf421d177d989b0dc04b2789a9e06e9
+  checksum: 1cc61f58773c5376772725cd24c6c2fa9a0894514e5da54c5b94400e6a4479182a22a0fdbdf412fcc75799eb51b0034bb6e5dd549e265ff55e27f144c4820eca
   languageName: node
   linkType: hard
 
-"@saberhq/stableswap-sdk@npm:^1.10.3":
-  version: 1.10.3
-  resolution: "@saberhq/stableswap-sdk@npm:1.10.3"
+"@saberhq/stableswap-sdk@npm:^1.10.4":
+  version: 1.10.4
+  resolution: "@saberhq/stableswap-sdk@npm:1.10.4"
   dependencies:
-    "@saberhq/solana-contrib": ^1.10.3
-    "@saberhq/token-utils": ^1.10.3
+    "@saberhq/solana-contrib": ^1.10.4
+    "@saberhq/token-utils": ^1.10.4
     "@solana/buffer-layout": ^3.0.0
     b58: ^4.0.3
     lodash.mapvalues: ^4.6.0
@@ -3753,15 +3753,15 @@ __metadata:
     "@solana/web3.js": ">=1.29.2"
     bn.js: ">=5"
     jsbi: ^3 || ^4
-  checksum: 4bc490854f7bc9708d9b87c28c986293ba70522da6e11da8ed14392d7e14914feef49f059dcb82c7a0c038ae1f5e0d064122bc26c688ecaa797ce37e99e97268
+  checksum: 043cd364303cb579ffe2cf6276adfb68055f00f1359b3f71587a65743af7605a9aca2f6f27c7aee95fcd5fe72fec883a01caee40d63c90a05ce4fe42ca0ce0b9
   languageName: node
   linkType: hard
 
-"@saberhq/token-utils@npm:^1.10.3":
-  version: 1.10.3
-  resolution: "@saberhq/token-utils@npm:1.10.3"
+"@saberhq/token-utils@npm:^1.10.4":
+  version: 1.10.4
+  resolution: "@saberhq/token-utils@npm:1.10.4"
   dependencies:
-    "@saberhq/solana-contrib": ^1.10.3
+    "@saberhq/solana-contrib": ^1.10.4
     "@solana/buffer-layout": ^3.0.0
     "@solana/spl-token": ^0.1.8
     "@ubeswap/token-math": ^4.3.1
@@ -3772,18 +3772,18 @@ __metadata:
     "@solana/web3.js": ^1.29.2
     bn.js: ^5.2
     jsbi: ^3 || ^4
-  checksum: 5ee32be35c4581ef1b2fc3cadcdae221607b12243c49ebfd91a2404484d571fac22369aa707d3057a39697fc110693f3e48fb2add8ec097acfba42616403e518
+  checksum: 231288dc1b3907c8ab668c7dc0c173753de4890275b5e5782fe61fa61a571d139f5614f088a943a68dde52725d92b1db77e7434471bd2a5c83d182f3a3ed1eb1
   languageName: node
   linkType: hard
 
-"@saberhq/use-solana@npm:^1.10.3":
-  version: 1.10.3
-  resolution: "@saberhq/use-solana@npm:1.10.3"
+"@saberhq/use-solana@npm:^1.10.4":
+  version: 1.10.4
+  resolution: "@saberhq/use-solana@npm:1.10.4"
   dependencies:
     "@ledgerhq/hw-transport": ^6.11.2
     "@ledgerhq/hw-transport-webusb": ^6.11.2
     "@project-serum/sol-wallet-adapter": ^0.2.6
-    "@saberhq/solana-contrib": ^1.10.3
+    "@saberhq/solana-contrib": ^1.10.4
     bs58: ^4.0.1
     eventemitter3: ^4.0.7
     fast-json-stable-stringify: ^2.1.0
@@ -3793,7 +3793,7 @@ __metadata:
   peerDependencies:
     "@solana/web3.js": ^1.29.2
     react: ^17.0.2
-  checksum: 99dc33b3e8945fce88faea5ddbfad887886356f8e7cf4b7713b16063d7a70ddffd6382a323536f6f7921754329dede31fb3235074fd123f59477cd60c5b95f76
+  checksum: db9043ca57f7351f75c8cdf616534c49c8e235578b5c29c830d492f9562e44970be89f7ba0afe17c517a4fa142b10e538fbb4281678c1d13857f89aa38d5d785
   languageName: node
   linkType: hard
 
@@ -3982,21 +3982,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solana/spl-token-registry@npm:^0.2.499":
-  version: 0.2.499
-  resolution: "@solana/spl-token-registry@npm:0.2.499"
+"@solana/spl-token-registry@npm:^0.2.535, @solana/spl-token-registry@npm:^0.2.541":
+  version: 0.2.541
+  resolution: "@solana/spl-token-registry@npm:0.2.541"
   dependencies:
     cross-fetch: 3.0.6
-  checksum: e0fbd7e5935d0616e5dff51671d55711e6c475e4dbdacb145f801d219546801f614b1b13702e89c41315d821763ac9fd5a52913943ebca4c0340fd272ef3dc99
-  languageName: node
-  linkType: hard
-
-"@solana/spl-token-registry@npm:^0.2.518":
-  version: 0.2.518
-  resolution: "@solana/spl-token-registry@npm:0.2.518"
-  dependencies:
-    cross-fetch: 3.0.6
-  checksum: f1e26d7878fbded76dfcccd8ac576f068196d313c3ee3756de002fd5fe3f29d551734875cca046fdef37c9cbade1a5126ef977448105147d01c6b3736fe49405
+  checksum: b311ac3e742c3066bbc734811b1eee4e4b644dc20c8f6e2e295f198992d1dca0af53ab3b2e6cf09f2718cb0eb7b17590270fe66be255fe9da47dd83718a089fe
   languageName: node
   linkType: hard
 
@@ -4589,10 +4580,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.11.10":
-  version: 16.11.10
-  resolution: "@types/node@npm:16.11.10"
-  checksum: 9c79419c5c3d92d5825bffa30f3668533f598d8b63a73ea7fc24e47f162bdbed92b0f8e4f4261cc3314b39cee050e303366d2aa154abc95c63a572a110b8c160
+"@types/node@npm:^16.11.11":
+  version: 16.11.11
+  resolution: "@types/node@npm:16.11.11"
+  checksum: 1c472bd63f23ca0e4effc96e6e0c693b83b027f613a1f41b6d1bd7791f65ce171a351e0a5c92575cb59e84ad0a930875397bfbbb91a7c925ddbbb558f7461af8
   languageName: node
   linkType: hard
 
@@ -8629,10 +8620,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.26.0":
-  version: 2.26.0
-  resolution: "date-fns@npm:2.26.0"
-  checksum: 49ad59bc788134a6552ef4e4af0d18792001c1ca0070d543de4f36aba5761058b6e6a57b8ca51dd3b0f07f3bd55376b8bc69602bd7940648ba3869c5253c6ae8
+"date-fns@npm:^2.27.0":
+  version: 2.27.0
+  resolution: "date-fns@npm:2.27.0"
+  checksum: db62036b3816eb0322c9532b353beac7f660a91e1a55dbd21c14893c621ebb8509f21c66ba287844dabd34dee0207edd54a9537bce6bb7cab9383dedc6b8bc90
   languageName: node
   linkType: hard
 
@@ -11555,10 +11546,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"highlight.run@npm:^2.8.3":
-  version: 2.8.3
-  resolution: "highlight.run@npm:2.8.3"
-  checksum: 6777f9699088d899d1dd248becc6736bee7824837af3393f9471b0eb3a261ceccf8a0d41ac3432b69ac745c9c4c99d776e49387ac7eee53dda4940dc1fd3c5b4
+"highlight.run@npm:^2.8.4":
+  version: 2.8.4
+  resolution: "highlight.run@npm:2.8.4"
+  checksum: a4178be22852108efc90cd8cef56d55b66f9788d594d2e32043a5d7ee9541ff40c56c1ec0341f8192144c39294e5fbba7c31beb53e1624eb9a2965b63efb66d3
   languageName: node
   linkType: hard
 
@@ -17670,9 +17661,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.33.7":
-  version: 3.33.7
-  resolution: "react-query@npm:3.33.7"
+"react-query@npm:^3.34.0":
+  version: 3.34.0
+  resolution: "react-query@npm:3.34.0"
   dependencies:
     "@babel/runtime": ^7.5.5
     broadcast-channel: ^3.4.1
@@ -17684,7 +17675,7 @@ fsevents@^1.2.7:
       optional: true
     react-native:
       optional: true
-  checksum: ce49d666bc974dc155299458eff120a6d6ee1cb622a78044f00f4498f0e31127bd063e35f4c785930c64301c5413f69ce5b53752ed82fc310ed635bdf04181bd
+  checksum: d510d1c1813f8d19dc188dc38e68ee78a061cf4ab0ae5da563dbba1717475cd1c26fea74cd87f336483460f092b3160b59637121eadfbb2448b0e688ac3ae0e9
   languageName: node
   linkType: hard
 
