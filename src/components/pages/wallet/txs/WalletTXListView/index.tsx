@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 
 import type { ParsedTX } from "../../../../../hooks/useSmartWallet";
 import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
+import { Button } from "../../../../common/Button";
 
 interface TXList {
   title: string;
@@ -27,20 +28,22 @@ const LISTS = {
 export const WalletTXListView: React.FC = () => {
   const { listId } = useParams<{ listId: keyof typeof LISTS }>();
   const list: TXList = LISTS[listId];
-  const { smartWallet, parsedTXs: allParsedTXs, key } = useSmartWallet();
+  const { path, parsedTXs: allParsedTXs, key, threshold } = useSmartWallet();
 
   const parsedTXs = list.filter
     ? allParsedTXs.filter(list.filter)
     : allParsedTXs;
 
-  const threshold = smartWallet?.data?.threshold.toNumber();
   return (
     <div tw="w-full">
-      <div tw="h-[57px] w-full flex items-center px-6 text-sm border-b">
+      <div tw="h-[57px] w-full flex items-center justify-between px-6 text-sm border-b">
         <div tw="flex items-center gap-2">
           <h1 tw="text-gray-800 font-medium">{list.title}</h1>
           <span tw="text-secondary">{parsedTXs.length}</span>
         </div>
+        <Link to={`${path}/propose`}>
+          <Button>Propose Transaction</Button>
+        </Link>
       </div>
       <div>
         {parsedTXs.map(({ tx, index, instructions }, i) => {

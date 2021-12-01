@@ -14,10 +14,10 @@ export const Jumbotron: React.FC = () => {
         Goki allows you to create, manage, and audit multisig wallets with
         transparency.
       </p>
-      <Link to="/wallet/new">
+      <Link to="/onboarding/new">
         <Button
           variant="primary"
-          tw="flex items-center gap-4 h-12 w-[200px] mt-6"
+          tw="flex items-center gap-4 h-12 w-[200px] mt-6 text-base"
         >
           <span>Get Started</span>
           <FaArrowRight />

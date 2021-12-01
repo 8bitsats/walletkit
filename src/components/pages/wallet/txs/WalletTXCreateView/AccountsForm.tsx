@@ -1,6 +1,8 @@
 import type { IdlAccountItem } from "@project-serum/anchor/dist/esm/idl";
 import { startCase } from "lodash";
 
+import { InputText } from "../../../../common/inputs/InputText";
+
 interface Props {
   accountItems: IdlAccountItem[];
   accountsStrs: Record<string, string>;
@@ -44,7 +46,7 @@ export const AccountsForm: React.FC<Props> = ({
                 </span>
               )}
             </div>
-            <input
+            <InputText
               key={account.name}
               type="text"
               placeholder={account.name}

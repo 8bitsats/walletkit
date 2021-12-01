@@ -8,6 +8,8 @@ import useSWR from "swr";
 
 import { useIDL } from "../../../../../hooks/useIDLs";
 import { fetcher } from "../../../../../utils/fetcher";
+import { Select } from "../../../../common/inputs/InputText";
+import { BasicPage } from "../../../../common/page/BasicPage";
 import { IXForm } from "./IXForm";
 
 export type InstructionInfo = {
@@ -59,13 +61,15 @@ export const WalletTXCreateView: React.FC = () => {
   }, [ixs]);
 
   return (
-    <div>
-      <h1 tw="text-3xl font-bold mb-4">Create a transaction</h1>
+    <BasicPage
+      title="Propose a Transaction"
+      description="Interact with any Anchor program."
+    >
       <form tw="grid gap-4">
         <div tw="p-4 border grid gap-4">
           <label tw="grid gap-1">
             <span>Program</span>
-            <select
+            <Select
               onChange={(e) => {
                 setProgramID(
                   e.target.value ? new PublicKey(e.target.value) : null
@@ -84,12 +88,12 @@ export const WalletTXCreateView: React.FC = () => {
                     );
                   })
                 : null}
-            </select>
+            </Select>
           </label>
           {programID && (
             <label tw="grid gap-1">
               <span>Instruction</span>
-              <select
+              <Select
                 onChange={(e) => {
                   const [ixType, ixName] = e.target.value.split("_");
                   const theIX = ixs?.find(
@@ -111,7 +115,7 @@ export const WalletTXCreateView: React.FC = () => {
                       );
                     })
                   : null}
-              </select>
+              </Select>
             </label>
           )}
         </div>
@@ -127,6 +131,6 @@ export const WalletTXCreateView: React.FC = () => {
           </div>
         )}
       </form>
-    </div>
+    </BasicPage>
   );
 };

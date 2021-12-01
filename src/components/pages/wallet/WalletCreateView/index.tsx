@@ -2,6 +2,7 @@ import { useSail } from "@saberhq/sail";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 import { useFormik } from "formik";
+import { uniq } from "lodash";
 import { useMemo } from "react";
 import { FaPlus, FaQuestionCircle, FaTrash } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
@@ -15,10 +16,27 @@ import { notify } from "../../../../utils/notifications";
 import { AddressLink } from "../../../common/AddressLink";
 import { AttributeList } from "../../../common/AttributeList";
 import { Button } from "../../../common/Button";
+import { InputText, Textarea } from "../../../common/inputs/InputText";
 import { MouseoverTooltip } from "../../../common/MouseoverTooltip";
 
 const CreateFormSchema = Yup.object().shape({
-  owners: Yup.array().min(1, "Enter at least one owner"),
+  owners: Yup.array()
+    .min(1, "Enter at least one owner")
+    .test("invalidKey", "Invalid key", (arr) => {
+      if (!arr) {
+        return false;
+      }
+      const last = arr[arr.length - 1] as string | undefined;
+      if (!last) {
+        return false;
+      }
+      try {
+        new PublicKey(last);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }),
   threshold: Yup.number().min(1, "Must have at least one signer required"),
   maxOwners: Yup.number()
     .required()
@@ -36,7 +54,7 @@ const CreateFormSchema = Yup.object().shape({
     }),
   baseKP: Yup.string()
     .required("Required")
-    .test("keypair", "Invalid keypair JSON", (str) => {
+    .test("baseKP", "Invalid keypair JSON", (str) => {
       if (!str) {
         return false;
       }
@@ -52,7 +70,6 @@ const CreateFormSchema = Yup.object().shape({
 
 interface CreateFormValues {
   owners: string[];
-  nextOwner: string;
   threshold: number;
   maxOwners: number;
   baseKP: string;
@@ -70,7 +87,6 @@ export const WalletCreateView: React.FC = () => {
   const formik = useFormik<CreateFormValues>({
     initialValues: {
       owners: [],
-      nextOwner: "",
       threshold: 1,
       maxOwners: 10,
       baseKP: initialBaseKP,
@@ -84,7 +100,7 @@ export const WalletCreateView: React.FC = () => {
           Uint8Array.from(JSON.parse(values.baseKP) as number[])
         );
         const { tx, smartWalletWrapper } = await sdkMut.newSmartWallet({
-          owners: values.owners.map((owner) => new PublicKey(owner)),
+          owners: uniq(values.owners).map((owner) => new PublicKey(owner)),
           threshold: new BN(values.threshold),
           numOwners: values.maxOwners,
           base: baseKP,
@@ -125,9 +141,9 @@ export const WalletCreateView: React.FC = () => {
           <form tw="grid grid-cols-1 gap-6" onSubmit={formik.handleSubmit}>
             <label htmlFor="nextOwner">
               <span>Owners</span>
-              {formik.values.owners.length > 0 && (
+              {formik.values.owners.length > 1 && (
                 <div>
-                  {formik.values.owners.map((owner, i) => (
+                  {formik.values.owners.slice(0, -1).map((owner, i) => (
                     <div key={owner} tw="flex items-center justify-between">
                       <span>
                         <AddressLink address={new PublicKey(owner)} showCopy />
@@ -147,42 +163,46 @@ export const WalletCreateView: React.FC = () => {
                 </div>
               )}
               <div tw="flex gap-1">
-                <input
+                <InputText
                   id="nextOwner"
                   name="nextOwner"
                   type="text"
                   tw="mt-1 w-full"
                   placeholder="Enter an address"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.nextOwner}
+                  onChange={(e) => {
+                    void formik.setFieldValue("owners", [
+                      ...formik.values.owners.slice(0, -1),
+                      e.target.value,
+                    ]);
+                  }}
+                  onBlur={() => {
+                    void formik.setFieldTouched("owners");
+                  }}
+                  value={
+                    formik.values.owners[formik.values.owners.length - 1] ?? ""
+                  }
                 />
                 <Button
                   type="button"
+                  disabled={
+                    !formik.values.owners[formik.values.owners.length - 1]
+                  }
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    const { nextOwner } = formik.values;
 
-                    if (formik.values.owners.includes(nextOwner)) {
-                      formik.setFieldError(
-                        "nextOwner",
-                        "Owner already in list"
-                      );
-                      return;
-                    }
-
+                    const last =
+                      formik.values.owners[formik.values.owners.length - 1];
+                    invariant(last, "last");
                     try {
-                      new PublicKey(nextOwner);
+                      new PublicKey(last);
+                      void formik.setFieldValue("owners", [
+                        ...formik.values.owners,
+                        "",
+                      ]);
                     } catch (e) {
-                      formik.setFieldError("nextOwner", "Invalid public key");
-                      return;
+                      void formik.setFieldTouched("owners", true);
                     }
-                    void formik.setFieldValue("owners", [
-                      ...formik.values.owners,
-                      formik.values.nextOwner,
-                    ]);
-                    void formik.setFieldValue("nextOwner", "");
                   }}
                   tw="mt-1"
                   variant="muted"
@@ -192,11 +212,6 @@ export const WalletCreateView: React.FC = () => {
               </div>
               {formik.touched.owners && formik.errors.owners && (
                 <div tw="text-red-500 text-sm mt-2">{formik.errors.owners}</div>
-              )}
-              {formik.touched.nextOwner && formik.errors.nextOwner && (
-                <div tw="text-red-500 text-sm mt-2">
-                  {formik.errors.nextOwner}
-                </div>
               )}
             </label>
             <label>
@@ -216,7 +231,7 @@ export const WalletCreateView: React.FC = () => {
                   <FaQuestionCircle tw="h-3 cursor-pointer" />
                 </MouseoverTooltip>
               </div>
-              <input
+              <InputText
                 name="threshold"
                 type="number"
                 inputMode="numeric"
@@ -253,7 +268,7 @@ export const WalletCreateView: React.FC = () => {
                   <FaQuestionCircle tw="h-3 cursor-pointer" />
                 </MouseoverTooltip>
               </div>
-              <input
+              <InputText
                 name="maxOwners"
                 type="number"
                 inputMode="numeric"
@@ -287,7 +302,7 @@ export const WalletCreateView: React.FC = () => {
                   <FaQuestionCircle tw="h-3 cursor-pointer" />
                 </MouseoverTooltip>
               </div>
-              <textarea
+              <Textarea
                 name="baseKP"
                 tw="mt-1 block w-full h-24"
                 onChange={formik.handleChange}
@@ -316,7 +331,7 @@ export const WalletCreateView: React.FC = () => {
                   <FaQuestionCircle tw="h-3 cursor-pointer" />
                 </MouseoverTooltip>
               </div>
-              <input
+              <InputText
                 name="delay"
                 type="number"
                 inputMode="numeric"
@@ -330,21 +345,22 @@ export const WalletCreateView: React.FC = () => {
                 <div tw="text-red-500 text-sm mt-2">{formik.errors.delay}</div>
               )}
             </label>
-            <div tw="rounded p-4 border w-[250px] max-w-full">
+            <div tw="rounded p-4 border">
               <h3 tw="mb-4 uppercase text-secondary text-sm">Details</h3>
               <AttributeList
                 attributes={{
-                  Mint: keypair ? keypair.publicKey : "--",
+                  "Wallet Address": keypair ? keypair.publicKey : "--",
                 }}
               />
             </div>
             <div>
               <Button
                 type="submit"
+                variant="primary"
                 size="md"
                 disabled={formik.isSubmitting || !formik.isValid}
               >
-                Confirm
+                Create Wallet
               </Button>
             </div>
           </form>

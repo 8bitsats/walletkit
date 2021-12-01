@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 
 import { COMMON_ACCOUNTS } from "../../../../../utils/anchor";
 import { Button } from "../../../../common/Button";
+import { InputText } from "../../../../common/inputs/InputText";
 import type { InstructionInfo } from ".";
 import { AccountsForm } from "./AccountsForm";
 import { PreviewIXModal } from "./PreviewIXModal";
@@ -125,7 +126,7 @@ export const IXForm: React.FC<Props> = ({ ix, program }: Props) => {
                 <span>
                   {startCase(arg.name)} ({formatIdlType(arg.type)})
                 </span>
-                <input
+                <InputText
                   type="text"
                   placeholder={arg.name}
                   value={

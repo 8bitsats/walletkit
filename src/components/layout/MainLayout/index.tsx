@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import type { ReactNode } from "react";
 import React from "react";
-import { Toaster } from "react-hot-toast";
 import tw from "twin.macro";
 
 import { Header } from "./Header";
@@ -18,7 +17,6 @@ export const MainLayout: React.FC<Props> = ({ children }: Props) => {
     <PageWrapper>
       <Header />
       <PageLayout>{children}</PageLayout>
-      <Toaster />
     </PageWrapper>
   );
 };
