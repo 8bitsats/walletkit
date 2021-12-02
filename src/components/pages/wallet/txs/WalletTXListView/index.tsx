@@ -1,8 +1,11 @@
+import { GiTumbleweed } from "react-icons/gi";
 import { Link, useParams } from "react-router-dom";
+import { css } from "twin.macro";
 
 import type { ParsedTX } from "../../../../../hooks/useSmartWallet";
 import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 import { Button } from "../../../../common/Button";
+import { EmptyState } from "../../../../common/EmptyState";
 
 interface TXList {
   title: string;
@@ -45,6 +48,27 @@ export const WalletTXListView: React.FC = () => {
           <Button>Propose Transaction</Button>
         </Link>
       </div>
+      {parsedTXs.length === 0 && (
+        <div
+          tw="flex items-center justify-center"
+          css={css`
+            height: calc(80vh - 57px);
+          `}
+        >
+          <EmptyState
+            icon={<GiTumbleweed />}
+            title={`No ${
+              listId === "all"
+                ? " transactions"
+                : list.title.toLocaleLowerCase()
+            }.`}
+          >
+            <Link tw="text-primary" to={`${path}/propose`}>
+              Propose a transaction
+            </Link>
+          </EmptyState>
+        </div>
+      )}
       <div>
         {parsedTXs.map(({ tx, index, instructions }, i) => {
           const numSigned = (

@@ -4,15 +4,20 @@ interface Props {
   icon?: React.ReactNode;
   title: string;
   children?: React.ReactNode;
+  className?: string;
 }
 
 export const EmptyState: React.FC<Props> = ({
   icon,
   title,
   children,
+  className,
 }: Props) => {
   return (
-    <div tw="w-full py-12 text-sm flex flex-col items-center">
+    <div
+      tw="w-full py-12 text-sm flex flex-col items-center"
+      className={className}
+    >
       {icon && (
         <div
           tw="w-20 h-20 mb-3"
