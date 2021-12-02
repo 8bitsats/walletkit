@@ -1,3 +1,5 @@
+import { useSolana } from "@saberhq/use-solana";
+import { startCase } from "lodash";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
@@ -6,6 +8,7 @@ import { ReactComponent as Logo } from "../../../common/svgs/logo-dark.svg";
 import { MoreInfo } from "./MoreInfo";
 
 export const Header: React.FC = () => {
+  const { network } = useSolana();
   return (
     <div tw="relative flex items-center justify-between py-4">
       <div tw="z-50 flex items-center">
@@ -22,7 +25,12 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      <div tw="flex justify-end items-center z-20 space-x-2">
+      <div tw="flex justify-end items-center z-20 gap-4">
+        {network !== "mainnet-beta" && (
+          <span tw="bg-accent px-3 py-0.5 text-xs rounded text-white font-medium">
+            {startCase(network)}
+          </span>
+        )}
         <MoreInfo />
       </div>
     </div>

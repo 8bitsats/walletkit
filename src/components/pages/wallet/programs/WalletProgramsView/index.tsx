@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { useAuthorityPrograms } from "../../../../../hooks/useAuthorityPrograms";
 import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 import { Button } from "../../../../common/Button";
+import { EmptyState } from "../../../../common/EmptyState";
 import { ErrorMessage } from "../../../../common/ErrorMessage";
 import { LoadingPage } from "../../../../common/LoadingPage";
 import { LoadingSpinner } from "../../../../common/LoadingSpinner";
 import { Notice } from "../../../../common/Notice";
 import { BasicPage } from "../../../../common/page/BasicPage";
+import { ReactComponent as EmptyFolder } from "../../../../common/svgs/EmptyFolder.svg";
 import { ProgramCard } from "./ProgramCard";
 
 export const WalletProgramsView: React.FC = () => {
@@ -27,6 +29,19 @@ export const WalletProgramsView: React.FC = () => {
             <LoadingSpinner />
           </Notice>
         ))
+      )}
+      {programs.length === 0 && programData.isFetched && (
+        <EmptyState
+          icon={<EmptyFolder />}
+          title="This wallet doesn't own any programs."
+        >
+          <Link
+            to={`/wallets/${key.toString()}/programs/import`}
+            tw="text-primary"
+          >
+            Import a program
+          </Link>
+        </EmptyState>
       )}
       <div tw="flex flex-col gap-2">
         {programs.map((program, i) => {

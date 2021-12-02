@@ -6,9 +6,9 @@ import React from "react";
 import { isMobile } from "react-device-detect";
 
 import appInfo from "../../app.json";
+import { environments } from "../../utils/environments";
 import { notify } from "../../utils/notifications";
 import { EnvironmentProvider } from "../../utils/useEnvironment";
-import { useConfig } from "../config";
 
 interface Props {
   children: React.ReactNode;
@@ -66,10 +66,9 @@ const onError = (err: Error) => {
 export const WalletConnectorProvider: React.FC<Props> = ({
   children,
 }: Props) => {
-  const { environments } = useConfig();
-
   return (
     <WalletKitProvider
+      defaultNetwork="devnet"
       app={{
         name: appInfo.name,
         icon: (

@@ -73,7 +73,7 @@ export function notify({
   toast(
     <div tw="flex flex-col text-sm gap-1">
       <div tw="font-medium">{message}</div>
-      <div tw="text-secondary">{description}</div>
+      {description && <div tw="text-secondary">{description}</div>}
     </div>
   );
 }

@@ -18,7 +18,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 import { App } from "./App";
-import { ConfigProvider } from "./contexts/config";
 import { QuarryInterfaceProvider } from "./contexts/quarry";
 import type { ProgramKey } from "./contexts/sdk";
 import { SDKProvider } from "./contexts/sdk";
@@ -154,7 +153,7 @@ const onSailError = (err: SailError) => {
     case "SailTransactionSignError": {
       notify({
         message: "Failed to sign transaction",
-        description: err.message,
+        description: err.cause,
       });
       return;
     }
@@ -173,22 +172,20 @@ const queryClient = new QueryClient();
 export const AppWithProviders: React.FC = () => {
   return (
     <React.StrictMode>
-      <ConfigProvider>
-        <ThemeProvider theme={theme}>
-          <WalletConnectorProvider>
-            <SailProvider initialState={{ onTxSend, onSailError }}>
-              <QuarryInterfaceProvider>
-                <SDKProvider>
-                  <QueryClientProvider client={queryClient}>
-                    <ReactQueryDevtools initialIsOpen={false} />
-                    <App />
-                  </QueryClientProvider>
-                </SDKProvider>
-              </QuarryInterfaceProvider>
-            </SailProvider>
-          </WalletConnectorProvider>
-        </ThemeProvider>
-      </ConfigProvider>
+      <ThemeProvider theme={theme}>
+        <WalletConnectorProvider>
+          <SailProvider initialState={{ onTxSend, onSailError }}>
+            <QuarryInterfaceProvider>
+              <SDKProvider>
+                <QueryClientProvider client={queryClient}>
+                  <ReactQueryDevtools initialIsOpen={false} />
+                  <App />
+                </QueryClientProvider>
+              </SDKProvider>
+            </QuarryInterfaceProvider>
+          </SailProvider>
+        </WalletConnectorProvider>
+      </ThemeProvider>
     </React.StrictMode>
   );
 };

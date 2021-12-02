@@ -7,9 +7,9 @@ import { ENV } from "@solana/spl-token-registry";
 import { useEffect, useMemo } from "react";
 import { createContainer } from "unstated-next";
 
-import { useConfig } from "../contexts/config";
 import { useTokenList } from "../hooks/api/useTokenList";
 import type { IEnvironment } from "./environments";
+import { environments } from "./environments";
 
 export const envs = {
   "mainnet-beta": ENV.MainnetBeta,
@@ -36,7 +36,6 @@ const useEnvironmentInternal = (): UseEnvironment => {
     });
   }, [network]);
 
-  const { environments } = useConfig();
   const environment: IEnvironment = environments[network];
   const chainId: ChainId = useMemo(() => networkToChainId(network), [network]);
   const { data } = useTokenList(network);

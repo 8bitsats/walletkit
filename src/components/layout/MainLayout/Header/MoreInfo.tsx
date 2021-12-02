@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { FaCode, FaEllipsisH, FaTwitter } from "react-icons/fa";
 
 import appInfo from "../../../../app.json";
-import { StyledButton } from "../../../common/Button";
 import { Drop } from "../../../common/Drop";
 
 export const MoreInfo: React.FC = () => {
@@ -37,8 +36,7 @@ export const MoreInfo: React.FC = () => {
 
   return (
     <>
-      <StyledButton
-        variant="outline"
+      <button
         ref={targetRef}
         onClick={() => {
           setShow(!show);
@@ -47,15 +45,14 @@ export const MoreInfo: React.FC = () => {
         <div tw="text-xl">
           <FaEllipsisH />
         </div>
-      </StyledButton>
-
+      </button>
       <Drop
         placement="bottom-end"
         show={show}
         onDismiss={() => setShow(false)}
         target={targetRef.current}
       >
-        <div tw="flex flex-col flex-nowrap p-2 bg-gray-100 rounded-lg">
+        <div tw="flex flex-col flex-nowrap p-2 bg-white shadow border rounded">
           {MORE_ITEMS.map((item) => (
             <a
               href={item.href}

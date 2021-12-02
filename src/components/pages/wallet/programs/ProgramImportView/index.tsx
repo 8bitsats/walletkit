@@ -10,11 +10,13 @@ import {
 } from "../../../../../utils/instructions/upgradeable_loader/instructions";
 import { displayAddress } from "../../../../../utils/programs";
 import { AsyncButton } from "../../../../common/AsyncButton";
+import { EmptyState } from "../../../../common/EmptyState";
 import { ErrorMessage } from "../../../../common/ErrorMessage";
 import { LoadingPage } from "../../../../common/LoadingPage";
 import { LoadingSpinner } from "../../../../common/LoadingSpinner";
 import { Notice } from "../../../../common/Notice";
 import { BasicPage } from "../../../../common/page/BasicPage";
+import { ReactComponent as EmptyFolder } from "../../../../common/svgs/EmptyFolder.svg";
 import { ProgramCard } from "../WalletProgramsView/ProgramCard";
 
 export const ProgramImportView: React.FC = () => {
@@ -38,12 +40,28 @@ export const ProgramImportView: React.FC = () => {
         ))
       )}
       {programs.length === 0 && programData.isFetched && (
-        <div tw="w-full border text-sm flex flex-col items-center gap-4 p-4 bg-gray-50">
-          <h2 tw="font-semibold">Your wallet doesn't own any programs</h2>
-          <p tw="text-secondary">
-            Connect to a different wallet to import programs into Goki.
-          </p>
-        </div>
+        <EmptyState
+          icon={<EmptyFolder />}
+          title="Your connected wallet doesn't own any programs."
+        >
+          <div tw="text-secondary flex flex-col items-center gap-2 mt-4">
+            <p>
+              You must connect to the upgrade authority wallet in order to
+              import programs.
+            </p>
+            <p>
+              Haven't deployed yet?{" "}
+              <a
+                tw="text-primary"
+                href="https://docs.solana.com/cli/deploy-a-program"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View the official guide
+              </a>
+            </p>
+          </div>
+        </EmptyState>
       )}
       <div tw="flex flex-col gap-2">
         {programs.map((program, i) => {

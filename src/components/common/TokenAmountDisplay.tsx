@@ -36,7 +36,7 @@ export const TokenAmountDisplay: React.FC<IProps> = ({
         />
       )}
       <TheNumber isMonoNumber={isMonoNumber}>
-        {formatDisplayWithSoftLimit(Number(amount.toFixed(2)), 2, 10)}
+        {formatDisplayWithSoftLimit(amount.asNumber, amount.token.decimals)}
       </TheNumber>
 
       {showSymbol && (

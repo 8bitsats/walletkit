@@ -29,7 +29,7 @@ const CreateFormSchema = Yup.object().shape({
       }
       const last = arr[arr.length - 1] as string | undefined;
       if (!last) {
-        return false;
+        return true;
       }
       try {
         new PublicKey(last);
@@ -101,7 +101,9 @@ export const WalletCreateView: React.FC = () => {
           Uint8Array.from(JSON.parse(values.baseKP) as number[])
         );
         const { tx, smartWalletWrapper } = await sdkMut.newSmartWallet({
-          owners: uniq(values.owners).map((owner) => new PublicKey(owner)),
+          owners: uniq(values.owners)
+            .filter((x) => !!x)
+            .map((owner) => new PublicKey(owner)),
           threshold: new BN(values.threshold),
           numOwners: values.maxOwners,
           base: baseKP,
