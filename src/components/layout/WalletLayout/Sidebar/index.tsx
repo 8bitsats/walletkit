@@ -52,7 +52,7 @@ export const Sidebar: React.FC = () => {
   const { key, path } = useSmartWallet();
   const { network } = useSolana();
   return (
-    <nav tw="w-[220px] max-w-[330px] h-screen border-r flex flex-col justify-between">
+    <nav tw="w-[220px] max-w-[330px] h-screen border-r flex flex-col justify-between flex-grow-0 flex-shrink-0">
       <div>
         <div tw="px-5 py-3 grid gap-7">
           <div tw="flex items-center justify-between">

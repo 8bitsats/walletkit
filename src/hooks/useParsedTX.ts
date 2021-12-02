@@ -3,6 +3,7 @@ import { useParsedAccountData } from "@saberhq/sail";
 import { useSolana } from "@saberhq/use-solana";
 import type { PublicKey } from "@solana/web3.js";
 import { startCase } from "lodash";
+import { useEffect } from "react";
 import { useQuery } from "react-query";
 import invariant from "tiny-invariant";
 
@@ -67,5 +68,12 @@ export const useParsedTX = (smartWalletKey: PublicKey, index: number) => {
       enabled: !!txData,
     }
   );
+
+  useEffect(() => {
+    if (txData && !query.isFetching) {
+      void query.refetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [txData]);
   return { ...query, isLoading: query.isLoading || loading };
 };
