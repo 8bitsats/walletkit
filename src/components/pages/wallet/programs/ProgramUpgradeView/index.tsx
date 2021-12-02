@@ -31,16 +31,6 @@ export const ProgramUpgradeView: React.FC = () => {
       <Notice tw="mb-8" icon={<FaUpload />} title="How do I upgrade a program?">
         <ol>
           <li>
-            Ensure that the smart wallet is the upgrade authority. You may do
-            this by running
-            <br />
-            <code>
-              solana program set-upgrade-authority {programIDStr}{" "}
-              --new-upgrade-authority {key.toString()}
-            </code>
-            .
-          </li>
-          <li>
             Build your program, ideally using{" "}
             <code>anchor build --verifiable</code>.
           </li>
