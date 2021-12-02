@@ -9,7 +9,7 @@ const today = new Date().toLocaleDateString(undefined, {
 
 export const WalletInboxView: React.FC = () => {
   return (
-    <BasicPage title="gm, Goki user" description={`Today is ${today}.`}>
+    <BasicPage title="Welcome to Goki." description={`Today is ${today}.`}>
       <Notice>Select an action on the left.</Notice>
     </BasicPage>
   );
