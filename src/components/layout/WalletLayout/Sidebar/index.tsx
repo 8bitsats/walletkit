@@ -1,3 +1,5 @@
+import { useSolana } from "@saberhq/use-solana";
+import { startCase } from "lodash";
 import { AiOutlineBank } from "react-icons/ai";
 import { FaCode, FaInbox, FaWrench } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -48,13 +50,21 @@ const NAV_LINKS = [
 
 export const Sidebar: React.FC = () => {
   const { key, path } = useSmartWallet();
+  const { network } = useSolana();
   return (
     <nav tw="w-[220px] max-w-[330px] h-screen border-r flex flex-col justify-between">
       <div>
         <div tw="px-5 py-3 grid gap-7">
-          <Link to={path}>
-            <GokiLogo tw="h-5 w-min text-primary-800 hover:(text-primary -rotate-3) transition-all" />
-          </Link>
+          <div tw="flex items-center justify-between">
+            <Link to={path}>
+              <GokiLogo tw="h-5 w-min text-primary-800 hover:(text-primary -rotate-3) transition-all" />
+            </Link>
+            {network !== "mainnet-beta" && (
+              <span tw="bg-accent-500 text-white px-3 py-0.5 rounded text-xs">
+                {startCase(network)}
+              </span>
+            )}
+          </div>
           <div tw="border rounded px-3 py-2 text-sm flex items-center gap-1">
             <span>Wallet:</span>
             <AddressLink

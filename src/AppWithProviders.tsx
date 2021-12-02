@@ -142,20 +142,30 @@ const onGetMultipleAccountsError = (
 };
 
 const onSailError = (err: SailError) => {
-  if (err.name === "SailTransactionError") {
-    onTxError(err as SailTransactionError);
-  } else if (err.name === "SailGetMultipleAccountsError") {
-    onGetMultipleAccountsError(err as SailGetMultipleAccountsError);
-  } else if (err.name === "SailTransactionSignError") {
-    notify({
-      message: "Failed to sign transaction",
-      description: err.message,
-    });
-  } else {
-    handleException(err, {
-      source: "sail.unknown",
-    });
+  switch (err.sailErrorName) {
+    case "SailTransactionError": {
+      onTxError(err as SailTransactionError);
+      return;
+    }
+    case "SailGetMultipleAccountsError": {
+      onGetMultipleAccountsError(err as SailGetMultipleAccountsError);
+      return;
+    }
+    case "SailTransactionSignError": {
+      notify({
+        message: "Failed to sign transaction",
+        description: err.message,
+      });
+      return;
+    }
   }
+  handleException(err, {
+    source: "sail.unknown",
+    userMessage: {
+      title: err.title,
+      description: err.message,
+    },
+  });
 };
 
 const queryClient = new QueryClient();
