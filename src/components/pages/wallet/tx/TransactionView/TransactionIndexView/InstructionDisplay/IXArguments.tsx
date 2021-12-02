@@ -1,4 +1,5 @@
 import type { InstructionParsed } from "@saberhq/anchor-contrib";
+import tw from "twin.macro";
 
 interface Props {
   parsed: InstructionParsed;
@@ -15,6 +16,7 @@ export const IXArguments: React.FC<Props> = ({ parsed }: Props) => {
           <div
             key={`arg_${i}`}
             tw="px-6 py-2 flex items-center justify-between border-t border-t-gray-150 gap-4"
+            css={[arg.type.includes("<") && tw`flex-col items-start gap-2`]}
           >
             <div tw="flex gap-4 flex-shrink-0">
               <span tw="text-gray-500 font-semibold">{arg.name}</span>
