@@ -10,7 +10,10 @@ import {
 } from "../../../../../utils/instructions/upgradeable_loader/instructions";
 import { displayAddress } from "../../../../../utils/programs";
 import { AsyncButton } from "../../../../common/AsyncButton";
-import { EmptyState } from "../../../../common/EmptyState";
+import {
+  EmptyState,
+  EmptyStateConnectWallet,
+} from "../../../../common/EmptyState";
 import { ErrorMessage } from "../../../../common/ErrorMessage";
 import { LoadingPage } from "../../../../common/LoadingPage";
 import { LoadingSpinner } from "../../../../common/LoadingSpinner";
@@ -29,6 +32,9 @@ export const ProgramImportView: React.FC = () => {
       title="Import a Program"
       description="Transfer the upgrade authority of one of your programs to your Smart Wallet."
     >
+      {!wallet && (
+        <EmptyStateConnectWallet title="Connect your wallet to import a program." />
+      )}
       {programData.isLoading ? (
         <LoadingPage />
       ) : (

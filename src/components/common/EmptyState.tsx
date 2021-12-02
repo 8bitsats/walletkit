@@ -1,4 +1,7 @@
+import { ConnectWalletButton } from "@gokiprotocol/walletkit";
 import tw, { css } from "twin.macro";
+
+import { ReactComponent as SolanaIcon } from "../layout/WalletLayout/SolanaIcon.svg";
 
 interface Props {
   icon?: React.ReactNode;
@@ -36,5 +39,19 @@ export const EmptyState: React.FC<Props> = ({
       </div>
       <div>{children}</div>
     </div>
+  );
+};
+
+export const EmptyStateConnectWallet: React.FC<Partial<Props>> = (
+  props: Partial<Props>
+) => {
+  return (
+    <EmptyState
+      icon={<SolanaIcon />}
+      title="Connect your wallet to view this page."
+      {...props}
+    >
+      <ConnectWalletButton tw="mt-4" />
+    </EmptyState>
   );
 };
