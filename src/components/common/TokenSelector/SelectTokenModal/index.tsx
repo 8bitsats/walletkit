@@ -2,6 +2,8 @@ import { useUserAssociatedTokenAccounts } from "@quarryprotocol/react-quarry";
 import type { Token } from "@saberhq/token-utils";
 import { useConnectedWallet } from "@saberhq/use-solana";
 
+import { useSDK } from "../../../../contexts/sdk";
+import { RAW_SOL_MINT } from "../../../../hooks/api/useTokenList";
 import { LoadingSpinner } from "../../LoadingSpinner";
 import type { ModalProps } from "../../Modal";
 import { Modal } from "../../Modal";
@@ -21,6 +23,7 @@ export const SelectTokenModal: React.FC<Props> = ({
   ...modalProps
 }: Props) => {
   const wallet = useConnectedWallet();
+  const { nativeBalance } = useSDK();
   const balances = useUserAssociatedTokenAccounts(tokens);
   return (
     <Modal {...modalProps} tw="p-0">
@@ -36,6 +39,9 @@ export const SelectTokenModal: React.FC<Props> = ({
             const userBalance = balances.find((b) =>
               b?.balance.token.equals(token)
             );
+            const balance = token.mintAccount.equals(RAW_SOL_MINT)
+              ? nativeBalance
+              : userBalance?.balance;
             return (
               // TODO: make this accessible
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events
@@ -58,8 +64,7 @@ export const SelectTokenModal: React.FC<Props> = ({
                           {userBalance?.loading || userBalance === undefined ? (
                             <LoadingSpinner />
                           ) : (
-                            userBalance?.balance.formatUnits() ??
-                            `0 ${token.symbol}`
+                            balance?.formatUnits() ?? `0 ${token.symbol}`
                           )}
                         </span>
                       )}

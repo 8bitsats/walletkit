@@ -1,6 +1,14 @@
 import { extractErrorMessage } from "@saberhq/sail";
 import { TOKEN_PROGRAM_ID } from "@saberhq/token-utils";
-import type { TransactionInstruction } from "@solana/web3.js";
+import type {
+  CreateAccountParams,
+  SystemInstructionType,
+  TransactionInstruction,
+  TransferParams,
+  WithdrawNonceParams,
+} from "@solana/web3.js";
+import { SystemInstruction, SystemProgram } from "@solana/web3.js";
+import { startCase } from "lodash";
 import type { Infer } from "superstruct";
 import { any, string, type } from "superstruct";
 
@@ -30,10 +38,17 @@ export type UpgradeableLoaderInstruction = {
   type: UpgradeableLoaderInstructionType;
 };
 
+export type SystemProgramInstruction = {
+  program: "system";
+  type: SystemInstructionType;
+  decoded: TransferParams | CreateAccountParams | WithdrawNonceParams | null;
+};
+
 type ParsedNonAnchorInstructionInner =
   | MemoInstruction
   | TokenInstruction
-  | UpgradeableLoaderInstruction;
+  | UpgradeableLoaderInstruction
+  | SystemProgramInstruction;
 
 export type ParsedNonAnchorInstruction<
   T extends ParsedNonAnchorInstructionInner = ParsedNonAnchorInstructionInner
@@ -69,6 +84,31 @@ export const PARSERS: Record<string, IXParser> = {
   ): ParsedNonAnchorInstruction<UpgradeableLoaderInstruction> => {
     const result = parseUpgradeableLoaderInstruction(ix);
     return { ...result, program: "upgradeable_loader" };
+  },
+  [SystemProgram.programId.toString()]: (
+    ix
+  ): ParsedNonAnchorInstruction<SystemProgramInstruction> => {
+    const ixType = SystemInstruction.decodeInstructionType(ix);
+    const decoded = (() => {
+      switch (ixType) {
+        case "Transfer":
+          return SystemInstruction.decodeTransfer(ix);
+        case "TransferWithSeed":
+          return SystemInstruction.decodeTransferWithSeed(ix);
+        case "Create":
+          return SystemInstruction.decodeCreateAccount(ix);
+        case "WithdrawNonceAccount":
+          return SystemInstruction.decodeNonceWithdraw(ix);
+        default:
+          return null;
+      }
+    })();
+    return {
+      type: ixType,
+      decoded,
+      name: startCase(ixType),
+      program: "system",
+    };
   },
 };
 

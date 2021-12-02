@@ -1,7 +1,7 @@
-import styled from "@emotion/styled";
 import { Percent, Price, Token, TokenAmount } from "@saberhq/token-utils";
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
+import { startCase } from "lodash";
 import React from "react";
 import tw from "twin.macro";
 
@@ -22,11 +22,15 @@ export const AttributeList: React.FC<Props> = ({
   attributes,
 }: Props) => {
   return (
-    <Wrapper className={className}>
-      {Object.entries(attributes).map(([label, attribute]) => (
-        <Row key={label}>
-          <div>{label}</div>
-          <Value>
+    <div tw="flex flex-col text-sm" className={className}>
+      {Object.entries(attributes).map(([label, attribute], i) => (
+        <div
+          tw="flex justify-between items-center px-6 py-2"
+          css={[i !== 0 && tw`border-t`]}
+          key={label}
+        >
+          <div tw="text-secondary font-semibold">{startCase(label)}</div>
+          <div tw="font-medium">
             {attribute === undefined ? (
               loading ? (
                 <LoadingSpinner />
@@ -77,24 +81,9 @@ export const AttributeList: React.FC<Props> = ({
               "unknown"
               // (attribute as React.ReactNode)
             )}
-          </Value>
-        </Row>
+          </div>
+        </div>
       ))}
-    </Wrapper>
+    </div>
   );
 };
-
-const Value = styled.div`
-  ${tw`font-mono text-DEFAULT`}
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;

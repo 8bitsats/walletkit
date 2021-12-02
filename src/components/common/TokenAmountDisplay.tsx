@@ -14,6 +14,7 @@ export interface IProps extends IFormatUint {
   className?: string;
   showSymbol?: boolean;
   suffix?: string;
+  exact?: boolean;
 }
 
 export const TokenAmountDisplay: React.FC<IProps> = ({
@@ -24,6 +25,7 @@ export const TokenAmountDisplay: React.FC<IProps> = ({
   percent,
   className,
   suffix = "",
+  exact = false,
 }: IProps) => {
   return (
     <TokenAmountWrapper className={className}>
@@ -36,7 +38,9 @@ export const TokenAmountDisplay: React.FC<IProps> = ({
         />
       )}
       <TheNumber isMonoNumber={isMonoNumber}>
-        {formatDisplayWithSoftLimit(amount.asNumber, amount.token.decimals)}
+        {exact
+          ? amount.toExact()
+          : formatDisplayWithSoftLimit(amount.asNumber, amount.token.decimals)}
       </TheNumber>
 
       {showSymbol && (

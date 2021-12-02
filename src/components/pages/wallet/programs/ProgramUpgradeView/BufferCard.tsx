@@ -93,7 +93,7 @@ export const BufferCard: React.FC<Props> = ({ buffer, programID }: Props) => {
                 await createUpgradeInstruction({
                   program: programID,
                   buffer: buffer.pubkey,
-                  spill: key,
+                  spill: smartWallet.provider.wallet.publicKey,
                   signer: key,
                 }),
               ],

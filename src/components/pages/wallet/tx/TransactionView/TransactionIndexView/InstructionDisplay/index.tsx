@@ -1,4 +1,6 @@
 import type { ParsedInstruction } from "../../../../../../../hooks/useSmartWallet";
+import type { SystemProgramInstruction } from "../../../../../../../utils/instructions/parseNonAnchorInstruction";
+import { AttributeList } from "../../../../../../common/AttributeList";
 import { Box } from "./Box";
 import { IXAccounts } from "./IXAccounts";
 import { IXArguments } from "./IXArguments";
@@ -43,6 +45,21 @@ export const InstructionDisplay: React.FC<Props> = ({ instruction }: Props) => {
         instruction.ix.data.length !== 4 && (
           <IXData data={instruction.ix.data} />
         )}
+      {program === "system" &&
+        ((rest as SystemProgramInstruction).decoded ? (
+          <Box title="Arguments" tw="p-0">
+            <AttributeList
+              attributes={
+                (rest as SystemProgramInstruction).decoded as Record<
+                  string,
+                  unknown
+                >
+              }
+            />
+          </Box>
+        ) : (
+          <IXData data={instruction.ix.data} />
+        ))}
       {program === "memo" && (
         <Box title="Memo Text">
           <p>{instruction.parsed.text}</p>

@@ -1,13 +1,10 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { DEFAULT_TOKEN_DECIMALS } from "@saberhq/stableswap-sdk";
 import type { Token } from "@saberhq/token-utils";
 import { TokenAmount } from "@saberhq/token-utils";
 import React from "react";
 import tw from "twin.macro";
 
-import { BREAKPOINT_SIZES } from "../../../theme/breakpoints";
-import useWindowDimensions from "../../../utils/useWindowDimensions";
 import { TokenAmountDisplay } from "../TokenAmountDisplay";
 import { TokenSelector } from "../TokenSelector";
 import { InputDecimal } from "./InputDecimal";
@@ -47,10 +44,6 @@ export const InputTokenAmount: React.FC<IProps> = ({
   className,
   isLoading,
 }: IProps) => {
-  const { width } = useWindowDimensions();
-  const uiDecimals =
-    width < BREAKPOINT_SIZES[0] ? 4 : token?.decimals ?? DEFAULT_TOKEN_DECIMALS;
-
   return (
     <div tw="flex flex-col gap-2" className={className}>
       <div tw="flex items-center justify-between">
@@ -74,11 +67,7 @@ export const InputTokenAmount: React.FC<IProps> = ({
                   >
                     <TokenAmountDisplay
                       amount={currentAmount.amount ?? new TokenAmount(token, 0)}
-                      locale="en-US"
-                      numberFormatOptions={{
-                        minimumFractionDigits: uiDecimals,
-                        maximumFractionDigits: uiDecimals,
-                      }}
+                      exact
                     />
                   </Accent>
                 ) : (

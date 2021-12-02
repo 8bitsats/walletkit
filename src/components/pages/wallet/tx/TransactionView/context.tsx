@@ -3,9 +3,10 @@ import type {
   SmartWalletTransactionData,
 } from "@gokiprotocol/client";
 import type { ParsedAccountInfo } from "@saberhq/sail";
-import { TransactionEnvelope } from "@saberhq/solana-contrib";
+import { SolanaProvider, TransactionEnvelope } from "@saberhq/solana-contrib";
 import { useSolana } from "@saberhq/use-solana";
 import type { TransactionResponse } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { useMemo } from "react";
 import { createContainer } from "unstated-next";
 
@@ -48,7 +49,7 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
     throw new Error(`missing tx`);
   }
   const { smartWalletData } = useSmartWallet();
-  const { providerMut } = useSolana();
+  const { provider, providerMut, network } = useSolana();
   const index = tx.tx.accountInfo.data.index.toNumber();
 
   const id = `TX-${index}`;
@@ -71,17 +72,35 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
   const { data: txData } = tx.tx.accountInfo;
 
   const txEnv = useMemo(() => {
-    if (!providerMut) {
-      return null;
-    }
     return new TransactionEnvelope(
-      providerMut,
+      providerMut ??
+        SolanaProvider.load({
+          connection: provider.connection,
+          sendConnection: provider.connection,
+          wallet: {
+            publicKey:
+              network === "devnet"
+                ? new PublicKey("A2jaCHPzD6346348JoEym2KFGX9A7uRBw6AhCdX7gTWP")
+                : new PublicKey("9u9iZBWqGsp5hXBxkVZtBTuLSGNAG9gEQLgpuVw39ASg"),
+            signTransaction: () => {
+              throw new Error("unimplemented");
+            },
+            signAllTransactions: () => {
+              throw new Error("unimplemented");
+            },
+          },
+        }),
       tx.tx.accountInfo.data.instructions.map((ix) => ({
         ...ix,
         data: Buffer.from(ix.data as Uint8Array),
       }))
     );
-  }, [providerMut, tx.tx.accountInfo.data.instructions]);
+  }, [
+    network,
+    provider.connection,
+    providerMut,
+    tx.tx.accountInfo.data.instructions,
+  ]);
 
   const etaRaw = txData.eta.toNumber();
   const eta = etaRaw === -1 ? null : new Date(etaRaw * 1_000);

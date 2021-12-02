@@ -1,4 +1,5 @@
 import { useTokens } from "@quarryprotocol/react-quarry";
+import { useAccountData } from "@saberhq/sail";
 import {
   deserializeAccount,
   getATAAddress,
@@ -7,9 +8,12 @@ import {
 } from "@saberhq/token-utils";
 import { useSolana } from "@saberhq/use-solana";
 import type { PublicKey } from "@solana/web3.js";
+import { SystemProgram } from "@solana/web3.js";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
 import invariant from "tiny-invariant";
+
+import { SOL } from "./api/useTokenList";
 
 export interface TokenAccountWithInfo {
   account: PublicKey;
@@ -24,6 +28,7 @@ export interface TokenAccountWithInfo {
  */
 export const useTokenAccounts = (address: PublicKey | null | undefined) => {
   const { connection, network } = useSolana();
+  const nativeBalance = useAccountData(address);
   const tokenAccountsRaw = useQuery(
     ["tokenAccountsRaw", network, address?.toString()],
     async () => {
@@ -59,24 +64,45 @@ export const useTokenAccounts = (address: PublicKey | null | undefined) => {
   );
   return useQuery(
     ["tokenAccounts", network, address?.toString()],
-    () => {
+    (): TokenAccountWithInfo[] => {
       invariant(address, "address");
-      return tokenAccountsRaw.data?.map(({ mint, balance, ...taRest }) => {
-        const token = tokens.find(
-          (token) =>
-            token?.mintAccount.equals(mint) && token.network === network
-        );
-        if (!token) {
-          return null;
+      const sol =
+        nativeBalance.data &&
+        // only show SOL balance if the account is normal
+        nativeBalance.data.accountInfo.owner.equals(SystemProgram.programId)
+          ? {
+              account: nativeBalance.data.accountId,
+              balance: new TokenAmount(
+                SOL[network],
+                nativeBalance.data.accountInfo.lamports
+              ),
+              isATA: false,
+            }
+          : null;
+      const result = tokenAccountsRaw.data?.map(
+        ({ mint, balance, ...taRest }) => {
+          const token = tokens.find(
+            (token) =>
+              token?.mintAccount.equals(mint) && token.network === network
+          );
+          if (!token) {
+            return null;
+          }
+          return {
+            ...taRest,
+            balance: new TokenAmount(token, balance),
+          };
         }
-        return {
-          ...taRest,
-          balance: new TokenAmount(token, balance),
-        };
-      });
+      );
+      return [
+        ...(sol ? [sol] : []),
+        ...(result?.filter((r): r is TokenAccountWithInfo => !!r) ?? []),
+      ];
     },
     {
       enabled:
+        !nativeBalance.loading &&
+        nativeBalance.data !== undefined &&
         !!address &&
         tokens.every((t) => t !== undefined) &&
         tokenAccountsRaw.isFetched,

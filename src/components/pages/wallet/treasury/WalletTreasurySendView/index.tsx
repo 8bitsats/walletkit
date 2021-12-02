@@ -1,7 +1,6 @@
 import { utils } from "@project-serum/anchor";
 import { useToken } from "@quarryprotocol/react-quarry";
 import { usePubkey, useSail } from "@saberhq/sail";
-import { SolanaAugmentedProvider } from "@saberhq/solana-contrib";
 import type { Token } from "@saberhq/token-utils";
 import {
   getOrCreateATA,
@@ -110,12 +109,18 @@ export const WalletTreasurySendView: React.FC = () => {
                 smartWallet && selectedAccount && amount && to,
                 "selected account"
               );
+
+              const provider = sdkMut.provider;
+              const initTX = provider.newTX([]);
+
               const destATA = await getOrCreateATA({
                 provider: sdkMut.provider,
                 mint: amount.token.mintAccount,
                 owner: to,
               });
-              const provider = new SolanaAugmentedProvider(sdkMut.provider);
+              if (destATA.instruction) {
+                initTX.instructions.push(destATA.instruction);
+              }
               const transferIX = SPLToken.createTransferCheckedInstruction(
                 TOKEN_PROGRAM_ID,
                 selectedAccount.account,
@@ -140,7 +145,7 @@ export const WalletTreasurySendView: React.FC = () => {
                 instructions: sendTX.instructions,
               });
               await handleTX(
-                provider.newTX([destATA.instruction]).combine(proposeTX),
+                initTX.combine(proposeTX),
                 `Proposal: send ${amount.formatUnits()} to ${shortenAddress(
                   to.toString()
                 )}`

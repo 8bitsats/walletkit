@@ -1,5 +1,4 @@
 import { formatNetwork, PendingTransaction } from "@saberhq/solana-contrib";
-import { SOL, TokenAmount } from "@saberhq/token-utils";
 import { useSolana } from "@saberhq/use-solana";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { capitalize } from "lodash";
@@ -15,19 +14,8 @@ import { TokenIcon } from "../../../../common/TokenIcon";
 
 export const Tokens: React.FC = () => {
   const { provider, network } = useSolana();
-  const { key, smartWalletData } = useSmartWallet();
-
-  const balance = smartWalletData
-    ? new TokenAmount(SOL[network], smartWalletData.accountInfo.lamports)
-    : smartWalletData;
+  const { key } = useSmartWallet();
   const balances = useTokenAccounts(key);
-
-  const amounts = [
-    ...(balance ? [balance] : []),
-    ...(balances.data
-      ?.map((b) => b?.balance)
-      .filter((ta): ta is TokenAmount => !!ta) ?? []),
-  ];
 
   return (
     <div tw="flex flex-col gap-4">
@@ -57,7 +45,7 @@ export const Tokens: React.FC = () => {
         )}
       </div>
       <div tw="text-sm">
-        {amounts.map((amount, i) => (
+        {balances.data?.map(({ balance: amount }, i) => (
           <div
             key={i}
             tw="flex items-center gap-4 py-2"
