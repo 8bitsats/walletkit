@@ -2381,7 +2381,7 @@ __metadata:
     "@saberhq/eslint-config-react": ^1.10.4
     "@saberhq/sail": ^2.8.0
     "@saberhq/solana-contrib": ^1.10.4
-    "@saberhq/spl-token-icons": ^0.1.97
+    "@saberhq/spl-token-icons": ^0.1.98
     "@saberhq/stableswap-sdk": ^1.10.4
     "@saberhq/token-utils": ^1.10.4
     "@saberhq/use-solana": ^1.10.4
@@ -2393,7 +2393,7 @@ __metadata:
     "@simbathesailor/babel-plugin-use-what-changed": ^2.1.0
     "@simbathesailor/use-what-changed": ^2.0.0
     "@solana/buffer-layout": ^3.0.0
-    "@solana/spl-token-registry": ^0.2.541
+    "@solana/spl-token-registry": ^0.2.555
     "@solana/web3.js": ^1.31.0
     "@sunnyag/react-coingecko": ^2.1.0
     "@tailwindcss/aspect-ratio": ^0.3.0
@@ -3726,13 +3726,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@saberhq/spl-token-icons@npm:^0.1.97":
-  version: 0.1.97
-  resolution: "@saberhq/spl-token-icons@npm:0.1.97"
+"@saberhq/spl-token-icons@npm:^0.1.98":
+  version: 0.1.98
+  resolution: "@saberhq/spl-token-icons@npm:0.1.98"
   dependencies:
-    "@solana/spl-token-registry": ^0.2.535
+    "@solana/spl-token-registry": ^0.2.549
     tslib: ^2.3.1
-  checksum: 1cc61f58773c5376772725cd24c6c2fa9a0894514e5da54c5b94400e6a4479182a22a0fdbdf412fcc75799eb51b0034bb6e5dd549e265ff55e27f144c4820eca
+  checksum: c8d7ab2ad16f0882e9f02201212380b0fe5a339a1d77984faa1988f2f7c8cac9be17df615de85de4fb57965db06b35db72b9c1b0c0d71454ca761f0c270779eb
   languageName: node
   linkType: hard
 
@@ -3982,12 +3982,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solana/spl-token-registry@npm:^0.2.535, @solana/spl-token-registry@npm:^0.2.541":
-  version: 0.2.541
-  resolution: "@solana/spl-token-registry@npm:0.2.541"
+"@solana/spl-token-registry@npm:^0.2.549, @solana/spl-token-registry@npm:^0.2.555":
+  version: 0.2.555
+  resolution: "@solana/spl-token-registry@npm:0.2.555"
   dependencies:
     cross-fetch: 3.0.6
-  checksum: b311ac3e742c3066bbc734811b1eee4e4b644dc20c8f6e2e295f198992d1dca0af53ab3b2e6cf09f2718cb0eb7b17590270fe66be255fe9da47dd83718a089fe
+  checksum: e8754f03eea8598fb88ed534c612265dd54f8a70805184136226bc72809c519d582fd0df66ce9ca64a2ddbf863f0b967c77a4a0593684134348da0055b75a29d
   languageName: node
   linkType: hard
 
