@@ -11,6 +11,7 @@ import * as Yup from "yup";
 
 import { useSDK } from "../../../../contexts/sdk";
 import { useKeypair } from "../../../../hooks/useKeypair";
+import { useSmartWalletAddress } from "../../../../hooks/useSmartWalletAddress";
 import { handleException } from "../../../../utils/error";
 import { notify } from "../../../../utils/notifications";
 import { AddressLink } from "../../../common/AddressLink";
@@ -126,6 +127,7 @@ export const WalletCreateView: React.FC = () => {
   });
 
   const keypair = useKeypair(formik.values.baseKP);
+  const walletKey = useSmartWalletAddress(keypair?.publicKey);
 
   return (
     <div tw="grid gap-12 w-full max-w-sm mx-auto">
@@ -349,7 +351,7 @@ export const WalletCreateView: React.FC = () => {
               <h3 tw="mb-4 uppercase text-secondary text-sm">Details</h3>
               <AttributeList
                 attributes={{
-                  "Wallet Address": keypair ? keypair.publicKey : "--",
+                  "Wallet Address": walletKey.data ? walletKey.data : "--",
                 }}
               />
             </div>
