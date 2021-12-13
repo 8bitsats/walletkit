@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const appInfo = require("./src/app.json");
 const deepMerge = require("deepmerge");
@@ -52,7 +53,30 @@ module.exports = {
         throw new Error("Can't find HtmlWebpackPlugin");
       }
 
-      htmlWebpackPlugin.options = deepMerge(htmlWebpackPlugin.options, {
+      config.plugins.unshift(
+        new webpack.ProvidePlugin({
+          Buffer: ["buffer", "Buffer"],
+        })
+      );
+
+      config.module.rules.push({
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false,
+        },
+      });
+
+      // solana wallet adapter, ledger need to be transpiled
+      config.module.rules.push({
+        test: /\.js/,
+        loader: require.resolve("babel-loader"),
+        exclude: (file) =>
+          !file.includes("@solana/wallet-adapter") &&
+          !file.includes("@ledgerhq/devices") &&
+          !file.includes("@saberhq/use-solana"),
+      });
+
+      htmlWebpackPlugin.userOptions = deepMerge(htmlWebpackPlugin.userOptions, {
         title: appInfo.name,
         meta: {
           viewport: "width=device-width, initial-scale=1",
@@ -132,9 +156,4 @@ module.exports = {
     enable: false,
   },
   typescript: { enableTypeChecking: false },
-  style: {
-    postcss: {
-      plugins: [require("tailwindcss"), require("autoprefixer")],
-    },
-  },
 };

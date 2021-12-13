@@ -20,11 +20,13 @@ jobs:
         with:
           always-auth: true
           node-version: "16"
-      - name: Cache Node modules
+      - name: Yarn Cache
         uses: actions/cache@v2
         with:
-          key: ${{ runner.os }}-${{ hashFiles('./**/*.js') }}
           path: ./.yarn
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
       - run: yarn install
       - run: yarn build:production
       - name: Deploy

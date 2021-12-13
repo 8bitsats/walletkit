@@ -1,9 +1,7 @@
 import type { Network } from "@saberhq/solana-contrib";
-import type { ChainId } from "@saberhq/token-utils";
-import { networkToChainId, Token } from "@saberhq/token-utils";
+import { ChainId, networkToChainId, Token } from "@saberhq/token-utils";
 import { useConnectionContext } from "@saberhq/use-solana";
 import * as Sentry from "@sentry/react";
-import { ENV } from "@solana/spl-token-registry";
 import { useEffect, useMemo } from "react";
 import { createContainer } from "unstated-next";
 
@@ -12,9 +10,9 @@ import type { IEnvironment } from "./environments";
 import { environments } from "./environments";
 
 export const envs = {
-  "mainnet-beta": ENV.MainnetBeta,
-  devnet: ENV.Devnet,
-  testnet: ENV.Testnet,
+  "mainnet-beta": ChainId.MainnetBeta,
+  devnet: ChainId.Devnet,
+  testnet: ChainId.Testnet,
 } as const;
 
 interface UseEnvironment {

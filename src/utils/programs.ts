@@ -1,4 +1,4 @@
-import type { TokenInfoMap } from "@solana/spl-token-registry";
+import type { TokenInfo } from "@saberhq/token-utils";
 import {
   BPF_LOADER_DEPRECATED_PROGRAM_ID,
   BPF_LOADER_PROGRAM_ID,
@@ -180,7 +180,7 @@ export function programLabel(address: string): string | undefined {
 
 export function tokenLabel(
   address: string,
-  tokenRegistry?: TokenInfoMap
+  tokenRegistry?: Map<string, TokenInfo>
 ): string | undefined {
   if (!tokenRegistry) return;
   const tokenInfo = tokenRegistry.get(address);
@@ -193,7 +193,7 @@ export function tokenLabel(
 
 export function addressLabel(
   address: string,
-  tokenRegistry?: TokenInfoMap
+  tokenRegistry?: Map<string, TokenInfo>
 ): string | undefined {
   return (
     programLabel(address) ||

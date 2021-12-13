@@ -1,3 +1,4 @@
+import { extractErrorMessage } from "@saberhq/sail";
 import * as Sentry from "@sentry/react";
 import type { CaptureContext } from "@sentry/types";
 
@@ -13,24 +14,6 @@ export class CapturedError extends Error {
     super(message);
   }
 }
-
-const extractErrorMessage = (err: unknown): string => {
-  if (!err) {
-    return "empty error";
-  }
-  const errObj = err as Record<string, unknown>;
-  const message = errObj.message;
-  if (!message) {
-    return "empty error message";
-  }
-  if (typeof message === "string") {
-    return message;
-  }
-  if (typeof message === "object") {
-    return message?.toString() ?? "unknown message";
-  }
-  return "no message could be extracted";
-};
 
 export const describeRPCError = (msg: string): string => {
   try {
@@ -84,7 +67,7 @@ export const handleException = (
 ): void => {
   const captured = new CapturedError(
     name,
-    extractErrorMessage(err),
+    extractErrorMessage(err) ?? "unknown",
     source,
     err
   );
@@ -94,8 +77,8 @@ export const handleException = (
   console.error(captured.originalError);
 
   notify({
-    message: userMessage?.title ?? name ?? captured.message,
-    description: userMessage?.description,
+    message: userMessage?.title ?? name ?? "Unknown Error",
+    description: userMessage?.description ?? captured.message,
     type: "error",
   });
 

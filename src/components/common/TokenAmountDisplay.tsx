@@ -39,7 +39,7 @@ export const TokenAmountDisplay: React.FC<IProps> = ({
       )}
       <TheNumber isMonoNumber={isMonoNumber}>
         {exact
-          ? amount.toExact()
+          ? amount.toExact({ groupSeparator: "," })
           : formatDisplayWithSoftLimit(amount.asNumber, amount.token.decimals)}
       </TheNumber>
 

@@ -1,6 +1,6 @@
 import type { Network } from "@saberhq/solana-contrib";
+import type { TokenList } from "@saberhq/token-utils";
 import { makeTokenForAllNetworks, NATIVE_MINT } from "@saberhq/token-utils";
-import type { TokenList } from "@solana/spl-token-registry";
 import { PublicKey } from "@solana/web3.js";
 import { useMemo } from "react";
 

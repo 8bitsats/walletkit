@@ -1,3 +1,5 @@
+const colors = require("tailwindcss/colors");
+
 const primary = {
   DEFAULT: "#3D9292",
   50: "#ABDCDC",
@@ -26,6 +28,37 @@ const accent = {
   900: "#350F22",
 };
 
+const coolGray = {
+  DEFAULT: "#6e7582",
+  50: "#f9fafb",
+  100: "#f0f1f3",
+  150: "#eff1f4",
+  200: "#d9dbdf",
+  300: "#AAB8C1",
+  400: "#9CA3AF",
+  500: "#6B7280",
+  600: "#4B5563",
+  700: "#374151",
+  800: "#161E26",
+  900: "#050505",
+};
+
+const warmGray = {
+  DEFAULT: "#6e7582",
+  50: "#f9fafb",
+  100: "#f0f1f3",
+  150: "#eff1f4",
+  200: "#d9dbdf",
+  300: "#b7bbc2",
+  400: "#8f959f",
+  500: "#6e7582",
+  600: "#555e6e",
+  700: "#3e4859",
+  800: "#222222",
+  850: "#181818",
+  900: "#050505",
+};
+
 const grays = {
   DEFAULT: "#6e7582",
   50: "#f9fafb",
@@ -38,6 +71,7 @@ const grays = {
   600: "#555e6e",
   700: "#3e4859",
   800: "#283242",
+  850: "#1f2023",
   900: "#131f30",
 };
 
@@ -47,8 +81,8 @@ const textColor = {
 };
 
 module.exports = {
-  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-  darkMode: false,
+  content: ["./src/**/*.{html,ts,tsx}"],
+  darkMode: "class",
 
   theme: {
     screens: {
@@ -65,9 +99,12 @@ module.exports = {
         sans: ["Inter", "sans-serif"],
       },
       colors: {
+        ...colors,
         primary,
         accent,
         gray: grays,
+        warmGray,
+        coolGray,
       },
       textColor,
       scale: {
@@ -115,7 +152,35 @@ module.exports = {
             },
           },
         },
+        light: {
+          css: {
+            color: grays[300],
+            strong: {
+              color: grays[50],
+            },
+            h1: {
+              color: grays[50],
+              fontWeight: 500,
+            },
+            h2: {
+              color: grays[50],
+              fontWeight: 500,
+            },
+            h3: {
+              color: grays[50],
+              fontWeight: 500,
+            },
+            code: {
+              color: grays[300],
+            },
+          },
+        },
       },
+    },
+  },
+  variants: {
+    extend: {
+      typography: ["dark"],
     },
   },
   plugins: [

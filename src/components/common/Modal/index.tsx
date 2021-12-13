@@ -85,6 +85,7 @@ export const Modal: React.FC<ModalProps> = ({
 
 const ModalWrapper = styled(animated(DialogContent))`
   ${tw`shadow-2xl w-full max-w-lg p-6 rounded-lg relative`}
+  ${tw`dark:(bg-warmGray-850)`}
 `;
 
 const StyledDialogOverlay = styled(animated(DialogOverlay), {

@@ -33,7 +33,7 @@ export const useParsedTX = (smartWalletKey: PublicKey, index: number) => {
         txData.accountInfo.data.instructions
           .map((rawIx) => ({
             ...rawIx,
-            data: Buffer.from(rawIx.data as Uint8Array),
+            data: Buffer.from(rawIx.data),
           }))
           .map((ix): Omit<ParsedInstruction, "title"> => {
             const idl = idls.find((theIDL) =>

@@ -72,6 +72,9 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
   const { data: txData } = tx.tx.accountInfo;
 
   const txEnv = useMemo(() => {
+    if (tx.tx.accountInfo.data.instructions.length === 0) {
+      return null;
+    }
     return new TransactionEnvelope(
       providerMut ??
         SolanaProvider.load({
@@ -92,7 +95,7 @@ const useTransactionInner = (tx?: LoadedTransaction): DetailedTransaction => {
         }),
       tx.tx.accountInfo.data.instructions.map((ix) => ({
         ...ix,
-        data: Buffer.from(ix.data as Uint8Array),
+        data: Buffer.from(ix.data),
       }))
     );
   }, [

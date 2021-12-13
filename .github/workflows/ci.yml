@@ -21,9 +21,12 @@ jobs:
       - name: Yarn Cache
         uses: actions/cache@v2
         with:
-          key: ${{ runner.os }}-${{ hashFiles('./.yarn/**/*.js') }}
           path: ./.yarn
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
       - name: Install Yarn dependencies
         run: yarn install
       - run: yarn typecheck
       - run: yarn lint
+      - run: yarn dlx @yarnpkg/doctor

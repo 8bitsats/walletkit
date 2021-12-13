@@ -12,7 +12,7 @@ export const BasicPage: React.FC<Props> = ({
   children,
 }: Props) => {
   return (
-    <div tw="w-full pb-8">
+    <div tw="w-full pb-8 px-4">
       <div tw="w-full max-w-2xl mx-auto mt-16">
         <div>
           <h1 tw="text-2xl font-medium mb-1">{title}</h1>

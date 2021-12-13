@@ -3,8 +3,11 @@ import type { InstructionDisplay } from "@project-serum/anchor/dist/cjs/coder/in
 import type { IdlAccountItem } from "@project-serum/anchor/dist/esm/idl";
 import { formatIdlType, SuperCoder } from "@saberhq/anchor-contrib";
 import type { TransactionInstruction } from "@solana/web3.js";
+import { Transaction } from "@solana/web3.js";
+import copyToClipboard from "copy-to-clipboard";
 import { set, startCase } from "lodash";
 import { useMemo, useState } from "react";
+import invariant from "tiny-invariant";
 
 import { COMMON_ACCOUNTS } from "../../../../../utils/anchor";
 import { Button } from "../../../../common/Button";
@@ -161,7 +164,7 @@ export const IXForm: React.FC<Props> = ({ ix, program }: Props) => {
           />
         </div>
       </div>
-      <div>
+      <div tw="flex gap-2">
         <Button
           disabled={!builtIX}
           type="button"
@@ -171,6 +174,29 @@ export const IXForm: React.FC<Props> = ({ ix, program }: Props) => {
           }}
         >
           Preview Instruction
+        </Button>
+        <Button
+          type="button"
+          disabled={!builtIX}
+          onClick={() => {
+            invariant(builtIX);
+
+            const tx = new Transaction();
+            tx.recentBlockhash = "GfVcyD4kkTrj4bKc7WA9sZCin9JDbdT4Zkd3EittNR1W";
+            tx.feePayer = builtIX.txInstruction.programId;
+            tx.instructions = [builtIX.txInstruction];
+
+            copyToClipboard(
+              tx
+                .serialize({
+                  requireAllSignatures: false,
+                  verifySignatures: false,
+                })
+                .toString("base64")
+            );
+          }}
+        >
+          Copy as base64
         </Button>
       </div>
     </div>

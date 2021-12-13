@@ -27,9 +27,10 @@ export const AddressLink: React.FC<Props> = ({
 }: Props) => {
   const { network } = useConnectionContext();
   return (
-    <Wrapper className={className}>
+    <Wrapper>
       <a
-        tw="text-gray-800 hover:text-primary"
+        className={className}
+        tw="text-gray-800 dark:text-warmGray-200 hover:text-primary"
         href={`https://explorer.solana.com/address/${address.toString()}?cluster=${
           network?.toString() ?? ""
         }`}
@@ -59,5 +60,5 @@ const Wrapper = styled.div`
 `;
 
 const CopyIcon = styled(FaRegCopy)`
-  ${tw`ml-1 cursor-pointer text-gray-800 hover:text-primary`}
+  ${tw`ml-1 cursor-pointer text-gray-800 dark:text-warmGray-200 hover:text-primary`}
 `;

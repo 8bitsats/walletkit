@@ -145,7 +145,7 @@ const useSmartWalletInner = (
           tx.accountInfo.data.instructions
             .map((rawIx) => ({
               ...rawIx,
-              data: Buffer.from(rawIx.data as Uint8Array),
+              data: Buffer.from(rawIx.data),
             }))
             .map((ix): Omit<ParsedInstruction, "title"> => {
               const idlIndex = programIDsToFetch.findIndex(

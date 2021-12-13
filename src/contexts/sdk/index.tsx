@@ -1,12 +1,12 @@
 import type { GOKI_ADDRESSES } from "@gokiprotocol/client";
 import { GokiSDK } from "@gokiprotocol/client";
-import { Wallet } from "@project-serum/anchor";
 import { useNativeAccount } from "@saberhq/sail";
-import { SolanaProvider } from "@saberhq/solana-contrib";
+import { SignerWallet, SolanaProvider } from "@saberhq/solana-contrib";
 import type { TokenAmount } from "@saberhq/token-utils";
 import { useConnectedWallet, useConnectionContext } from "@saberhq/use-solana";
 import type { PublicKey } from "@solana/web3.js";
 import { Keypair } from "@solana/web3.js";
+import { TribecaSDK } from "@tribecahq/tribeca-sdk";
 import { useMemo } from "react";
 import { createContainer } from "unstated-next";
 
@@ -17,6 +17,7 @@ export const useSDKInternal = (): {
   sdkMut: GokiSDK | null;
   owner: PublicKey | null;
   nativeBalance?: TokenAmount;
+  tribecaMut: TribecaSDK | null;
 } => {
   const { connection, sendConnection } = useConnectionContext();
   const wallet = useConnectedWallet();
@@ -25,7 +26,7 @@ export const useSDKInternal = (): {
     const provider = SolanaProvider.load({
       connection,
       sendConnection,
-      wallet: new Wallet(Keypair.generate()),
+      wallet: new SignerWallet(Keypair.generate()),
       opts: {
         commitment: "recent",
       },
@@ -35,7 +36,7 @@ export const useSDKInternal = (): {
     };
   }, [connection, sendConnection]);
 
-  const { sdkMut: sdkMut } = useMemo(() => {
+  const { sdkMut } = useMemo(() => {
     if (!wallet) {
       return { sdkMut: null };
     }
@@ -52,6 +53,21 @@ export const useSDKInternal = (): {
     };
   }, [connection, sendConnection, wallet]);
 
+  const tribecaMut = useMemo(() => {
+    if (!wallet) {
+      return null;
+    }
+    const provider = SolanaProvider.load({
+      connection,
+      sendConnection,
+      wallet,
+      opts: {
+        commitment: "recent",
+      },
+    });
+    return TribecaSDK.load({ provider });
+  }, [connection, sendConnection, wallet]);
+
   const owner = useMemo(
     () => sdkMut?.provider.wallet.publicKey ?? null,
     [sdkMut?.provider.wallet.publicKey]
@@ -63,6 +79,7 @@ export const useSDKInternal = (): {
     nativeBalance,
     sdk,
     sdkMut: sdkMut ?? null,
+    tribecaMut,
   };
 };
 

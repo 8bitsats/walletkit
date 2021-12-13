@@ -17,10 +17,10 @@ export const Header: React.FC = () => {
             to="/"
             tw="hidden md:block h-6 w-36 hover:-rotate-3 transition-all"
           >
-            <Logo tw="text-primary-800 hover:text-primary h-full w-full" />
+            <Logo tw="text-primary-800 hover:text-primary dark:(text-primary hover:text-white) h-full w-full transition-colors" />
           </NavLink>
           <NavLink to="/" tw="md:hidden h-10 hover:-rotate-3 transition-all">
-            <Icon tw="text-primary-800 hover:text-primary h-full w-full" />
+            <Icon tw="text-primary-800 hover:text-primary dark:(text-primary hover:text-white) h-full w-full transition-colors" />
           </NavLink>
         </div>
       </div>

@@ -25,11 +25,13 @@ export const AttributeList: React.FC<Props> = ({
     <div tw="flex flex-col text-sm" className={className}>
       {Object.entries(attributes).map(([label, attribute], i) => (
         <div
-          tw="flex justify-between items-center px-6 py-2"
-          css={[i !== 0 && tw`border-t`]}
+          tw="flex justify-between items-center px-6 py-2 gap-4"
+          css={[i !== 0 && tw`border-t dark:border-warmGray-800`]}
           key={label}
         >
-          <div tw="text-secondary font-semibold">{startCase(label)}</div>
+          <div tw="text-secondary dark:text-gray-400 font-semibold">
+            {startCase(label)}
+          </div>
           <div tw="font-medium">
             {attribute === undefined ? (
               loading ? (

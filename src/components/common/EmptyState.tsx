@@ -35,7 +35,7 @@ export const EmptyState: React.FC<Props> = ({
         </div>
       )}
       <div tw="h-6">
-        <span tw="text-secondary ">{title}</span>
+        <span tw="text-secondary dark:text-coolGray-300">{title}</span>
       </div>
       <div>{children}</div>
     </div>
