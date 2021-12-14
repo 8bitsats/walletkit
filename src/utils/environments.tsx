@@ -10,7 +10,8 @@ export const environments = {
   },
   devnet: {
     name: "Devnet",
-    endpoint: "https://api.devnet.solana.com/",
+    endpoint: "https://api.devnet.rpcpool.com/",
+    // endpoint: "https://api.devnet.solana.com/",
     // endpoint: "https://sg6.rpcpool.com/",
   },
   testnet: {
