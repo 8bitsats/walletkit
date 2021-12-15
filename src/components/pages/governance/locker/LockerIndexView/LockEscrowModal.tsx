@@ -1,7 +1,4 @@
-import {
-  useToken,
-  useUserAssociatedTokenAccounts,
-} from "@quarryprotocol/react-quarry";
+import { useUserAssociatedTokenAccounts } from "@quarryprotocol/react-quarry";
 import { SliderHandle, SliderRange, SliderTrack } from "@reach/slider";
 import { useSail } from "@saberhq/sail";
 import { Fraction } from "@saberhq/token-utils";
@@ -21,6 +18,7 @@ import { AttributeList } from "../../../../common/AttributeList";
 import { Button } from "../../../../common/Button";
 import { InputSlider } from "../../../../common/inputs/InputSlider";
 import { InputTokenAmount } from "../../../../common/inputs/InputTokenAmount";
+import { LoadingSpinner } from "../../../../common/LoadingSpinner";
 import type { ModalProps } from "../../../../common/Modal";
 import { Modal } from "../../../../common/Modal";
 import { useEscrow, useLocker } from "../../hooks/useEscrow";
@@ -74,9 +72,8 @@ const nicePresets = (
 
 export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
   const { tribecaMut } = useSDK();
-  const { governor } = useGovernor();
+  const { governor, veToken, govToken } = useGovernor();
   const { data: locker } = useLocker();
-  const govToken = useToken(locker?.accountInfo.data.tokenMint);
   const { data: escrow, refetch } = useEscrow(
     tribecaMut?.provider.wallet.publicKey
   );
@@ -182,45 +179,50 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
                 <FaArrowDown />
               </div>
               <div tw="mb-6 border rounded border-warmGray-800">
-                <AttributeList
-                  rowStyles={tw`items-start gap-4`}
-                  labelStyles={tw`w-32`}
-                  valueStyles={tw`flex-grow`}
-                  attributes={{
-                    "Voting Power": (
-                      <div tw="flex flex-col">
-                        <div>
-                          <span tw="text-warmGray-400">Prev: </span>
-                          <span>{currentVotingPower.toLocaleString()}</span>
+                {!veToken ? (
+                  <LoadingSpinner />
+                ) : (
+                  <AttributeList
+                    rowStyles={tw`items-start gap-4`}
+                    labelStyles={tw`w-32`}
+                    valueStyles={tw`flex-grow`}
+                    transformLabel={false}
+                    attributes={{
+                      [`${veToken.symbol} balance`]: (
+                        <div tw="flex flex-col">
+                          <div>
+                            <span tw="text-warmGray-400">Prev: </span>
+                            <span>{currentVotingPower.toLocaleString()}</span>
+                          </div>
+                          <div>
+                            <span tw="text-warmGray-400">Next: </span>
+                            <span>{newVotingPower?.toLocaleString()}</span>
+                          </div>
                         </div>
-                        <div>
-                          <span tw="text-warmGray-400">Next: </span>
-                          <span>{newVotingPower?.toLocaleString()}</span>
+                      ),
+                      "Unlock Time": (
+                        <div tw="flex flex-col">
+                          <div>
+                            <span tw="text-warmGray-400">Prev: </span>
+                            <span>
+                              {prevUnlockTime?.toLocaleString(undefined, {
+                                timeZoneName: "short",
+                              }) ?? "n/a"}
+                            </span>
+                          </div>
+                          <div>
+                            <span tw="text-warmGray-400">Next: </span>
+                            <span>
+                              {unlockTime.toLocaleString(undefined, {
+                                timeZoneName: "short",
+                              })}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    ),
-                    "Unlock Time": (
-                      <div tw="flex flex-col">
-                        <div>
-                          <span tw="text-warmGray-400">Prev: </span>
-                          <span>
-                            {prevUnlockTime?.toLocaleString(undefined, {
-                              timeZoneName: "short",
-                            }) ?? "n/a"}
-                          </span>
-                        </div>
-                        <div>
-                          <span tw="text-warmGray-400">Next: </span>
-                          <span>
-                            {unlockTime.toLocaleString(undefined, {
-                              timeZoneName: "short",
-                            })}
-                          </span>
-                        </div>
-                      </div>
-                    ),
-                  }}
-                />
+                      ),
+                    }}
+                  />
+                )}
               </div>
               <Button
                 size="md"

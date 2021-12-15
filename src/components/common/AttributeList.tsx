@@ -17,6 +17,7 @@ interface Props {
   rowStyles?: React.CSSProperties;
   labelStyles?: React.CSSProperties;
   valueStyles?: React.CSSProperties;
+  transformLabel?: boolean;
 }
 
 export const AttributeList: React.FC<Props> = ({
@@ -26,6 +27,7 @@ export const AttributeList: React.FC<Props> = ({
   rowStyles,
   labelStyles,
   valueStyles,
+  transformLabel = true,
 }: Props) => {
   return (
     <div tw="flex flex-col text-sm" className={className}>
@@ -40,7 +42,7 @@ export const AttributeList: React.FC<Props> = ({
             tw="text-secondary dark:text-gray-400 font-semibold"
             style={labelStyles}
           >
-            {startCase(label)}
+            {transformLabel ? startCase(label) : label}
           </div>
           <div tw="font-medium" style={valueStyles}>
             {attribute === undefined ? (
