@@ -22,7 +22,7 @@ import { InputTokenAmount } from "../../../../common/inputs/InputTokenAmount";
 import { LoadingSpinner } from "../../../../common/LoadingSpinner";
 import type { ModalProps } from "../../../../common/Modal";
 import { Modal } from "../../../../common/Modal";
-import { useEscrow, useLocker } from "../../hooks/useEscrow";
+import { useLocker, useUserEscrow } from "../../hooks/useEscrow";
 import { useGovernor } from "../../hooks/useGovernor";
 
 type Props = Omit<ModalProps, "children"> & {
@@ -79,9 +79,7 @@ export const LockEscrowModal: React.FC<Props> = ({
   const { tribecaMut } = useSDK();
   const { governor, veToken, govToken } = useGovernor();
   const { data: locker } = useLocker();
-  const { data: escrow, refetch } = useEscrow(
-    tribecaMut?.provider.wallet.publicKey
-  );
+  const { data: escrow, refetch } = useUserEscrow();
   const [userBalance] = useUserAssociatedTokenAccounts([govToken]);
   const [lockDurationSeconds, setDurationSeconds] = useState<string>(
     ONE_DAY.toString()
@@ -113,13 +111,17 @@ export const LockEscrowModal: React.FC<Props> = ({
         10 ** govToken.decimals
       : 0;
 
-  const newVotingPower = locker
-    ? Fraction.fromNumber(currentVotingPower)
-        .add(depositAmount?.asFraction ?? 0)
-        .multiply(locker.accountInfo.data.params.maxStakeVoteMultiplier)
-        .multiply(parsedDurationSeconds)
-        .divide(locker.accountInfo.data.params.maxStakeDuration).asNumber
-    : null;
+  const newVotingPower =
+    govToken && locker
+      ? new Fraction(
+          escrow?.escrow?.amount.toNumber() ?? 0,
+          10 ** govToken?.decimals
+        )
+          .add(depositAmount?.asFraction ?? 0)
+          .multiply(locker.accountInfo.data.params.maxStakeVoteMultiplier)
+          .multiply(parsedDurationSeconds)
+          .divide(locker.accountInfo.data.params.maxStakeDuration).asNumber
+      : null;
 
   return (
     <Modal tw="p-0 dark:text-white" {...modalProps}>
