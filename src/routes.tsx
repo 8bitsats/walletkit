@@ -17,7 +17,10 @@ import { useAnalytics } from "./utils/useAnalytics";
 export const Routes: React.FC = () => {
   const location = useLocation();
   useEffect(() => {
-    if (location.pathname.startsWith("/gov")) {
+    if (
+      location.pathname.startsWith("/gov") ||
+      location.pathname.startsWith("/onboarding/dao")
+    ) {
       document.body.classList.add("dark");
       return () => {
         document.body.classList.remove("dark");

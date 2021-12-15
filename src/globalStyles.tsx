@@ -13,8 +13,9 @@ export const globalStyles = (
         [data-reach-dialog-overlay] {
           z-index: 999 !important;
         }
+        html,
         body {
-          ${tw`font-sans bg-white text-DEFAULT dark:(bg-warmGray-800 text-gray-300)`};
+          ${tw`h-full min-h-screen font-sans bg-white text-DEFAULT dark:(bg-warmGray-800 text-gray-300)`};
         }
       `}
     />
