@@ -6,13 +6,14 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import invariant from "tiny-invariant";
 
-import { useSDK } from "../../../../../contexts/sdk";
-import { notify } from "../../../../../utils/notifications";
-import { Button } from "../../../../common/Button";
-import { HelperCard } from "../../../../common/HelperCard";
-import type { ModalProps } from "../../../../common/Modal";
-import { Modal } from "../../../../common/Modal";
-import { useGovernor, useGovernorParams } from "../../hooks/useGovernor";
+import { useSDK } from "../../../../../../contexts/sdk";
+import { notify } from "../../../../../../utils/notifications";
+import { Button } from "../../../../../common/Button";
+import { HelperCard } from "../../../../../common/HelperCard";
+import type { ModalProps } from "../../../../../common/Modal";
+import { Modal } from "../../../../../common/Modal";
+import { useGovernor, useGovernorParams } from "../../../hooks/useGovernor";
+import { ProposalIX } from "./ProposalIX";
 
 type Props = Omit<ModalProps, "children"> & {
   proposal: {
@@ -52,6 +53,11 @@ export const ProposalConfirmModal: React.FC<Props> = ({
           </p>
         </HelperCard>
         <div tw="prose prose-sm prose-light">{proposal.description}</div>
+        <div tw="flex flex-col gap-1.5">
+          {proposal.instructions.map((ix, i) => (
+            <ProposalIX key={i} ix={ix} />
+          ))}
+        </div>
         {network !== "localnet" && proposal.instructions.length > 0 && (
           <a
             tw="text-sm text-primary hover:text-white transition-colors flex items-center gap-2"

@@ -1,4 +1,3 @@
-import { structLayout } from "@saberhq/token-utils";
 import * as BufferLayout from "@solana/buffer-layout";
 import type { TransactionInstruction } from "@solana/web3.js";
 import { startCase } from "lodash";
@@ -41,7 +40,7 @@ const accountLabels: { [K in UpgradeableLoaderInstructionType]?: string[] } = {
 export const parseUpgradeableLoaderInstruction = (
   ix: TransactionInstruction
 ): UpgradeableLoaderInstructionData => {
-  const ixLayout = structLayout<{
+  const ixLayout = BufferLayout.struct<{
     instruction: number;
   }>([BufferLayout.u32("instruction")]);
   const { instruction } = ixLayout.decode(ix.data);

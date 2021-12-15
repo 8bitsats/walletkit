@@ -5,14 +5,15 @@ import { useMemo, useState } from "react";
 import { Button } from "../../../../common/Button";
 import { Card } from "../../../../common/governance/Card";
 import { InputText, Textarea } from "../../../../common/inputs/InputText";
-import { ProposalConfirmModal } from "./ProposalConfirmModal";
+import { ProposalConfirmModal } from "./ProposalConfirmationModal";
+import { ProposalTXForm } from "./ProposalTXForm";
 
 export const ProposalCreateView: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [txRaw, setTxRaw] = useState<string>("");
 
-  const { tx, error } = useMemo(() => {
+  const { tx } = useMemo(() => {
     try {
       const buffer = Buffer.from(txRaw, "base64");
       const tx = Transaction.from(buffer);
@@ -70,18 +71,7 @@ export const ProposalCreateView: React.FC = () => {
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </label>
-              <label tw="flex flex-col gap-1" htmlFor="instructionsRaw">
-                <span tw="text-sm">Transaction (base64)</span>
-                <Textarea
-                  id="instructionsRaw"
-                  tw="h-auto font-mono"
-                  rows={4}
-                  placeholder="Paste raw base64 encoded transaction message"
-                  value={txRaw}
-                  onChange={(e) => setTxRaw(e.target.value)}
-                />
-                <span tw="text-red-500">{error}</span>
-              </label>
+              <ProposalTXForm txRaw={txRaw} setTxRaw={setTxRaw} />
               <Button
                 type="button"
                 disabled={!(tx && title && description)}

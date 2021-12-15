@@ -65,6 +65,10 @@ export const useGovernor = () => {
     [governor, tribecaMut]
   );
 
+  const smartWallet = governorData
+    ? governorData.accountInfo.data.smartWallet
+    : governorData;
+
   return {
     daoName: govToken?.name.split(" ")[0] ?? "the Protocol",
     path,
@@ -77,6 +81,7 @@ export const useGovernor = () => {
     minActivationThreshold,
     lockedSupply,
     proposalCount,
+    smartWallet,
   };
 };
 
