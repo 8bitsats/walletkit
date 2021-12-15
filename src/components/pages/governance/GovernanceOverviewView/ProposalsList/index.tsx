@@ -11,14 +11,22 @@ import { ProposalCard } from "./ProposalCard";
 const NUM_PLACEHOLDERS = 0;
 const MAX_PROPOSAL_COUNT = 4;
 
-export const ProposalsList: React.FC = () => {
+interface Props {
+  maxCount?: number;
+}
+
+export const ProposalsList: React.FC<Props> = ({
+  maxCount = 9_999_999,
+}: Props) => {
   const { path, proposalCount } = useGovernor();
   const proposals = useProposals();
   const [currentPage, setCurrentPage] = useState(0);
+
   const allProposals = [
     ...proposals,
     ...new Array<null>(NUM_PLACEHOLDERS).fill(null),
-  ];
+  ].slice(0, maxCount);
+
   const startCursor = currentPage * MAX_PROPOSAL_COUNT;
 
   if (proposalCount === 0) {
@@ -36,6 +44,8 @@ export const ProposalsList: React.FC = () => {
     );
   }
 
+  const pageCount = calcPageTotal(allProposals.length ?? 0);
+
   return (
     <>
       {allProposals
@@ -50,11 +60,13 @@ export const ProposalsList: React.FC = () => {
             <PlaceholderCard key={i} />
           )
         )}
-      <PageNav
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        numPages={calcPageTotal(proposals.length ?? 0)}
-      />
+      {pageCount > 1 && (
+        <PageNav
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          numPages={pageCount}
+        />
+      )}
     </>
   );
 };

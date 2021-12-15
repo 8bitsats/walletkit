@@ -27,7 +27,7 @@ export const RecentProposals: React.FC = () => {
           </EmptyState>
         </div>
       ) : (
-        <ProposalsList />
+        <ProposalsList maxCount={3} />
       )}
     </Card>
   );
