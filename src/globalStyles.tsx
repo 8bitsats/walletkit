@@ -19,6 +19,10 @@ export const globalStyles = (
         }
         body {
           ${tw`font-sans bg-white text-DEFAULT dark:(bg-warmGray-800 text-gray-300)`};
+          // twin macro doesn't seem to pick this up if we use the "dark:" tailwind attribute
+          &.dark {
+            ${tw`bg-warmGray-800 text-gray-300`};
+          }
         }
       `}
     />

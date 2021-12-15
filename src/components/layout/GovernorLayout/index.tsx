@@ -9,7 +9,7 @@ export const GovernorLayout: React.FC = ({ children }: Props) => {
     <div>
       <Header />
       <div tw="flex w-screen">
-        <div tw="flex-grow h-screen overflow-y-scroll">{children}</div>
+        <div tw="flex-grow h-full overflow-y-scroll">{children}</div>
       </div>
     </div>
   );

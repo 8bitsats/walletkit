@@ -81,7 +81,9 @@ export const ProposalConfirmModal: React.FC<Props> = ({
             }
             await pending.wait();
             notify({
-              message: "Proposal created",
+              message: `Proposal ${`000${createProposal.index.toString()}`.slice(
+                -4
+              )} created`,
             });
             history.push(
               `${path}/proposals/${createProposal.index.toString()}`
