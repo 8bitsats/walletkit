@@ -9,7 +9,7 @@ import { PlaceholderCard } from "./PlaceholderCard";
 import { ProposalCard } from "./ProposalCard";
 
 const NUM_PLACEHOLDERS = 0;
-const MAX_PROPOSAL_COUNT = 4;
+const PROPOSALS_PER_PAGE = 20;
 
 interface Props {
   maxCount?: number;
@@ -27,7 +27,7 @@ export const ProposalsList: React.FC<Props> = ({
     ...new Array<null>(NUM_PLACEHOLDERS).fill(null),
   ].slice(0, maxCount);
 
-  const startCursor = currentPage * MAX_PROPOSAL_COUNT;
+  const startCursor = currentPage * PROPOSALS_PER_PAGE;
 
   if (proposalCount === 0) {
     return (
@@ -49,7 +49,7 @@ export const ProposalsList: React.FC<Props> = ({
   return (
     <>
       {allProposals
-        .slice(startCursor, startCursor + MAX_PROPOSAL_COUNT)
+        .slice(startCursor, startCursor + PROPOSALS_PER_PAGE)
         .map((proposal, i) =>
           proposal && proposal.data ? (
             <ProposalCard
@@ -73,6 +73,6 @@ export const ProposalsList: React.FC<Props> = ({
 
 const calcPageTotal = (numProposals: number): number => {
   const totalProposals = numProposals + NUM_PLACEHOLDERS;
-  const div = Math.floor(totalProposals / MAX_PROPOSAL_COUNT);
-  return div + (totalProposals % MAX_PROPOSAL_COUNT ? 1 : 0);
+  const div = Math.floor(totalProposals / PROPOSALS_PER_PAGE);
+  return div + (totalProposals % PROPOSALS_PER_PAGE ? 1 : 0);
 };
