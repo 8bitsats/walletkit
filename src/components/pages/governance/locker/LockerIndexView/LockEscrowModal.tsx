@@ -1,7 +1,7 @@
 import { useUserAssociatedTokenAccounts } from "@quarryprotocol/react-quarry";
 import { SliderHandle, SliderRange, SliderTrack } from "@reach/slider";
 import { useSail } from "@saberhq/sail";
-import { Fraction } from "@saberhq/token-utils";
+import { Fraction, u64 } from "@saberhq/token-utils";
 import type { VoteEscrow } from "@tribecahq/tribeca-sdk";
 import { LockerWrapper } from "@tribecahq/tribeca-sdk";
 import BN from "bn.js";
@@ -16,6 +16,7 @@ import { useParseTokenAmount } from "../../../../../hooks/useParseTokenAmount";
 import { tsToDate } from "../../../../../utils/utils";
 import { AttributeList } from "../../../../common/AttributeList";
 import { Button } from "../../../../common/Button";
+import { HelperCard } from "../../../../common/HelperCard";
 import { InputSlider } from "../../../../common/inputs/InputSlider";
 import { InputTokenAmount } from "../../../../common/inputs/InputTokenAmount";
 import { LoadingSpinner } from "../../../../common/LoadingSpinner";
@@ -26,6 +27,7 @@ import { useGovernor } from "../../hooks/useGovernor";
 
 type Props = Omit<ModalProps, "children"> & {
   escrowW: VoteEscrow | null;
+  variant: "lock" | "refresh" | null;
 };
 
 const ONE_DAY = 86_400;
@@ -70,7 +72,10 @@ const nicePresets = (
   );
 };
 
-export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
+export const LockEscrowModal: React.FC<Props> = ({
+  variant,
+  ...modalProps
+}: Props) => {
   const { tribecaMut } = useSDK();
   const { governor, veToken, govToken } = useGovernor();
   const { data: locker } = useLocker();
@@ -95,7 +100,7 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
     ? nicePresets(durations[0], durations[1])
     : [];
 
-  const [depositAmountStr, setDepositAmountStr] = useState<string>("0");
+  const [depositAmountStr, setDepositAmountStr] = useState<string>("");
   const depositAmount = useParseTokenAmount(govToken, depositAmountStr);
 
   const prevUnlockTime = escrow ? tsToDate(escrow.escrow.escrowEndsAt) : null;
@@ -109,8 +114,8 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
       : 0;
 
   const newVotingPower = locker
-    ? depositAmount?.asFraction
-        .add(Fraction.fromNumber(currentVotingPower))
+    ? Fraction.fromNumber(currentVotingPower)
+        .add(depositAmount?.asFraction ?? 0)
         .multiply(locker.accountInfo.data.params.maxStakeVoteMultiplier)
         .multiply(parsedDurationSeconds)
         .divide(locker.accountInfo.data.params.maxStakeDuration).asNumber
@@ -119,21 +124,33 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
   return (
     <Modal tw="p-0 dark:text-white" {...modalProps}>
       <div tw="h-14 flex items-center px-8 border-b dark:border-warmGray-700">
-        <h1 tw="font-medium text-base">Lock Tokens</h1>
+        <h1 tw="font-medium text-base">
+          {variant === "refresh" ? "Refresh Lockup" : "Lock Tokens"}
+        </h1>
       </div>
       <div tw="px-8 py-4">
         <div tw="flex flex-col gap-8">
-          <InputTokenAmount
-            tokens={[]}
-            label="Deposit Amount"
-            token={govToken ?? null}
-            inputValue={depositAmountStr}
-            inputOnChange={setDepositAmountStr}
-            currentAmount={{
-              amount: userBalance?.balance,
-              allowSelect: true,
-            }}
-          />
+          {variant === "refresh" && (
+            <HelperCard>
+              <p>
+                Refresh your lockup to increase the voting power of your current
+                token stake.
+              </p>
+            </HelperCard>
+          )}
+          {variant === "lock" && (
+            <InputTokenAmount
+              tokens={[]}
+              label="Deposit Amount"
+              token={govToken ?? null}
+              inputValue={depositAmountStr}
+              inputOnChange={setDepositAmountStr}
+              currentAmount={{
+                amount: userBalance?.balance,
+                allowSelect: true,
+              }}
+            />
+          )}
           <div>
             <div tw="flex flex-col gap-2">
               <span tw="font-medium text-sm">Lock Period</span>
@@ -180,7 +197,9 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
               </div>
               <div tw="mb-6 border rounded border-warmGray-800">
                 {!veToken ? (
-                  <LoadingSpinner />
+                  <div tw="w-full py-5 flex items-center justify-center">
+                    <LoadingSpinner tw="h-8 w-8" />
+                  </div>
                 ) : (
                   <AttributeList
                     rowStyles={tw`items-start gap-4`}
@@ -227,21 +246,16 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
               <Button
                 size="md"
                 variant="primary"
-                disabled={
-                  !tribecaMut ||
-                  !depositAmount ||
-                  !locker ||
-                  !!isInvalidUnlockTime
-                }
+                disabled={!tribecaMut || !locker || !!isInvalidUnlockTime}
                 onClick={async () => {
-                  invariant(tribecaMut && depositAmount && locker);
+                  invariant(tribecaMut && locker);
                   const lockerW = new LockerWrapper(
                     tribecaMut,
                     locker.accountId,
                     governor
                   );
                   const tx = await lockerW.lockTokens({
-                    amount: depositAmount.toU64(),
+                    amount: depositAmount?.toU64() ?? new u64(0),
                     duration: new BN(parsedDurationSeconds),
                   });
                   const { pending, success } = await handleTX(
@@ -258,6 +272,8 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
               >
                 {isInvalidUnlockTime
                   ? "Cannot decrease lock time"
+                  : variant === "refresh"
+                  ? "Refresh Lockup"
                   : "Lock Tokens"}
               </Button>
             </div>
