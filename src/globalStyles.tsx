@@ -15,7 +15,10 @@ export const globalStyles = (
         }
         html,
         body {
-          ${tw`h-full min-h-screen font-sans bg-white text-DEFAULT dark:(bg-warmGray-800 text-gray-300)`};
+          ${tw`h-full w-full`}
+        }
+        body {
+          ${tw`font-sans bg-white text-DEFAULT dark:(bg-warmGray-800 text-gray-300)`};
         }
       `}
     />
