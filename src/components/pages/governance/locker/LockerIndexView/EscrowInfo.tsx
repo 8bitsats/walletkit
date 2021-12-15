@@ -30,7 +30,7 @@ export const EscrowInfo: React.FC<Props> = ({ className }: Props) => {
 
   const history = useHistory();
   const lockModalVariant =
-    lockerSubpage === "lock" || lockerSubpage === "refresh"
+    lockerSubpage === "lock" || lockerSubpage === "extend"
       ? lockerSubpage
       : null;
   const showModal = !!lockModalVariant;
@@ -67,14 +67,14 @@ export const EscrowInfo: React.FC<Props> = ({ className }: Props) => {
             Lock
           </Button>
         </Link>
-        <Link to={`${path}/locker/refresh`}>
+        <Link to={`${path}/locker/extend`}>
           <Button
             tw="w-full border-primary dark:text-primary hover:dark:text-white"
             type="button"
             size="md"
             variant="outline"
           >
-            Refresh
+            Extend
           </Button>
         </Link>
       </div>

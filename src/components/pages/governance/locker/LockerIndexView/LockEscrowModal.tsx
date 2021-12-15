@@ -27,7 +27,7 @@ import { useGovernor } from "../../hooks/useGovernor";
 
 type Props = Omit<ModalProps, "children"> & {
   escrowW: VoteEscrow | null;
-  variant: "lock" | "refresh" | null;
+  variant: "lock" | "extend" | null;
 };
 
 const ONE_DAY = 86_400;
@@ -127,15 +127,15 @@ export const LockEscrowModal: React.FC<Props> = ({
     <Modal tw="p-0 dark:text-white" {...modalProps}>
       <div tw="h-14 flex items-center px-8 border-b dark:border-warmGray-700">
         <h1 tw="font-medium text-base">
-          {variant === "refresh" ? "Refresh Lockup" : "Lock Tokens"}
+          {variant === "extend" ? "Extend Lockup" : "Lock Tokens"}
         </h1>
       </div>
       <div tw="px-8 py-4">
         <div tw="flex flex-col gap-8">
-          {variant === "refresh" && (
+          {variant === "extend" && (
             <HelperCard>
               <p>
-                Refresh your lockup to increase the voting power of your current
+                Extend your lockup to increase the voting power of your current
                 token stake.
               </p>
             </HelperCard>
@@ -274,8 +274,8 @@ export const LockEscrowModal: React.FC<Props> = ({
               >
                 {isInvalidUnlockTime
                   ? "Cannot decrease lock time"
-                  : variant === "refresh"
-                  ? "Refresh Lockup"
+                  : variant === "extend"
+                  ? "Extend Lockup"
                   : "Lock Tokens"}
               </Button>
             </div>
