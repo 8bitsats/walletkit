@@ -1,7 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
 import tw, { css } from "twin.macro";
 
-const NAV_LINKS = [
+export const NAV_LINKS = [
   {
     title: "Overview",
     href: "/",
@@ -33,10 +33,14 @@ const NAV_LINKS = [
   },
 ];
 
-export const Nav: React.FC = () => {
+interface Props {
+  className?: string;
+}
+
+export const Nav: React.FC<Props> = ({ className }: Props) => {
   const { governor } = useParams<{ governor: string }>();
   return (
-    <nav tw="flex gap-2">
+    <nav tw="flex gap-2" className={className}>
       {NAV_LINKS.map(({ title, href, exact }) => (
         <NavLink
           exact={exact}

@@ -11,8 +11,8 @@ export const LockerIndexView: React.FC = () => {
   const { path } = useGovernor();
   return (
     <GovernancePage title="Vote Locker">
-      <div tw="flex gap-4 items-start">
-        <div tw="flex-basis[300px] flex flex-col gap-4 flex-shrink-0">
+      <div tw="flex flex-wrap md:flex-nowrap gap-4 items-start">
+        <div tw="w-full md:flex-basis[300px] flex flex-col gap-4 flex-shrink-0">
           <EscrowInfo />
           <Card>
             <div tw="px-7 py-5">

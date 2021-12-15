@@ -110,7 +110,8 @@ export const useProposals = () => {
     proposalCount
       ? Array(proposalCount)
           .fill(null)
-          .map((_, i) => ({
+          .map((_, i) => proposalCount - i - 1)
+          .map((i) => ({
             queryKey: ["proposalInfo", network, governor.toString(), i],
             queryFn: async (): Promise<ProposalInfo | null> => {
               invariant(governorData);

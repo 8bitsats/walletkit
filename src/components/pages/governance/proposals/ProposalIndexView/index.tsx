@@ -1,5 +1,6 @@
 import { ProposalState, VoteSide } from "@tribecahq/tribeca-sdk";
 import { useParams } from "react-router-dom";
+import tw from "twin.macro";
 
 import { GovernancePage } from "../../../../common/governance/GovernancePage";
 import { Profile } from "../../../../common/governance/Profile";
@@ -30,10 +31,11 @@ export const ProposalIndexView: React.FC = () => {
           <Profile address={proposal.data.proposalData.proposer} />
         ) : undefined
       }
+      contentStyles={tw`-mt-20`}
     >
       <div tw="grid gap-4 mb-20">
         {proposal.data && (
-          <div tw="grid grid-cols-2 gap-4">
+          <div tw="grid md:grid-cols-2 gap-4">
             <VotesCard
               side={VoteSide.For}
               proposal={proposal.data.proposalData}
@@ -44,7 +46,7 @@ export const ProposalIndexView: React.FC = () => {
             />
           </div>
         )}
-        <div tw="flex gap-4 items-start">
+        <div tw="flex flex-col md:(flex-row items-start) gap-4">
           <ProposalDetails tw="flex-grow[2]" proposalInfo={proposal.data} />
           <div tw="flex-basis[350px] flex flex-col gap-4">
             {proposal.data?.state === ProposalState.Draft && (

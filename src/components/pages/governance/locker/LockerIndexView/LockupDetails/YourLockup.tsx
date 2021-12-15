@@ -1,6 +1,8 @@
 import { Card } from "../../../../../common/governance/Card";
+import { LoadingSpinner } from "../../../../../common/LoadingSpinner";
 import { TokenAmountDisplay } from "../../../../../common/TokenAmountDisplay";
 import { useUserEscrow } from "../../../hooks/useEscrow";
+import { useGovernor } from "../../../hooks/useGovernor";
 import { CardItem } from "../CardItem";
 import { formatDurationSeconds } from "../LockEscrowModal";
 
@@ -9,6 +11,7 @@ interface Props {
 }
 
 export const YourLockup: React.FC<Props> = ({ className }: Props) => {
+  const { veToken } = useGovernor();
   const { data: escrow, veBalance } = useUserEscrow();
 
   if (!escrow) {
@@ -23,12 +26,14 @@ export const YourLockup: React.FC<Props> = ({ className }: Props) => {
     : null;
   return (
     <Card title="Your Lockup" className={className}>
-      <div tw="flex flex-row">
-        {veBalance && (
-          <CardItem label={`${veBalance.token.symbol} Balance`}>
+      <div tw="flex flex-row flex-wrap">
+        <CardItem label={`${veToken?.symbol ?? "ve"} Balance`}>
+          {veBalance ? (
             <TokenAmountDisplay amount={veBalance} showSymbol={false} />
-          </CardItem>
-        )}
+          ) : (
+            <LoadingSpinner />
+          )}
+        </CardItem>
         <CardItem label="Time Remaining">{timeRemaining}</CardItem>
         <CardItem label="End Date">{endDate.toLocaleDateString()}</CardItem>
       </div>

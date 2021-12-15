@@ -15,7 +15,7 @@ export const GovernorInfo: React.FC = () => {
       : null;
 
   return (
-    <Card title="Governor">
+    <Card title="Governor" tw="pb-2">
       <AttributeList
         attributes={{
           "Smart Wallet": governorData?.accountInfo.data.smartWallet,

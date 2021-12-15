@@ -28,8 +28,8 @@ export const OverviewHeader: React.FC = () => {
     : lockedSupply;
 
   return (
-    <div tw="flex gap-2.5">
-      <StatCard tw="flex-grow">
+    <div tw="flex flex-wrap gap-2.5">
+      <StatCard tw="flex-grow flex-basis[100%] md:flex-basis[auto]">
         <StatInner>
           <span tw="text-white text-xl font-semibold">{lockedSupplyFmt}</span>
           <span tw="text-xs font-semibold text-coolGray-300 tracking-tighter">
@@ -37,7 +37,7 @@ export const OverviewHeader: React.FC = () => {
           </span>
         </StatInner>
       </StatCard>
-      <StatCard tw="flex-basis[200px]">
+      <StatCard tw="flex-grow md:(flex-basis[200px] flex-grow-0)">
         <StatInner>
           <span tw="text-white text-xl font-semibold">{totalSupplyFmt}</span>
           <span tw="text-xs font-semibold text-coolGray-300 tracking-tighter">
@@ -45,7 +45,7 @@ export const OverviewHeader: React.FC = () => {
           </span>
         </StatInner>
       </StatCard>
-      <StatCard tw="flex-basis[200px]">
+      <StatCard tw="flex-grow md:(flex-basis[200px] flex-grow-0)">
         <StatInner>
           <span tw="text-white text-xl font-semibold">0</span>
           <span tw="text-xs font-semibold text-coolGray-300 tracking-tighter">

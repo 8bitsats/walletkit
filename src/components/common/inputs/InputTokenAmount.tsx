@@ -82,14 +82,14 @@ export const InputTokenAmount: React.FC<IProps> = ({
       </div>
       <div tw="flex gap-4">
         <TokenSelector
-          tw="bg-white border dark:(bg-warmGray-800 border-warmGray-600) rounded-xl flex-basis[200px]"
+          tw="bg-white border dark:(bg-warmGray-800 border-warmGray-600) rounded flex-basis[200px]"
           tokens={tokens}
           isLoading={isLoading}
           token={token}
           onSelect={onTokenSelect}
         />
         <InputDecimal
-          tw="text-right w-1/2 bg-transparent border-none"
+          tw="flex-grow text-right w-1/2 bg-transparent dark:bg-warmGray-800 border-none"
           placeholder="0.00"
           disabled={inputDisabled}
           value={inputValue}

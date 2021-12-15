@@ -177,3 +177,24 @@ export const formatDisplayWithSoftLimit = (
   );
   return flooredToPrecision.toLocaleString(locale, maxFormatOptions);
 };
+
+const SI_SUFFIXES = {
+  t: 12,
+  b: 9,
+  m: 6,
+  k: 3,
+};
+
+export const formatNumberSI = (value: number): string => {
+  const result = Object.entries(SI_SUFFIXES).find(([_, power]) => {
+    return value >= 10 ** power;
+  });
+  if (!result) {
+    return value.toLocaleString();
+  }
+  const [suffix, power] = result;
+  const adjusted = value / 10 ** power;
+  return `${adjusted.toLocaleString(undefined, {
+    maximumSignificantDigits: 3,
+  })}${suffix}`;
+};

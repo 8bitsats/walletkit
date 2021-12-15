@@ -1,6 +1,5 @@
 import { useWalletKit } from "@gokiprotocol/walletkit";
-import { useConnectedWallet, useSolana, useWallet } from "@saberhq/use-solana";
-import { startCase } from "lodash";
+import { useConnectedWallet, useWallet } from "@saberhq/use-solana";
 import { useState } from "react";
 
 import { shortenAddress } from "../../../../utils/utils";
@@ -10,7 +9,6 @@ import { AccountPopover } from "../../MainLayout/Header/WalletDropdown/AccountPo
 
 export const WalletDropdown: React.FC = () => {
   const { connect } = useWalletKit();
-  const { network } = useSolana();
   const wallet = useConnectedWallet();
   const { walletProviderInfo } = useWallet();
 
@@ -21,13 +19,8 @@ export const WalletDropdown: React.FC = () => {
     <>
       {wallet ? (
         <>
-          {network !== "mainnet-beta" && (
-            <span tw="text-white bg-accent text-sm px-3 py-1 rounded font-semibold">
-              {startCase(network)}
-            </span>
-          )}
           <button
-            tw="px-3 py-1 flex items-center gap-2 justify-between rounded text-white bg-warmGray-800 hover:bg-coolGray-800"
+            tw="px-3 py-1 flex items-center gap-2 justify-between rounded text-white bg-warmGray-800 hover:bg-coolGray-800 z-20 md:z-auto"
             ref={setTargetRef}
             onClick={() => {
               setShowAccountPopover((p) => !p);
@@ -63,7 +56,7 @@ export const WalletDropdown: React.FC = () => {
         </>
       ) : (
         <Button
-          tw="rounded flex items-center gap-2 border-primary dark:(text-primary hover:text-white) px-3 py-2 font-bold tracking-wider"
+          tw="rounded flex items-center gap-2 border-primary dark:(text-primary hover:text-white) px-3 py-2 font-bold tracking-wider z-20 md:z-auto"
           variant="outline"
           onClick={connect}
         >

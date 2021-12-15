@@ -4,9 +4,11 @@ import invariant from "tiny-invariant";
 
 import { Button } from "../../../../../common/Button";
 import { Card } from "../../../../../common/governance/Card";
+import { LoadingPage } from "../../../../../common/LoadingPage";
 import { useUserEscrow } from "../../../hooks/useEscrow";
 import { useGovernor } from "../../../hooks/useGovernor";
 import type { ProposalInfo } from "../../../hooks/useProposals";
+import { formatDurationSeconds } from "../../../locker/LockerIndexView/LockEscrowModal";
 
 interface Props {
   proposal: ProposalInfo;
@@ -17,14 +19,43 @@ export const ProposalActivate: React.FC<Props> = ({
   proposal,
   onActivate,
 }: Props) => {
-  const { minActivationThreshold, path } = useGovernor();
+  const { minActivationThreshold, path, governorData } = useGovernor();
   const { data: escrow, veBalance } = useUserEscrow();
   const { handleTX } = useSail();
+
+  const earliestActivationTime = governorData
+    ? new Date(
+        proposal.proposalData.createdAt
+          .add(governorData.accountInfo.data.params.votingDelay)
+          .toNumber() * 1_000
+      )
+    : null;
+
   return (
     <Card title="Activate Proposal">
       <div tw="px-7 py-4 text-sm">
-        {minActivationThreshold &&
-        veBalance?.greaterThan(minActivationThreshold) ? (
+        {!earliestActivationTime || !governorData ? (
+          <LoadingPage />
+        ) : earliestActivationTime > new Date() ? (
+          <div tw="flex flex-col gap-2">
+            <p>
+              You must wait{" "}
+              {formatDurationSeconds(
+                governorData.accountInfo.data.params.votingDelay.toNumber()
+              )}{" "}
+              for this proposal to be activated.
+            </p>
+            <p>
+              The proposal may be activated at{" "}
+              {earliestActivationTime?.toLocaleString(undefined, {
+                timeZoneName: "short",
+              })}{" "}
+              by anyone who possesses at least{" "}
+              {minActivationThreshold?.formatUnits()}.
+            </p>
+          </div>
+        ) : minActivationThreshold &&
+          veBalance?.greaterThan(minActivationThreshold) ? (
           <Button
             disabled={!escrow}
             variant="primary"

@@ -1,6 +1,12 @@
 import { ZERO } from "@quarryprotocol/quarry-sdk";
 import type { ProposalData } from "@tribecahq/tribeca-sdk";
-import type BN from "bn.js";
+import {
+  getProposalState,
+  PROPOSAL_STATE_LABELS,
+  ProposalState,
+} from "@tribecahq/tribeca-sdk";
+import BN from "bn.js";
+import { startCase } from "lodash";
 
 import { Card } from "../../../../common/governance/Card";
 import type { ProposalInfo } from "../../hooks/useProposals";
@@ -33,6 +39,21 @@ const extractEvents = (proposalData: ProposalData): ProposalEvent[] => {
   }
   if (!proposalData.queuedAt.eq(ZERO)) {
     events.push({ title: "Queued", date: makeDate(proposalData.queuedAt) });
+  }
+  if (
+    !proposalData.votingEndsAt.eq(ZERO) &&
+    makeDate(proposalData.votingEndsAt) <= new Date()
+  ) {
+    // TODO: update quorum
+    const state = getProposalState({ proposalData, quorumVotes: new BN(0) });
+    events.push({
+      title: startCase(
+        PROPOSAL_STATE_LABELS[
+          state === ProposalState.Queued ? ProposalState.Succeeded : state
+        ]
+      ),
+      date: makeDate(proposalData.votingEndsAt),
+    });
   }
   return events.sort((a, b) => (a.date < b.date ? -1 : 1));
 };

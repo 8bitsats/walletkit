@@ -1,6 +1,7 @@
 import type { ProposalData } from "@tribecahq/tribeca-sdk";
 import { ProposalState } from "@tribecahq/tribeca-sdk";
 import type BN from "bn.js";
+import formatDistance from "date-fns/formatDistance";
 
 interface Props {
   proposal: ProposalData;
@@ -45,9 +46,9 @@ export const ProposalStateDate: React.FC<Props> = ({
     <span>
       {STATE_LABELS[state]}{" "}
       {state === ProposalState.Active
-        ? date?.toLocaleString(undefined, {
-            timeZoneName: "short",
-          })
+        ? date
+          ? formatDistance(date, new Date(), { addSuffix: true })
+          : "--"
         : date?.toLocaleDateString(undefined, {
             month: "long",
             day: "numeric",

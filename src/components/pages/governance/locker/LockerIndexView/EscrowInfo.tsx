@@ -7,6 +7,7 @@ import { useHistory, useParams } from "react-router-dom";
 
 import { Button } from "../../../../common/Button";
 import { Card } from "../../../../common/governance/Card";
+import { LoadingSpinner } from "../../../../common/LoadingSpinner";
 import { TokenAmountDisplay } from "../../../../common/TokenAmountDisplay";
 import { TokenIcon } from "../../../../common/TokenIcon";
 import { useEscrow, useLocker } from "../../hooks/useEscrow";
@@ -39,11 +40,13 @@ export const EscrowInfo: React.FC<Props> = ({ className }: Props) => {
       />
       <CardItem label={`${govToken?.symbol ?? "Token"} Balance`}>
         <div tw="flex items-center gap-2.5">
-          {govTokenBalance && (
+          {govTokenBalance ? (
             <TokenAmountDisplay
               amount={govTokenBalance.balance}
               showSymbol={false}
             />
+          ) : (
+            <LoadingSpinner />
           )}
           <TokenIcon size={18} token={govToken} />
         </div>
