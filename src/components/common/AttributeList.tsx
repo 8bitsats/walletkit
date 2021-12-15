@@ -14,12 +14,18 @@ interface Props {
   className?: string;
   loading?: boolean;
   attributes: Record<string, unknown>;
+  rowStyles?: React.CSSProperties;
+  labelStyles?: React.CSSProperties;
+  valueStyles?: React.CSSProperties;
 }
 
 export const AttributeList: React.FC<Props> = ({
   className,
   loading = true,
   attributes,
+  rowStyles,
+  labelStyles,
+  valueStyles,
 }: Props) => {
   return (
     <div tw="flex flex-col text-sm" className={className}>
@@ -28,11 +34,15 @@ export const AttributeList: React.FC<Props> = ({
           tw="flex justify-between items-center px-6 py-2 gap-4"
           css={[i !== 0 && tw`border-t dark:border-warmGray-800`]}
           key={label}
+          style={rowStyles}
         >
-          <div tw="text-secondary dark:text-gray-400 font-semibold">
+          <div
+            tw="text-secondary dark:text-gray-400 font-semibold"
+            style={labelStyles}
+          >
             {startCase(label)}
           </div>
-          <div tw="font-medium">
+          <div tw="font-medium" style={valueStyles}>
             {attribute === undefined ? (
               loading ? (
                 <LoadingSpinner />
@@ -79,6 +89,9 @@ export const AttributeList: React.FC<Props> = ({
               attribute.toLocaleString()
             ) : BN.isBN(attribute) ? (
               attribute.toString()
+            ) : // eslint-disable-next-line @typescript-eslint/ban-types
+            React.isValidElement(attribute as {} | null | undefined) ? (
+              (attribute as React.ReactNode)
             ) : (
               "unknown"
               // (attribute as React.ReactNode)

@@ -1,3 +1,4 @@
+import type BN from "bn.js";
 import { useCallback, useState } from "react";
 
 export function useLocalStorageState<T>(
@@ -43,3 +44,11 @@ export function shortenAddress(address: string, chars = 5): string {
     address.length - chars
   )}`;
 }
+
+/**
+ * Converts a Solana timestamp to a Date.
+ *
+ * @param num
+ * @returns
+ */
+export const tsToDate = (num: BN): Date => new Date(num.toNumber() * 1_000);

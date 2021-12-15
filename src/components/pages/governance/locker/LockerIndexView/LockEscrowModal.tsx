@@ -4,6 +4,7 @@ import {
 } from "@quarryprotocol/react-quarry";
 import { SliderHandle, SliderRange, SliderTrack } from "@reach/slider";
 import { useSail } from "@saberhq/sail";
+import { Fraction } from "@saberhq/token-utils";
 import type { VoteEscrow } from "@tribecahq/tribeca-sdk";
 import { LockerWrapper } from "@tribecahq/tribeca-sdk";
 import BN from "bn.js";
@@ -11,9 +12,11 @@ import formatDuration from "date-fns/formatDuration";
 import { useState } from "react";
 import { FaArrowDown } from "react-icons/fa";
 import invariant from "tiny-invariant";
+import tw from "twin.macro";
 
 import { useSDK } from "../../../../../contexts/sdk";
 import { useParseTokenAmount } from "../../../../../hooks/useParseTokenAmount";
+import { tsToDate } from "../../../../../utils/utils";
 import { AttributeList } from "../../../../common/AttributeList";
 import { Button } from "../../../../common/Button";
 import { InputSlider } from "../../../../common/inputs/InputSlider";
@@ -74,7 +77,7 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
   const { governor } = useGovernor();
   const { data: locker } = useLocker();
   const govToken = useToken(locker?.accountInfo.data.tokenMint);
-  const { data: escrow, remove } = useEscrow(
+  const { data: escrow, refetch } = useEscrow(
     tribecaMut?.provider.wallet.publicKey
   );
   const [userBalance] = useUserAssociatedTokenAccounts([govToken]);
@@ -98,7 +101,9 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
   const [depositAmountStr, setDepositAmountStr] = useState<string>("0");
   const depositAmount = useParseTokenAmount(govToken, depositAmountStr);
 
+  const prevUnlockTime = escrow ? tsToDate(escrow.escrow.escrowEndsAt) : null;
   const unlockTime = new Date(Date.now() + parsedDurationSeconds * 1_000);
+  const isInvalidUnlockTime = prevUnlockTime && unlockTime < prevUnlockTime;
 
   const currentVotingPower =
     escrow && govToken
@@ -106,14 +111,13 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
         10 ** govToken.decimals
       : 0;
 
-  const addedVotingPower = locker
+  const newVotingPower = locker
     ? depositAmount?.asFraction
+        .add(Fraction.fromNumber(currentVotingPower))
         .multiply(locker.accountInfo.data.params.maxStakeVoteMultiplier)
         .multiply(parsedDurationSeconds)
         .divide(locker.accountInfo.data.params.maxStakeDuration).asNumber
     : null;
-
-  const newVotingPower = currentVotingPower + (addedVotingPower ?? 0);
 
   return (
     <Modal tw="p-0 dark:text-white" {...modalProps}>
@@ -136,7 +140,10 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
           <div>
             <div tw="flex flex-col gap-2">
               <span tw="font-medium text-sm">Lock Period</span>
-              <div tw="text-4xl my-6">
+              <div
+                tw="text-4xl my-6"
+                css={[isInvalidUnlockTime && tw`text-red-500`]}
+              >
                 {formatDuration(
                   normalizeDuration(
                     Math.floor(parsedDurationSeconds / 86_400) * 86_400
@@ -174,22 +181,56 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
               <div tw="py-6 flex items-center justify-center">
                 <FaArrowDown />
               </div>
-              <div>
+              <div tw="mb-6 border rounded border-warmGray-800">
                 <AttributeList
+                  rowStyles={tw`items-start gap-4`}
+                  labelStyles={tw`w-32`}
+                  valueStyles={tw`flex-grow`}
                   attributes={{
-                    "Current Voting Power": currentVotingPower,
-                    "Added Voting Power": addedVotingPower,
-                    "New Voting Power": newVotingPower,
-                    "Unlock Time": unlockTime.toLocaleString(undefined, {
-                      timeZoneName: "short",
-                    }),
+                    "Voting Power": (
+                      <div tw="flex flex-col">
+                        <div>
+                          <span tw="text-warmGray-400">Prev: </span>
+                          <span>{currentVotingPower.toLocaleString()}</span>
+                        </div>
+                        <div>
+                          <span tw="text-warmGray-400">Next: </span>
+                          <span>{newVotingPower?.toLocaleString()}</span>
+                        </div>
+                      </div>
+                    ),
+                    "Unlock Time": (
+                      <div tw="flex flex-col">
+                        <div>
+                          <span tw="text-warmGray-400">Prev: </span>
+                          <span>
+                            {prevUnlockTime?.toLocaleString(undefined, {
+                              timeZoneName: "short",
+                            }) ?? "n/a"}
+                          </span>
+                        </div>
+                        <div>
+                          <span tw="text-warmGray-400">Next: </span>
+                          <span>
+                            {unlockTime.toLocaleString(undefined, {
+                              timeZoneName: "short",
+                            })}
+                          </span>
+                        </div>
+                      </div>
+                    ),
                   }}
                 />
               </div>
               <Button
                 size="md"
                 variant="primary"
-                disabled={!tribecaMut || !depositAmount || !locker}
+                disabled={
+                  !tribecaMut ||
+                  !depositAmount ||
+                  !locker ||
+                  !!isInvalidUnlockTime
+                }
                 onClick={async () => {
                   invariant(tribecaMut && depositAmount && locker);
                   const lockerW = new LockerWrapper(
@@ -209,11 +250,13 @@ export const LockEscrowModal: React.FC<Props> = ({ ...modalProps }) => {
                     return;
                   }
                   await pending.wait();
-                  remove();
+                  await refetch();
                   modalProps.onDismiss();
                 }}
               >
-                Lock Tokens
+                {isInvalidUnlockTime
+                  ? "Cannot decrease lock time"
+                  : "Lock Tokens"}
               </Button>
             </div>
           </div>
