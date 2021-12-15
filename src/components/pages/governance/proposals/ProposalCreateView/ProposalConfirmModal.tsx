@@ -9,9 +9,10 @@ import invariant from "tiny-invariant";
 import { useSDK } from "../../../../../contexts/sdk";
 import { notify } from "../../../../../utils/notifications";
 import { Button } from "../../../../common/Button";
+import { HelperCard } from "../../../../common/HelperCard";
 import type { ModalProps } from "../../../../common/Modal";
 import { Modal } from "../../../../common/Modal";
-import { useGovernor } from "../../hooks/useGovernor";
+import { useGovernor, useGovernorParams } from "../../hooks/useGovernor";
 
 type Props = Omit<ModalProps, "children"> & {
   proposal: {
@@ -27,7 +28,8 @@ export const ProposalConfirmModal: React.FC<Props> = ({
 }: Props) => {
   const { network } = useSolana();
   const { sdk, tribecaMut } = useSDK();
-  const { governor, path } = useGovernor();
+  const { governor, path, minActivationThreshold } = useGovernor();
+  const { votingPeriodFmt } = useGovernorParams();
   const { handleTX } = useSail();
   const history = useHistory();
 
@@ -37,11 +39,18 @@ export const ProposalConfirmModal: React.FC<Props> = ({
         <h1 tw="font-medium text-base">Proposal: {proposal.title}</h1>
       </div>
       <div tw="px-8 py-4 grid gap-4">
-        <div tw="bg-primary bg-opacity-20 text-primary border border-primary rounded text-sm px-4 py-2">
-          Tip: The proposal cannot be modified after submission, so please
-          verify all information before submitting. If and when the proposal is
-          activated, the voting period will begin and last for 3 days.
-        </div>
+        <HelperCard>
+          <p tw="mb-1">
+            Tip: The proposal cannot be modified after submission, so please
+            verify all information before submitting.
+          </p>
+          <p>
+            Once submitted, anyone with at least{" "}
+            {minActivationThreshold?.formatUnits()} may start the voting period,
+            i.e., activate the proposal. The voting period will then immediately
+            begin and last for {votingPeriodFmt}.
+          </p>
+        </HelperCard>
         <div tw="prose prose-sm prose-light">{proposal.description}</div>
         {network !== "localnet" && proposal.instructions.length > 0 && (
           <a

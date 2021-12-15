@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 
 import { useSDK } from "../../../../contexts/sdk";
+import { formatDurationSeconds } from "../locker/LockerIndexView/LockEscrowModal";
 
 const parseGovernor = (data: KeyedAccountInfo) =>
   TRIBECA_CODERS.Govern.accountParsers.governor(data.accountInfo.data);
@@ -77,4 +78,21 @@ export const useGovernor = () => {
     lockedSupply,
     proposalCount,
   };
+};
+
+export const useGovernorParams = () => {
+  const { governorData, veToken } = useGovernor();
+  const votesForQuorum =
+    governorData && veToken
+      ? new TokenAmount(
+          veToken,
+          governorData.accountInfo.data.params.quorumVotes
+        )
+      : null;
+  const votingPeriodFmt = governorData
+    ? formatDurationSeconds(
+        governorData.accountInfo.data.params.votingPeriod.toNumber()
+      )
+    : null;
+  return { votesForQuorum, votingPeriodFmt };
 };
