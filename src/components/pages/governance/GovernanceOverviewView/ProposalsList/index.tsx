@@ -12,7 +12,7 @@ const NUM_PLACEHOLDERS = 0;
 const MAX_PROPOSAL_COUNT = 4;
 
 export const ProposalsList: React.FC = () => {
-  const { path } = useGovernor();
+  const { path, proposalCount } = useGovernor();
   const proposals = useProposals();
   const [currentPage, setCurrentPage] = useState(0);
   const allProposals = [
@@ -21,7 +21,7 @@ export const ProposalsList: React.FC = () => {
   ];
   const startCursor = currentPage * MAX_PROPOSAL_COUNT;
 
-  if (allProposals.length === 0) {
+  if (proposalCount === 0) {
     return (
       <div>
         <EmptyState title="There aren't any proposals yet.">

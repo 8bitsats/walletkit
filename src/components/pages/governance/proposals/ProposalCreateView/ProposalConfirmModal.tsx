@@ -3,6 +3,7 @@ import { useSolana } from "@saberhq/use-solana";
 import type { TransactionInstruction } from "@solana/web3.js";
 import { GovernorWrapper } from "@tribecahq/tribeca-sdk";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 import invariant from "tiny-invariant";
 
 import { useSDK } from "../../../../../contexts/sdk";
@@ -26,8 +27,10 @@ export const ProposalConfirmModal: React.FC<Props> = ({
 }: Props) => {
   const { network } = useSolana();
   const { sdk, tribecaMut } = useSDK();
-  const { governor } = useGovernor();
+  const { governor, path } = useGovernor();
   const { handleTX } = useSail();
+  const history = useHistory();
+
   return (
     <Modal tw="p-0 dark:text-white" {...modalProps}>
       <div tw="h-14 flex items-center px-8 border-b dark:border-warmGray-700">
@@ -80,6 +83,9 @@ export const ProposalConfirmModal: React.FC<Props> = ({
             notify({
               message: "Proposal created",
             });
+            history.push(
+              `${path}/proposals/${createProposal.index.toString()}`
+            );
             modalProps.onDismiss();
           }}
         >
