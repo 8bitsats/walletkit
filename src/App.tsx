@@ -19,7 +19,7 @@ export const App: React.FC = () => {
       <Toaster position="bottom-right">
         {(t) => (
           <div
-            tw="bg-white dark:bg-gray-850 border p-4 w-full max-w-sm shadow rounded relative"
+            tw="bg-white border p-4 w-full max-w-sm shadow rounded relative dark:(bg-gray-850 border-warmGray-600)"
             style={{
               opacity: t.visible ? 1 : 0,
             }}
