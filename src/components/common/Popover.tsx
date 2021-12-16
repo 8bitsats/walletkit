@@ -118,7 +118,7 @@ export const Popover: React.FC<PopoverProps> = ({
                   {...attributes.popper}
                 >
                   <animated.div
-                    tw="rounded shadow text-base bg-gray-200"
+                    tw="rounded shadow text-base bg-gray-200 dark:bg-warmGray-800"
                     style={springStyles}
                   >
                     {content}
