@@ -2,10 +2,15 @@ import { useState } from "react";
 
 import { serializeToBase64 } from "../../../../../utils/makeTransaction";
 import { Select } from "../../../../common/inputs/InputText";
+import { Memo } from "./actions/Memo";
 import { RawTX } from "./actions/RawTX";
 import { UpgradeProgramForm } from "./actions/UpgradeProgramForm";
 
-const ACTION_TYPES = ["Upgrade Program", "Raw Transaction (base64)"] as const;
+const ACTION_TYPES = [
+  "Upgrade Program",
+  "Memo",
+  "Raw Transaction (base64)",
+] as const;
 
 type ActionType = typeof ACTION_TYPES[number];
 
@@ -42,6 +47,7 @@ export const ProposalTXForm: React.FC<Props> = ({ txRaw, setTxRaw }: Props) => {
           }}
         />
       )}
+      {actionType === "Memo" && <Memo setTxRaw={setTxRaw} />}
       {actionType === "Raw Transaction (base64)" && (
         <RawTX txRaw={txRaw} setTxRaw={setTxRaw} />
       )}

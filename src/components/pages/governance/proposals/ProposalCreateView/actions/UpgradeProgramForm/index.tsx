@@ -54,7 +54,7 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
         <span tw="text-sm">Program ID</span>
         {smartWallet ? (
           <>
-            {programs?.length === 0 && !programData.isLoading && (
+            {programs?.length === 0 && !programData.isLoading ? (
               <EmptyState
                 icon={<GiTumbleweed />}
                 title="The DAO doesn't own any programs."
@@ -78,31 +78,32 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
                   </p>
                 </div>
               </EmptyState>
+            ) : (
+              <Select
+                onChange={(e) => {
+                  setProgramID(new PublicKey(e.target.value));
+                }}
+              >
+                <option>Select a program ID</option>
+                {programs?.map((program) => {
+                  const { data } = program;
+                  if (!data) {
+                    return null;
+                  }
+                  const label = programLabel(data.programID.toString());
+                  return (
+                    <option
+                      key={data.programID.toString()}
+                      value={data.programID.toString()}
+                    >
+                      {label
+                        ? `${label} (${data.programID.toString()})`
+                        : data.programID.toString()}
+                    </option>
+                  );
+                })}
+              </Select>
             )}
-            <Select
-              onChange={(e) => {
-                setProgramID(new PublicKey(e.target.value));
-              }}
-            >
-              <option>Select a program ID</option>
-              {programs?.map((program) => {
-                const { data } = program;
-                if (!data) {
-                  return null;
-                }
-                const label = programLabel(data.programID.toString());
-                return (
-                  <option
-                    key={data.programID.toString()}
-                    value={data.programID.toString()}
-                  >
-                    {label
-                      ? `${label} (${data.programID.toString()})`
-                      : data.programID.toString()}
-                  </option>
-                );
-              })}
-            </Select>
           </>
         ) : (
           <LoadingPage />
@@ -112,7 +113,7 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
         <span tw="text-sm">New Buffer</span>
         {smartWallet ? (
           <>
-            {buffers?.length === 0 && (
+            {buffers?.length === 0 ? (
               <EmptyState icon={<GiTumbleweed />} title="No buffers available">
                 <p>
                   To propose a program upgrade, please upload a buffer with the
@@ -130,17 +131,21 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
                   .
                 </p>
               </EmptyState>
+            ) : (
+              <Select
+                onChange={(e) => {
+                  setBufferKey(new PublicKey(e.target.value));
+                }}
+              >
+                <option>Select a buffer</option>
+                {buffers?.map((buffer) => (
+                  <BufferOption
+                    key={buffer.pubkey.toString()}
+                    buffer={buffer}
+                  />
+                ))}
+              </Select>
             )}
-            <Select
-              onChange={(e) => {
-                setBufferKey(new PublicKey(e.target.value));
-              }}
-            >
-              <option>Select a buffer</option>
-              {buffers?.map((buffer) => (
-                <BufferOption key={buffer.pubkey.toString()} buffer={buffer} />
-              ))}
-            </Select>
           </>
         ) : (
           <LoadingPage />

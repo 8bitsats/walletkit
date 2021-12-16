@@ -8,13 +8,9 @@ export const ProposalCreateView: React.FC = () => {
   const { sdkMut } = useSDK();
   return (
     <GovernancePage title="Create a Proposal">
-      {sdkMut ? (
-        <ProposalCreateInner />
-      ) : (
-        <Card title="Proposal Info">
-          <EmptyStateConnectWallet />
-        </Card>
-      )}
+      <Card title="Proposal Info" tw="max-w-xl mx-auto">
+        {sdkMut ? <ProposalCreateInner /> : <EmptyStateConnectWallet />}
+      </Card>
     </GovernancePage>
   );
 };
