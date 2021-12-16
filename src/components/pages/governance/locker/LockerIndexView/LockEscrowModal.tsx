@@ -1,7 +1,7 @@
 import { useUserAssociatedTokenAccounts } from "@quarryprotocol/react-quarry";
 import { SliderHandle, SliderRange, SliderTrack } from "@reach/slider";
 import { useSail } from "@saberhq/sail";
-import { Fraction, u64 } from "@saberhq/token-utils";
+import { Fraction, sleep, u64 } from "@saberhq/token-utils";
 import type { VoteEscrow } from "@tribecahq/tribeca-sdk";
 import { LockerWrapper } from "@tribecahq/tribeca-sdk";
 import BN from "bn.js";
@@ -268,6 +268,7 @@ export const LockEscrowModal: React.FC<Props> = ({
                     return;
                   }
                   await pending.wait();
+                  await sleep(1_000);
                   await refetch();
                   modalProps.onDismiss();
                 }}
