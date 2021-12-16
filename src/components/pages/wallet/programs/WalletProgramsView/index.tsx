@@ -15,6 +15,7 @@ import { ProgramCard } from "./ProgramCard";
 export const WalletProgramsView: React.FC = () => {
   const { key, path } = useSmartWallet();
   const { programs, programData } = useAuthorityPrograms(key);
+  const isEmpty = programs.length === 0 && programData.isFetched;
   return (
     <BasicPage
       title="Programs"
@@ -30,7 +31,7 @@ export const WalletProgramsView: React.FC = () => {
           </Notice>
         ))
       )}
-      {programs.length === 0 && programData.isFetched && (
+      {isEmpty && (
         <EmptyState
           icon={<EmptyFolder />}
           title="This wallet doesn't own any programs."
@@ -65,11 +66,13 @@ export const WalletProgramsView: React.FC = () => {
           );
         })}
       </div>
-      <div tw="mt-6">
-        <Link to={`${path}/programs/import`}>
-          <Button>Import an existing program</Button>
-        </Link>
-      </div>
+      {!isEmpty && (
+        <div tw="mt-6">
+          <Link to={`${path}/programs/import`}>
+            <Button>Import an existing program</Button>
+          </Link>
+        </div>
+      )}
     </BasicPage>
   );
 };
