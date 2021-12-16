@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { GovernancePage } from "../../../../common/governance/GovernancePage";
 import { Profile } from "../../../../common/governance/Profile";
 import { ProposalSubtitle } from "../../GovernanceOverviewView/ProposalsList/ProposalSubtitle";
+import { useGovWindowTitle } from "../../hooks/useGovernor";
 import { useProposal } from "../../hooks/useProposals";
 import { ProposalActivate } from "./actions/ProposalActivate";
 import { ProposalQueue } from "./actions/ProposalQueue";
@@ -16,7 +17,8 @@ export const ProposalIndexView: React.FC = () => {
   const { proposalIndex: proposalIndexStr } = useParams<{
     proposalIndex: string;
   }>();
-  const proposal = useProposal(parseInt(proposalIndexStr));
+  const { index, ...proposal } = useProposal(parseInt(proposalIndexStr));
+  useGovWindowTitle(`Proposal Detail #${index}`);
 
   return (
     <GovernancePage

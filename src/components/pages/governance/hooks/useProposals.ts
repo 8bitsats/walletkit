@@ -80,7 +80,8 @@ export const useProposal = (index: number) => {
   const { network } = useSolana();
   const { governor, governorData } = useGovernor();
   const { fetchKeys } = useSail();
-  return useQuery({
+  const id = `000${index}`.slice(-4);
+  const proposalInfo = useQuery({
     queryKey: ["proposalInfo", network, governor.toString(), index],
     queryFn: async (): Promise<ProposalInfo | null> => {
       invariant(governorData);
@@ -92,6 +93,11 @@ export const useProposal = (index: number) => {
     },
     enabled: !!governorData,
   });
+  return {
+    ...proposalInfo,
+    id,
+    index,
+  };
 };
 
 /**

@@ -4,11 +4,13 @@ import { Button } from "../../../../common/Button";
 import { Card } from "../../../../common/governance/Card";
 import { GovernancePage } from "../../../../common/governance/GovernancePage";
 import { ProposalsList } from "../../GovernanceOverviewView/ProposalsList";
-import { useGovernor } from "../../hooks/useGovernor";
+import { useGovernor, useGovWindowTitle } from "../../hooks/useGovernor";
 import { LegendsNeverDie } from "./LegendsNeverDie";
 
 export const ProposalsListView: React.FC = () => {
   const { path } = useGovernor();
+  useGovWindowTitle(`Proposals`);
+
   return (
     <GovernancePage title="Governance Proposals" right={<LegendsNeverDie />}>
       <Card

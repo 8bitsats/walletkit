@@ -1,9 +1,9 @@
 import { useSolana } from "@saberhq/use-solana";
 import { startCase } from "lodash";
-import { useEffect } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { useSmartWallet } from "../../../../../../hooks/useSmartWallet";
+import { useWindowTitle } from "../../../../../../hooks/useWindowTitle";
 import { displayAddress } from "../../../../../../utils/programs";
 import { shortenAddress } from "../../../../../../utils/utils";
 import { AddressLink } from "../../../../../common/AddressLink";
@@ -18,15 +18,7 @@ export const TransactionIndexView: React.FC = () => {
   const { network } = useSolana();
   const { instructions, txEnv, title, id } = useTransaction();
 
-  useEffect(() => {
-    const prevTitle = document.title;
-    document.title = `[${id}] ${title} - ${displayAddress(
-      key.toString()
-    )} | Goki`;
-    return () => {
-      document.title = prevTitle;
-    };
-  });
+  useWindowTitle(`[${id}] ${title} - ${displayAddress(key.toString())} | Goki`);
 
   return (
     <div tw="flex w-full py-2">

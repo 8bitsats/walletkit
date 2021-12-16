@@ -5,8 +5,10 @@ import type { KeyedAccountInfo } from "@solana/web3.js";
 import { GovernorWrapper, TRIBECA_CODERS } from "@tribecahq/tribeca-sdk";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { createContainer } from "unstated-next";
 
 import { useSDK } from "../../../../contexts/sdk";
+import { useWindowTitle } from "../../../../hooks/useWindowTitle";
 import { formatDurationSeconds } from "../locker/LockerIndexView/LockEscrowModal";
 
 const parseGovernor = (data: KeyedAccountInfo) =>
@@ -15,7 +17,7 @@ const parseGovernor = (data: KeyedAccountInfo) =>
 const parseLocker = (data: KeyedAccountInfo) =>
   TRIBECA_CODERS.LockedVoter.accountParsers.locker(data.accountInfo.data);
 
-export const useGovernor = () => {
+const useGovernorInner = () => {
   const { governor: governorStr } = useParams<{ governor: string }>();
   const governor = usePubkey(governorStr);
   if (!governor) {
@@ -70,7 +72,7 @@ export const useGovernor = () => {
     : governorData;
 
   return {
-    daoName: govToken?.name.split(" ")[0] ?? "the Protocol",
+    daoName: govToken?.name.split(" ")[0],
     path,
     governor,
     governorW,
@@ -100,4 +102,12 @@ export const useGovernorParams = () => {
       )
     : null;
   return { votesForQuorum, votingPeriodFmt };
+};
+
+export const { useContainer: useGovernor, Provider: GovernorProvider } =
+  createContainer(useGovernorInner);
+
+export const useGovWindowTitle = (title: string) => {
+  const { daoName } = useGovernor();
+  useWindowTitle(daoName ? `${daoName} | ${title}` : "Loading...");
 };

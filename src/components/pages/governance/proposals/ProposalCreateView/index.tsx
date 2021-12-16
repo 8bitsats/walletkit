@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { Button } from "../../../../common/Button";
 import { Card } from "../../../../common/governance/Card";
 import { InputText, Textarea } from "../../../../common/inputs/InputText";
+import { useGovWindowTitle } from "../../hooks/useGovernor";
 import { ProposalConfirmModal } from "./ProposalConfirmationModal";
 import { ProposalTXForm } from "./ProposalTXForm";
 
@@ -12,6 +13,7 @@ export const ProposalCreateView: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [txRaw, setTxRaw] = useState<string>("");
+  useGovWindowTitle(`Create Proposal`);
 
   const { tx } = useMemo(() => {
     try {

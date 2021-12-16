@@ -1,10 +1,13 @@
 import { GovernorLayout } from "../../layout/GovernorLayout";
+import { GovernorProvider } from "./hooks/useGovernor";
 import { GovernanceRoutes } from "./routes";
 
 export const GovernanceView: React.FC = () => {
   return (
-    <GovernorLayout>
-      <GovernanceRoutes />
-    </GovernorLayout>
+    <GovernorProvider>
+      <GovernorLayout>
+        <GovernanceRoutes />
+      </GovernorLayout>
+    </GovernorProvider>
   );
 };
