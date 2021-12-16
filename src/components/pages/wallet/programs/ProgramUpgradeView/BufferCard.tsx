@@ -106,7 +106,7 @@ export const BufferCard: React.FC<Props> = ({ buffer, programID }: Props) => {
             history.push(`${path}/tx/${index}`);
           }}
         >
-          Deploy
+          Upgrade
         </AsyncButton>
       </div>
     </div>

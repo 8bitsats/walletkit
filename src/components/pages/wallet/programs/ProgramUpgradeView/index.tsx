@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { useAuthorityBuffers } from "../../../../../hooks/useAuthorityPrograms";
 import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 import { BPF_UPGRADEABLE_LOADER_ID } from "../../../../../utils/instructions/upgradeable_loader/instructions";
+import { displayAddress } from "../../../../../utils/programs";
 import { ErrorMessage } from "../../../../common/ErrorMessage";
 import { LoadingPage } from "../../../../common/LoadingPage";
 import { Notice } from "../../../../common/Notice";
@@ -25,8 +26,10 @@ export const ProgramUpgradeView: React.FC = () => {
 
   return (
     <BasicPage
-      title={`Upgrade Program`}
-      description="Upgrade a program's code."
+      title={`Upgrade Program ${
+        programID ? displayAddress(programID.toString()) : "--"
+      }`}
+      description={`Upgrade a program's code`}
     >
       <Notice tw="mb-8" icon={<FaUpload />} title="How do I upgrade a program?">
         <ol>
@@ -70,13 +73,15 @@ export const ProgramUpgradeView: React.FC = () => {
                 </p>
               </Notice>
             )}
-            {buffers.data?.map((buffer) => (
-              <BufferCard
-                key={buffer.pubkey.toString()}
-                buffer={buffer}
-                programID={programID}
-              />
-            ))}
+            <div tw="grid gap-2">
+              {buffers.data?.map((buffer) => (
+                <BufferCard
+                  key={buffer.pubkey.toString()}
+                  buffer={buffer}
+                  programID={programID}
+                />
+              ))}
+            </div>
           </div>
         )}
       </BasicSection>
