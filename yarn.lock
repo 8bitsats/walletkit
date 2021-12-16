@@ -3344,7 +3344,7 @@ __metadata:
     react-use-gesture: ^9.1.3
     superstruct: ^0.15.3
     swr: ^1.1.2-beta.0
-    tailwindcss: ^3.0.5
+    tailwindcss: ^3.0.6
     tiny-invariant: ^1.2.0
     tslib: ^2.3.1
     twin.macro: ^2.8.2
@@ -16101,7 +16101,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-selector-parser@npm:^6, postcss-selector-parser@npm:^6.0.4, postcss-selector-parser@npm:^6.0.5":
+"postcss-selector-parser@npm:^6, postcss-selector-parser@npm:^6.0.4, postcss-selector-parser@npm:^6.0.5, postcss-selector-parser@npm:^6.0.7":
   version: 6.0.7
   resolution: "postcss-selector-parser@npm:6.0.7"
   dependencies:
@@ -18691,9 +18691,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.0.5":
-  version: 3.0.5
-  resolution: "tailwindcss@npm:3.0.5"
+"tailwindcss@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "tailwindcss@npm:3.0.6"
   dependencies:
     arg: ^5.0.1
     chalk: ^4.1.2
@@ -18711,7 +18711,7 @@ resolve@^2.0.0-next.3:
     postcss-js: ^3.0.3
     postcss-load-config: ^3.1.0
     postcss-nested: 5.0.6
-    postcss-selector-parser: ^6.0.6
+    postcss-selector-parser: ^6.0.7
     postcss-value-parser: ^4.2.0
     quick-lru: ^5.1.1
     resolve: ^1.20.0
@@ -18722,7 +18722,7 @@ resolve@^2.0.0-next.3:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 8509923d71e83348a4f9871c545bc44eb2c8ffb2d8e78d7018bde964812d60c9ac2b3a43bd3a001ca15e20efe32c79cd5e378df7267d8b9d970a4b2e3f1b4022
+  checksum: 9b381caadb1d058fbfede02d87a3f3ce2d64de08fd1b13528b2bdc8aebb31d66af254355dbe96195cb5fb7769631803396494a452cb3b373b0e4f79a8fe1169a
   languageName: node
   linkType: hard
 
