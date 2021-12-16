@@ -1,4 +1,5 @@
 import { useSail } from "@saberhq/sail";
+import { sleep } from "@saberhq/token-utils";
 import { Link } from "react-router-dom";
 import invariant from "tiny-invariant";
 
@@ -20,7 +21,7 @@ export const ProposalActivate: React.FC<Props> = ({
   onActivate,
 }: Props) => {
   const { minActivationThreshold, path, governorData } = useGovernor();
-  const { data: escrow, veBalance } = useUserEscrow();
+  const { data: escrow, veBalance, refetch } = useUserEscrow();
   const { handleTX } = useSail();
   const { governorW } = useGovernor();
 
@@ -98,6 +99,8 @@ export const ProposalActivate: React.FC<Props> = ({
                     return;
                   }
                   await pending.wait();
+                  await sleep(1_000);
+                  await refetch();
                   onActivate();
                 }}
               >

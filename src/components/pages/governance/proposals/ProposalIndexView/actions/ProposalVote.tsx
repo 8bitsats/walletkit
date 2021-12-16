@@ -1,5 +1,5 @@
 import { useSail } from "@saberhq/sail";
-import { TokenAmount } from "@saberhq/token-utils";
+import { sleep, TokenAmount } from "@saberhq/token-utils";
 import { VoteSide } from "@tribecahq/tribeca-sdk";
 import invariant from "tiny-invariant";
 
@@ -20,7 +20,7 @@ export const ProposalVote: React.FC<Props> = ({
   onVote,
 }: Props) => {
   const { veToken } = useGovernor();
-  const { data: escrow } = useUserEscrow();
+  const { data: escrow, refetch } = useUserEscrow();
   const vePower =
     veToken && escrow
       ? new TokenAmount(
@@ -40,6 +40,8 @@ export const ProposalVote: React.FC<Props> = ({
     });
     const { pending } = await handleTX(tx, `Vote ${VOTE_SIDE_LABEL[side]}`);
     await pending?.wait();
+    await sleep(1_000);
+    await refetch();
     onVote();
   };
 
