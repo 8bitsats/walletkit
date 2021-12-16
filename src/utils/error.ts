@@ -6,10 +6,10 @@ import { notify } from "./notifications";
 
 export class CapturedError extends Error {
   constructor(
-    public readonly name: string,
-    public readonly message: string,
-    public readonly source: string,
-    public readonly originalError: unknown
+    readonly name: string,
+    readonly message: string,
+    readonly source: string,
+    readonly originalError: unknown
   ) {
     super(message);
   }

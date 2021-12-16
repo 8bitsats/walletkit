@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import tw from "twin.macro";
+
 interface Props {
   numPages: number;
   currentPage: number;

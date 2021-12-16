@@ -114,8 +114,8 @@ export const PARSERS: Record<string, IXParser> = {
 
 export class InstructionParseError extends Error {
   constructor(
-    public readonly ix: TransactionInstruction,
-    public readonly originalError: unknown
+    readonly ix: TransactionInstruction,
+    readonly originalError: unknown
   ) {
     super(extractErrorMessage(originalError) ?? "unknown");
     this.name = "InstructionParseError";

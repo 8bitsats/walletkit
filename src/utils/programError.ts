@@ -31,15 +31,15 @@ export function parseIdlErrors(idl: Idl): Map<number, ProgramErrorRepr> {
 // An error from a user defined program.
 export class ProgramError extends Error {
   constructor(
-    public readonly errorInfo: ProgramErrorRepr,
-    public readonly underlying: string,
-    public readonly program?: KnownProgram
+    readonly errorInfo: ProgramErrorRepr,
+    readonly underlying: string,
+    readonly program?: KnownProgram
   ) {
     super(errorInfo.displayMessage);
     this.name = `${program ?? "Anchor"}ProgramError`;
   }
 
-  public static parse(
+  static parse(
     err: Error,
     txEnv: TransactionEnvelope,
     programIDs: Record<string, ProgramKey>,
@@ -103,7 +103,7 @@ export class ProgramError extends Error {
     return this.errorInfo.name;
   }
 
-  public toString(): string {
+  toString(): string {
     return this.errorInfo.displayMessage;
   }
 }
