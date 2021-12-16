@@ -33,7 +33,9 @@ export const RawTX: React.FC<Props> = ({ txRaw, setTxRaw }: Props) => {
         value={txRaw}
         onChange={(e) => setTxRaw(e.target.value)}
       />
-      <span tw="text-red-500">{error}</span>
+      {error && (
+        <span tw="text-red-500">Error parsing transaction: {error}</span>
+      )}
     </label>
   );
 };
