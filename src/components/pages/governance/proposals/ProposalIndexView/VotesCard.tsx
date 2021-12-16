@@ -60,10 +60,10 @@ export const VotesCard: React.FC<Props> = ({ side, proposal }: Props) => {
         </div>
       }
       titleStyles={tw`h-20`}
-      link={{
-        title: "View All",
-        href: "",
-      }}
-    ></Card>
+      // link={{
+      //   title: "View All",
+      //   href: "",
+      // }}
+    />
   );
 };

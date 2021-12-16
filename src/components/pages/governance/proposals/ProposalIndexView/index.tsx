@@ -1,6 +1,5 @@
 import { ProposalState, VoteSide } from "@tribecahq/tribeca-sdk";
 import { useParams } from "react-router-dom";
-import tw from "twin.macro";
 
 import { GovernancePage } from "../../../../common/governance/GovernancePage";
 import { Profile } from "../../../../common/governance/Profile";
@@ -32,7 +31,6 @@ export const ProposalIndexView: React.FC = () => {
           <Profile address={proposal.data.proposalData.proposer} />
         ) : undefined
       }
-      contentStyles={tw`-mt-20`}
     >
       <div tw="grid gap-4 mb-20">
         {proposal.data && (
