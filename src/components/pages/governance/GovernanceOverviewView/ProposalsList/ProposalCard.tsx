@@ -25,9 +25,11 @@ export const ProposalCard: React.FC<Props> = ({ proposalInfo }: Props) => {
           <PulsingDot tw="w-11 h-11 text-accent" />
         )}
         <div>
-          <span tw="text-white leading-snug">
-            {proposalInfo.proposalMetaData?.title as string}
-          </span>
+          <div tw="h-5 flex items-center">
+            <span tw="text-white leading-snug">
+              {proposalInfo.proposalMetaData?.title}
+            </span>
+          </div>
           {proposalInfo.proposalData && proposalInfo.state !== null && (
             <div tw="flex items-center gap-2 mt-2">
               <ProposalStateLabel state={proposalInfo.state} />
