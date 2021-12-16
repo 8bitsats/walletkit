@@ -18,11 +18,12 @@ export const ProposalIndexView: React.FC = () => {
     proposalIndex: string;
   }>();
   const proposal = useProposal(parseInt(proposalIndexStr));
+
   return (
     <GovernancePage
       title={proposal.data?.proposalMetaData?.title ?? "Proposal"}
       header={
-        <div>
+        <div tw="flex items-center gap-2 mt-2">
           {proposal.data && <ProposalSubtitle proposalInfo={proposal.data} />}
         </div>
       }

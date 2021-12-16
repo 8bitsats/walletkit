@@ -19,18 +19,18 @@ export const NAV_LINKS = [
     title: "Parameters",
     href: "/details",
   },
-  {
-    title: "Quarries",
-    href: "/quarries",
-  },
-  {
-    title: "Boost",
-    href: "/boost",
-  },
-  {
-    title: "Payouts",
-    href: "/payouts",
-  },
+  // {
+  //   title: "Quarries",
+  //   href: "/quarries",
+  // },
+  // {
+  //   title: "Boost",
+  //   href: "/boost",
+  // },
+  // {
+  //   title: "Payouts",
+  //   href: "/payouts",
+  // },
 ];
 
 interface Props {
