@@ -1,10 +1,8 @@
-import { ConnectWalletButton } from "@gokiprotocol/walletkit";
-import { FaVoteYea } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 import { useSDK } from "../../../../../../contexts/sdk";
 import { Button } from "../../../../../common/Button";
-import { EmptyState } from "../../../../../common/EmptyState";
+import { EmptyStateConnectWallet } from "../../../../../common/EmptyState";
 import { Card } from "../../../../../common/governance/Card";
 import { useGovernor } from "../../../hooks/useGovernor";
 import { formatDurationSeconds } from "../LockEscrowModal";
@@ -25,16 +23,7 @@ export const SetupVoting: React.FC<Props> = ({ className }: Props) => {
 
   return (
     <Card title="Setup Voting" className={className}>
-      {!sdkMut && (
-        <EmptyState
-          icon={<FaVoteYea />}
-          title="Connect your wallet to participate in governance."
-        >
-          <div tw="mt-8">
-            <ConnectWalletButton />
-          </div>
-        </EmptyState>
-      )}
+      {!sdkMut && <EmptyStateConnectWallet />}
       {sdkMut && (
         <div tw="px-7 py-4 text-sm grid gap-4">
           <p>
