@@ -78,7 +78,9 @@ export const ProposalHistory: React.FC<Props> = ({
   proposalInfo,
 }: Props) => {
   const { data: tx } = useParsedAccountData(
-    proposalInfo?.proposalData.queuedTransaction,
+    !proposalInfo?.proposalData.queuedAt.eq(ZERO)
+      ? proposalInfo?.proposalData.queuedTransaction
+      : null,
     decodeTransaction
   );
   const events = proposalInfo

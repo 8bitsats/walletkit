@@ -27,7 +27,7 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
   const { sdkMut } = useSDK();
   const { smartWallet } = useGovernor();
   const { data: buffers } = useAuthorityBuffers(smartWallet);
-  const { programs } = useAuthorityPrograms(smartWallet);
+  const { programs, programData } = useAuthorityPrograms(smartWallet);
   const { network } = useSolana();
 
   const [programID, setProgramID] = useState<PublicKey | null>(null);
@@ -54,7 +54,7 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
         <span tw="text-sm">Program ID</span>
         {smartWallet ? (
           <>
-            {programs?.length === 0 && (
+            {programs?.length === 0 && !programData.isLoading && (
               <EmptyState
                 icon={<GiTumbleweed />}
                 title="The DAO doesn't own any programs."
