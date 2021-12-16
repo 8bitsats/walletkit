@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 
+import { TransactionBuilder } from "./components/common/TransactionBuilder";
 import { MainLayout } from "./components/layout/MainLayout";
 import { GovernanceView } from "./components/pages/governance/GovernanceView";
 import { IndexView } from "./components/pages/IndexView";
@@ -31,6 +32,7 @@ export const Routes: React.FC = () => {
   useAnalytics();
   return (
     <Switch>
+      <Route path="/tools/tx-builder" component={TransactionBuilder} />
       <Route path="/wallets/:walletKey" component={WalletView} />
       <Route path="/gov/:governor" component={GovernanceView} />
       <MainLayout>
