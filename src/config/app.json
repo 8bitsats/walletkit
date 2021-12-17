@@ -14,6 +14,7 @@
       "discord": "",
       "keybase": ""
     },
+    "favicon": "/images/tribeca/favicon.png",
     "code": "https://github.com/TribecaHQ/tribeca"
   },
   "goki": {
@@ -31,6 +32,7 @@
       "discord": "",
       "keybase": "gokihelp"
     },
+    "favicon": "/images/goki/favicon.png",
     "code": "https://github.com/GokiProtocol/goki"
   }
 }

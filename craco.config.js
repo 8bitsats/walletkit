@@ -110,7 +110,7 @@ module.exports = {
 
       config.plugins.push(
         new FaviconsWebpackPlugin({
-          logo: "./public/images/icon.png",
+          logo: `./public${appInfo.favicon}`,
           publicPath: "/",
           favicons: {
             appName: appInfo.name,
