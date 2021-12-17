@@ -100,8 +100,10 @@ export const useProposal = (index: number) => {
     : null;
 
   useEffect(() => {
-    void refetch();
-  }, [proposalData, refetch, proposalMetaData, state]);
+    if (!isLoading) {
+      void refetch();
+    }
+  }, [proposalData, refetch, proposalMetaData, state, isLoading]);
 
   useEffect(() => {
     if (!proposalData) {
