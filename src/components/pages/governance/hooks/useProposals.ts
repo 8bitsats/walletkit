@@ -7,14 +7,14 @@ import type {
   GovernorData,
   ProposalData,
   ProposalMetaData,
-  ProposalState,
 } from "@tribecahq/tribeca-sdk";
 import {
   findProposalAddress,
   findProposalMetaAddress,
   getProposalState,
+  ProposalState,
 } from "@tribecahq/tribeca-sdk";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useQueries, useQuery } from "react-query";
 import invariant from "tiny-invariant";
 
@@ -44,7 +44,7 @@ const buildProposalInfo = ({
   governorData: ParsedAccountInfo<GovernorData>;
   proposalData: ParsedAccountInfo<ProposalData>;
   proposalMetaData: ProposalMetaData | null;
-}): ProposalInfo | null => {
+}): ProposalInfo => {
   const state = getProposalState({
     proposalData: proposalData.accountInfo.data,
     quorumVotes: governorData.accountInfo.data.params.quorumVotes,
@@ -87,21 +87,56 @@ export const useProposal = (index: number) => {
     proposalKeys.data?.proposalMetaKey
   );
 
-  const proposalInfo = useMemo(() => {
-    if (!governorData || !proposalData || proposalMetaData === undefined) {
-      return null;
+  const isLoading =
+    !governorData || !proposalData || proposalMetaData === undefined;
+  const proposalInfoQuery = useQuery({
+    queryKey: ["proposalInfo", network, governor.toString(), index],
+    queryFn: (): ProposalInfo => {
+      invariant(governorData && proposalData);
+      return buildProposalInfo({
+        index: proposalData.accountInfo.data.index.toNumber(),
+        governorData,
+        proposalData,
+        proposalMetaData: proposalMetaData
+          ? proposalMetaData.accountInfo.data
+          : null,
+      });
+    },
+    enabled: !isLoading,
+  });
+
+  const { refetch } = proposalInfoQuery;
+  const info = isLoading ? null : proposalInfoQuery.data ?? null;
+  const state = proposalData
+    ? getProposalState({
+        proposalData: proposalData.accountInfo.data,
+        quorumVotes: proposalData.accountInfo.data.quorumVotes,
+      })
+    : null;
+
+  useEffect(() => {
+    void refetch();
+  }, [proposalData, refetch, proposalMetaData, state]);
+
+  useEffect(() => {
+    if (!proposalData) {
+      return;
     }
-    return buildProposalInfo({
-      index,
-      governorData,
-      proposalData,
-      proposalMetaData: proposalMetaData
-        ? proposalMetaData.accountInfo.data
-        : null,
-    });
-  }, [governorData, index, proposalData, proposalMetaData]);
+    if (state === ProposalState.Active) {
+      const timeRemaining =
+        proposalData.accountInfo.data.votingEndsAt.toNumber() * 1_000 -
+        Date.now();
+      return clearTimeout(
+        setTimeout(() => {
+          void refetch();
+        }, timeRemaining + 1)
+      );
+    }
+  }, [proposalData, refetch, state]);
+
   return {
-    info: proposalInfo,
+    refetch,
+    info,
     id,
     index,
   };
