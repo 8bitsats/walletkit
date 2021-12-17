@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 
 import { useIDL } from "../../../../../hooks/useIDLs";
+import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 import { fetcher } from "../../../../../utils/fetcher";
 import { Select } from "../../../../common/inputs/InputText";
 import { BasicPage } from "../../../../common/page/BasicPage";
@@ -19,6 +20,7 @@ export type InstructionInfo = {
 
 export const WalletTXCreateView: React.FC = () => {
   const { connection } = useSolana();
+  const { smartWallet } = useSmartWallet();
   const [programID, setProgramID] = useState<PublicKey | null>(null);
   const [ix, setIx] = useState<InstructionInfo | null>(null);
 
@@ -127,6 +129,7 @@ export const WalletTXCreateView: React.FC = () => {
               }`}
               ix={ix}
               program={program}
+              smartWallet={smartWallet}
             />
           </div>
         )}

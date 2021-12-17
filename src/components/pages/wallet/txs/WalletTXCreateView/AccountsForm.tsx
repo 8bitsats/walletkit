@@ -24,6 +24,7 @@ export const AccountsForm: React.FC<Props> = ({
             <span>{account.name}</span>
             <div>
               <AccountsForm
+                key={account.name}
                 accountItems={account.accounts}
                 accountsStrs={accountsStrs}
                 prefix={`${account.name}.`}

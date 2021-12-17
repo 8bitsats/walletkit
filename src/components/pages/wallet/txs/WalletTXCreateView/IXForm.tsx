@@ -1,7 +1,9 @@
+import type { SmartWalletWrapper } from "@gokiprotocol/client";
 import type { Accounts, Program } from "@project-serum/anchor";
 import type { InstructionDisplay } from "@project-serum/anchor/dist/cjs/coder/instruction";
 import type { IdlAccountItem } from "@project-serum/anchor/dist/esm/idl";
 import { formatIdlType, SuperCoder } from "@saberhq/anchor-contrib";
+import { u64 } from "@saberhq/token-utils";
 import type { TransactionInstruction } from "@solana/web3.js";
 import { Transaction } from "@solana/web3.js";
 import copyToClipboard from "copy-to-clipboard";
@@ -19,6 +21,7 @@ import { PreviewIXModal } from "./PreviewIXModal";
 interface Props {
   ix: InstructionInfo;
   program: Program;
+  smartWallet?: SmartWalletWrapper | null;
 }
 
 const makeIX = ({
@@ -49,6 +52,9 @@ const makeIX = ({
     const cfg = ix.instruction.args[i];
     if (!cfg) {
       return arg;
+    }
+    if (cfg.type === "u64") {
+      return new u64(arg);
     }
     if (typeof cfg.type !== "string") {
       return JSON.parse(arg) as unknown;
@@ -85,7 +91,11 @@ const makeDefaults = (accounts: IdlAccountItem[]): Record<string, string> => {
   return result;
 };
 
-export const IXForm: React.FC<Props> = ({ ix, program }: Props) => {
+export const IXForm: React.FC<Props> = ({
+  ix,
+  program,
+  smartWallet,
+}: Props) => {
   const [rawArgs, setRawArgs] = useState<string[]>(
     new Array(ix.instruction.args.length).map(() => "")
   );
@@ -95,8 +105,7 @@ export const IXForm: React.FC<Props> = ({ ix, program }: Props) => {
 
   const builtIX = useMemo(() => {
     try {
-      const resultIX = makeIX({ program, ix, rawArgs, accountsStrs });
-      return resultIX;
+      return makeIX({ program, ix, rawArgs, accountsStrs });
     } catch (e) {
       console.error("ERROR", e);
       // ignore
@@ -114,6 +123,7 @@ export const IXForm: React.FC<Props> = ({ ix, program }: Props) => {
           txInstructions={[builtIX.txInstruction]}
           formatted={builtIX.formatted}
           isOpen={showPreview}
+          smartWallet={smartWallet}
           onDismiss={() => {
             setShowPreview(false);
           }}

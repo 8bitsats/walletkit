@@ -1,18 +1,23 @@
+import type { SmartWalletWrapper } from "@gokiprotocol/client";
 import type { InstructionDisplay } from "@project-serum/anchor/dist/cjs/coder/instruction";
 import { useSail } from "@saberhq/sail";
-import { TransactionEnvelope } from "@saberhq/solana-contrib";
+import {
+  SignerWallet,
+  SingleConnectionBroadcaster,
+  SolanaProvider,
+  TransactionEnvelope,
+} from "@saberhq/solana-contrib";
 import { useSolana } from "@saberhq/use-solana";
 import type {
   SimulatedTransactionResponse,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { Transaction } from "@solana/web3.js";
+import { Connection, Keypair, Transaction } from "@solana/web3.js";
 import { startCase } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import invariant from "tiny-invariant";
 
-import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 import { AsyncButton } from "../../../../common/AsyncButton";
 import { AttributeList } from "../../../../common/AttributeList";
 import { Modal } from "../../../../common/Modal";
@@ -24,6 +29,7 @@ interface Props {
   formatted: InstructionDisplay;
   isOpen: boolean;
   onDismiss: () => void;
+  smartWallet?: SmartWalletWrapper | null;
 }
 
 export const PreviewIXModal: React.FC<Props> = ({
@@ -31,21 +37,33 @@ export const PreviewIXModal: React.FC<Props> = ({
   txInstructions,
   formatted,
   isOpen,
+  smartWallet,
   onDismiss,
 }: Props) => {
   const { network } = useSolana();
-  const { smartWallet } = useSmartWallet();
   const { handleTX } = useSail();
 
+  // TODO(michael): Figure this out ...
+  const rpcURL = process.env.RPC_URL ?? "https://api.devnet.solana.com";
+  const readonlyKeypair = Keypair.generate();
+
   const txEnv = useMemo(() => {
-    if (!smartWallet) {
-      return;
-    }
     const theTX = new Transaction();
     theTX.instructions = txInstructions;
-    theTX.feePayer = smartWallet.provider.wallet.publicKey;
-    return new TransactionEnvelope(smartWallet.provider, txInstructions);
-  }, [smartWallet, txInstructions]);
+    theTX.feePayer =
+      smartWallet?.provider.wallet.publicKey ?? readonlyKeypair.publicKey;
+    const readonlyConnection = new Connection(rpcURL);
+
+    return new TransactionEnvelope(
+      smartWallet?.provider ??
+        new SolanaProvider(
+          readonlyConnection,
+          new SingleConnectionBroadcaster(readonlyConnection),
+          new SignerWallet(readonlyKeypair)
+        ),
+      txInstructions
+    );
+  }, [smartWallet, txInstructions, rpcURL, readonlyKeypair]);
   const [result, setResult] = useState<SimulatedTransactionResponse | null>(
     null
   );
@@ -124,21 +142,23 @@ export const PreviewIXModal: React.FC<Props> = ({
           )}
         </div>
         <div>
-          <AsyncButton
-            onClick={async () => {
-              invariant(smartWallet, "smart wallet");
-              const pendingTX = await smartWallet.newTransaction({
-                instructions: txInstructions,
-              });
-              await handleTX(
-                pendingTX.tx,
-                `Propose ${startCase(ix.instruction.name)}`
-              );
-              onDismiss();
-            }}
-          >
-            Propose Transaction
-          </AsyncButton>
+          {smartWallet && (
+            <AsyncButton
+              onClick={async () => {
+                invariant(smartWallet, "smart wallet");
+                const pendingTX = await smartWallet.newTransaction({
+                  instructions: txInstructions,
+                });
+                await handleTX(
+                  pendingTX.tx,
+                  `Propose ${startCase(ix.instruction.name)}`
+                );
+                onDismiss();
+              }}
+            >
+              Propose Transaction
+            </AsyncButton>
+          )}
         </div>
       </div>
     </Modal>
