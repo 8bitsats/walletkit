@@ -18,7 +18,7 @@ export const Meter: React.FC<Props> = ({
           width: `${Math.min(value / max, 1) * 100}%`,
           backgroundColor: barColor,
         }}
-        tw="bg-primary h-1 rounded"
+        tw="bg-primary h-1 rounded transition-all"
       />
     </div>
   );
