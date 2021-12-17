@@ -18,7 +18,7 @@ export const GovernancePage: React.FC<Props> = ({
   preContent,
   children,
   contentStyles,
-  hideDAOName = true,
+  hideDAOName = false,
 }: Props) => {
   const { govToken, daoName } = useGovernor();
   return (
