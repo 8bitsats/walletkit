@@ -11,7 +11,7 @@ env:
   REACT_APP_SENTRY_RELEASE: gh-${{ github.sha }}
 
 jobs:
-  deploy-dist:
+  goki-dist:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -36,3 +36,31 @@ jobs:
           external_repository: ${{ github.repository }}-dist
           publish_branch: master
           publish_dir: ./build/
+
+  tribeca-dist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          always-auth: true
+          node-version: "16"
+      - name: Yarn Cache
+        uses: actions/cache@v2
+        with:
+          path: ./.yarn
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
+      - run: yarn install
+      - run: yarn build:production
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.DIST_DEPLOY_KEY }}
+          external_repository: TribecaHQ/tribeca-interface-dist
+          publish_branch: master
+          publish_dir: ./build/
+          user_name: "swaglioni"
+          user_email: "swag@tribeca.so"
