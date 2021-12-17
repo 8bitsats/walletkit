@@ -56,21 +56,16 @@ const buildProposalInfo = ({
  */
 export const useProposal = (index: number) => {
   const { network } = useSolana();
-  const { governor, governorData } = useGovernor();
+  const { governor } = useGovernor();
   const id = `000${index}`.slice(-4);
 
   const proposalKeys = useQuery(
     ["proposalKeys", network, governor.toString(), index],
     async () => {
-      invariant(governorData);
-      const [proposalKey] = await findProposalAddress(
-        governorData.accountId,
-        new u64(index)
-      );
+      const [proposalKey] = await findProposalAddress(governor, new u64(index));
       const [proposalMetaKey] = await findProposalMetaAddress(proposalKey);
       return { proposalKey, proposalMetaKey };
-    },
-    { enabled: !!governorData }
+    }
   );
 
   const { data: proposalData } = useParsedProposal(
@@ -80,15 +75,13 @@ export const useProposal = (index: number) => {
     proposalKeys.data?.proposalMetaKey
   );
 
-  const isLoading =
-    !governorData || !proposalData || proposalMetaData === undefined;
+  const isLoading = !proposalData || proposalMetaData === undefined;
   const proposalInfoQuery = useQuery({
     queryKey: ["proposalInfo", network, governor.toString(), index],
     queryFn: (): ProposalInfo => {
-      invariant(governorData && proposalData);
+      invariant(proposalData);
       return buildProposalInfo({
         index: proposalData.accountInfo.data.index.toNumber(),
-        governorData,
         proposalData,
         proposalMetaData: proposalMetaData
           ? proposalMetaData.accountInfo.data
@@ -187,7 +180,6 @@ export const useProposals = () => {
   );
 
   const isLoading =
-    !governorData ||
     !proposalsData.every((p) => p !== undefined) ||
     !proposalsMetaData.every((p) => p !== undefined);
 
@@ -199,7 +191,6 @@ export const useProposals = () => {
           .map((i) => ({
             queryKey: ["proposalInfo", network, governor.toString(), i],
             queryFn: (): ProposalInfo | null => {
-              invariant(governorData);
               const proposalData = proposalsData.find(
                 (p) => p?.accountInfo.data.index.toNumber() === i
               );
@@ -211,7 +202,6 @@ export const useProposals = () => {
               );
               return buildProposalInfo({
                 index: proposalData.accountInfo.data.index.toNumber(),
-                governorData,
                 proposalData,
                 proposalMetaData: proposalMetaData
                   ? proposalMetaData.accountInfo.data
