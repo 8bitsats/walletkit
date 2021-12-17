@@ -1,10 +1,14 @@
+import { useGovernor } from "../../pages/governance/hooks/useGovernor";
+import { TokenIcon } from "../TokenIcon";
+
 interface Props {
-  title: string;
+  title: React.ReactNode;
   header?: React.ReactNode;
   right?: React.ReactNode;
   preContent?: React.ReactNode;
   children?: React.ReactNode;
   contentStyles?: React.CSSProperties;
+  hideDAOName?: boolean;
 }
 
 export const GovernancePage: React.FC<Props> = ({
@@ -14,12 +18,22 @@ export const GovernancePage: React.FC<Props> = ({
   preContent,
   children,
   contentStyles,
+  hideDAOName = true,
 }: Props) => {
+  const { govToken, daoName } = useGovernor();
   return (
     <div tw="w-full">
-      <div tw="bg-warmGray-900 pt-20 pb-24">
+      <div tw="bg-warmGray-900 pb-24">
         <div tw="max-w-5xl w-11/12 mx-auto">
-          <div tw="flex gap-8 flex-row flex-wrap items-center justify-between w-full">
+          <div tw="h-6">
+            {!hideDAOName && (
+              <div tw="flex items-center gap-2 text-sm font-semibold text-white">
+                <TokenIcon token={govToken} size={24} />
+                <span>{daoName} Governance</span>
+              </div>
+            )}
+          </div>
+          <div tw="flex gap-8 flex-row flex-wrap items-center justify-between w-full mt-16">
             <div tw="flex flex-col">
               <h1 tw="text-2xl md:text-3xl font-bold text-white tracking-tighter">
                 {title}

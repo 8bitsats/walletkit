@@ -7,6 +7,7 @@ import tw, { styled } from "twin.macro";
 
 import { useSDK } from "../../../../../contexts/sdk";
 import { Button } from "../../../../common/Button";
+import { ContentLoader } from "../../../../common/ContentLoader";
 import { Card } from "../../../../common/governance/Card";
 import { TokenAmountDisplay } from "../../../../common/TokenAmountDisplay";
 import { TokenIcon } from "../../../../common/TokenIcon";
@@ -25,7 +26,7 @@ export const EscrowInfo: React.FC<Props> = ({ className }: Props) => {
   const { data: locker } = useLocker();
   const govToken = useToken(locker?.accountInfo.data.tokenMint);
   const [govTokenBalance] = useUserAssociatedTokenAccounts([govToken]);
-  const { data: escrow, isLoading } = useUserEscrow();
+  const { data: escrow, isLoading, govTokensLocked } = useUserEscrow();
   const { sdkMut } = useSDK();
 
   const history = useHistory();
@@ -52,6 +53,16 @@ export const EscrowInfo: React.FC<Props> = ({ className }: Props) => {
             />
           ) : (
             <div tw="h-4 w-12 animate-pulse rounded bg-white bg-opacity-10" />
+          )}
+          <TokenIcon size={18} token={govToken} />
+        </div>
+      </CardItem>
+      <CardItem label={`Your ${govToken?.symbol ?? "Token"} Locked`}>
+        <div tw="flex items-center gap-2.5 h-7">
+          {govTokensLocked ? (
+            <TokenAmountDisplay amount={govTokensLocked} showSymbol={false} />
+          ) : (
+            <ContentLoader tw="h-4 w-12" />
           )}
           <TokenIcon size={18} token={govToken} />
         </div>

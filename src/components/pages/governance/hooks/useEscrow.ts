@@ -30,7 +30,7 @@ export const useLocker = () => {
 export const useEscrow = (owner?: PublicKey) => {
   const { tribecaMut } = useSDK();
   const { network } = useSolana();
-  const { governorData, governor, veToken } = useGovernor();
+  const { governorData, governor, veToken, govToken } = useGovernor();
   const lockerKey = governorData
     ? governorData.accountInfo.data.electorate
     : governorData;
@@ -71,7 +71,13 @@ export const useEscrow = (owner?: PublicKey) => {
           result.data.calculateVotingPower(new Date().getTime() / 1_000)
         )
       : null;
-  return { ...result, veBalance };
+
+  const govTokensLocked =
+    govToken && result.isFetched
+      ? new TokenAmount(govToken, result.data ? result.data.escrow.amount : 0)
+      : null;
+
+  return { ...result, veBalance, govTokensLocked };
 };
 
 export const useUserEscrow = () => {
