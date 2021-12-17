@@ -95,7 +95,7 @@ export const StyledButton = styled.button<AdditionalButtonProps>(
     variant === "outline" &&
       tw`border hover:border-gray-200 transition-colors text-gray-800 dark:text-white`,
     variant === "primary" &&
-      tw`text-white bg-primary shadow border border-primary-600`,
+      tw`text-black bg-primary shadow border border-primary-600`,
     variant === "secondary" &&
       tw`text-white bg-accent shadow border border-accent-600`,
     variant === "muted" && tw`text-gray-200 bg-gray-700 hover:bg-gray-500`,
