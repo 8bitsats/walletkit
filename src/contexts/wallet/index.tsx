@@ -77,7 +77,7 @@ export const WalletConnectorProvider: React.FC<Props> = ({
               width: 48px;
               height: 48px;
             `}
-            src="/images/icon.png"
+            src={APP_CONFIG.favicon}
             alt={`${APP_CONFIG.name} Logo`}
           />
         ),
