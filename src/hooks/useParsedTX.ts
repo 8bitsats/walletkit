@@ -15,8 +15,12 @@ import { decodeTransaction } from "./useSmartWallet";
 import { useTXAddress } from "./useTXAddress";
 
 export const useParsedTX = (smartWalletKey: PublicKey, index: number) => {
-  const { network } = useSolana();
   const { data: key } = useTXAddress(smartWalletKey, index);
+  return useParsedTXByKey(key);
+};
+
+export const useParsedTXByKey = (key: PublicKey | undefined) => {
+  const { network } = useSolana();
   const { data: txData, loading } = useParsedAccountData(
     key,
     decodeTransaction
@@ -26,7 +30,7 @@ export const useParsedTX = (smartWalletKey: PublicKey, index: number) => {
   );
 
   const query = useQuery(
-    ["parsedTX", network, smartWalletKey.toString(), index],
+    ["parsedTX", network, key],
     () => {
       invariant(txData);
       const instructions: ParsedInstruction[] =
@@ -62,7 +66,11 @@ export const useParsedTX = (smartWalletKey: PublicKey, index: number) => {
               )}`,
             })
           );
-      return { tx: txData, index, instructions };
+      return {
+        tx: txData,
+        index: txData.accountInfo.data.index.toNumber(),
+        instructions,
+      };
     },
     {
       enabled: !!txData,

@@ -1,9 +1,10 @@
 import { useParsedAccountData, useSail } from "@saberhq/sail";
+import pluralize from "pluralize";
 import invariant from "tiny-invariant";
 
 import { useSDK } from "../../../../../../contexts/sdk";
 import { gokiTXLink, tsToDate } from "../../../../../../utils/utils";
-import { AsyncButton } from "../../../../../common/AsyncButton";
+import { AsyncConfirmButton } from "../../../../../common/AsyncConfirmButton";
 import { Card } from "../../../../../common/governance/Card";
 import { ExternalLink } from "../../../../../common/typography/ExternalLink";
 import {
@@ -12,6 +13,7 @@ import {
 } from "../../../hooks/useExecutiveCouncil";
 import { useGovernor } from "../../../hooks/useGovernor";
 import type { ProposalInfo } from "../../../hooks/useProposals";
+import { EmbedTX } from "../EmbedTX";
 
 interface Props {
   proposal: ProposalInfo;
@@ -49,7 +51,31 @@ export const ProposalExecute: React.FC<Props> = ({
         >
           View on Goki
         </ExternalLink>
-        <AsyncButton
+        <AsyncConfirmButton
+          modal={{
+            title: "Execute Proposal",
+            contents: (
+              <div tw="prose prose-light prose-sm">
+                <p>
+                  You are about to execute the following{" "}
+                  {pluralize(
+                    "instruction",
+                    gokiTransactionData.accountInfo.data.instructions.length
+                  )}{" "}
+                  on behalf of the DAO:
+                </p>
+                <div>
+                  <EmbedTX txKey={gokiTransactionData.accountId} />
+                </div>
+                <p>
+                  There will be two instructions for you to sign: the first is
+                  to approve the proposal for execution by the smart wallet, and
+                  the second is to execute the transaction on behalf of the
+                  smart wallet.
+                </p>
+              </div>
+            ),
+          }}
           disabled={!governorW || !ecWallet.data}
           size="md"
           variant="primary"
@@ -95,7 +121,7 @@ export const ProposalExecute: React.FC<Props> = ({
           }}
         >
           Execute Proposal
-        </AsyncButton>
+        </AsyncConfirmButton>
       </div>
     </Card>
   );

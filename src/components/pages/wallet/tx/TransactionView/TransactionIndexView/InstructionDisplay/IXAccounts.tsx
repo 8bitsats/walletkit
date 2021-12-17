@@ -1,6 +1,7 @@
 import type { PublicKey } from "@solana/web3.js";
 
 import { AddressLink } from "../../../../../../common/AddressLink";
+import { Box } from "./Box";
 
 interface Props {
   accounts: {
@@ -13,15 +14,12 @@ interface Props {
 
 export const IXAccounts: React.FC<Props> = ({ accounts }: Props) => {
   return (
-    <div tw="border rounded text-sm">
-      <h2 tw="px-6 py-2 font-semibold text-gray-800">
-        Accounts ({accounts.length})
-      </h2>
+    <Box title={`Accounts (${accounts.length})`} tw="p-0">
       {accounts.map((account, i) => {
         return (
           <div
             key={`account_${i}`}
-            tw="px-6 py-2 flex items-center justify-between border-t border-t-gray-150"
+            tw="px-6 py-2 flex items-center gap-4 justify-between border-t border-t-gray-150 dark:border-t-warmGray-600"
           >
             <div tw="flex items-center gap-4">
               <span tw="text-gray-500 font-semibold">
@@ -42,12 +40,12 @@ export const IXAccounts: React.FC<Props> = ({ accounts }: Props) => {
                 )}
               </div>
             </div>
-            <div tw="text-gray-800 font-medium">
+            <div tw="text-gray-800 font-medium flex-shrink-0">
               <AddressLink address={account.pubkey} showCopy showRaw={false} />
             </div>
           </div>
         );
       })}
-    </div>
+    </Box>
   );
 };
