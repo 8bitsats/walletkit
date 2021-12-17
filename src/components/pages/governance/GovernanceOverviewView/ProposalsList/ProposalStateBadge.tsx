@@ -52,7 +52,7 @@ const getStateIcon = (state: ProposalState): React.ReactNode => {
 
 export const ProposalStateBadge: React.FC<Props> = ({ state }: Props) => {
   return (
-    <div tw="flex flex-col items-center gap-1 lg:(flex-row gap-5 flex-basis[140px])">
+    <div tw="flex flex-col items-center gap-1 lg:(flex-row gap-5)">
       {getStateIcon(state)}
       <span tw="text-sm text-white">{startCase(STATE_LABELS[state])}</span>
     </div>

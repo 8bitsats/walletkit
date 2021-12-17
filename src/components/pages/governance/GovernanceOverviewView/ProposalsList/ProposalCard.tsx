@@ -46,14 +46,16 @@ export const ProposalCard: React.FC<Props> = ({ proposalInfo }: Props) => {
         </div>
       </div>
       {proposalInfo.state === ProposalState.Active && (
-        <div tw="flex-basis[290px]">
+        <div tw="w-[290px]">
           <ActiveProposalVotingBars proposal={proposalInfo} />
         </div>
       )}
       {proposalInfo.state !== null &&
         proposalInfo.state !== ProposalState.Draft &&
         proposalInfo.state !== ProposalState.Active && (
-          <ProposalStateBadge state={proposalInfo.state} />
+          <div tw="md:w-20 lg:w-[140px]">
+            <ProposalStateBadge state={proposalInfo.state} />
+          </div>
         )}
     </Link>
   );
