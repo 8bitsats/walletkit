@@ -38,15 +38,15 @@ export const parseTokenInstructionData = <
 ): (TokenInstructionInner & { type: K })["data"] => {
   switch (type) {
     case "transfer": {
-      const dataLayout = structLayout<{
-        amount: Buffer;
+      const dataLayout = BufferLayout.struct<{
+        amount: Uint8Array;
       }>([Uint64Layout("amount")]);
       const decoded = dataLayout.decode(data);
       const [source, destination, authority] = keys;
       if (!source || !destination || !authority) {
         return null;
       }
-      const amount = u64.fromBuffer(decoded.amount);
+      const amount = u64.fromBuffer(Buffer.from(decoded.amount));
       return {
         source,
         destination,
@@ -56,7 +56,7 @@ export const parseTokenInstructionData = <
     }
     case "transfer2": {
       const dataLayout = structLayout<{
-        amount: Buffer;
+        amount: Uint8Array;
         decimals: number;
       }>([Uint64Layout("amount"), BufferLayout.u8("decimals")]);
       const decoded = dataLayout.decode(data);
@@ -64,7 +64,7 @@ export const parseTokenInstructionData = <
       if (!source || !destination || !mint) {
         return null;
       }
-      const amount = u64.fromBuffer(decoded.amount);
+      const amount = u64.fromBuffer(Buffer.from(decoded.amount));
       return {
         source,
         destination,
