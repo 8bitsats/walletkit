@@ -3,11 +3,7 @@ import { getCacheKeyOfPublicKey } from "@saberhq/sail";
 import { u64 } from "@saberhq/token-utils";
 import { useSolana } from "@saberhq/use-solana";
 import type { PublicKey } from "@solana/web3.js";
-import type {
-  GovernorData,
-  ProposalData,
-  ProposalMetaData,
-} from "@tribecahq/tribeca-sdk";
+import type { ProposalData, ProposalMetaData } from "@tribecahq/tribeca-sdk";
 import {
   findProposalAddress,
   findProposalMetaAddress,
@@ -36,18 +32,15 @@ export interface ProposalInfo {
 
 const buildProposalInfo = ({
   index,
-  governorData,
   proposalData,
   proposalMetaData,
 }: {
   index: number;
-  governorData: ParsedAccountInfo<GovernorData>;
   proposalData: ParsedAccountInfo<ProposalData>;
   proposalMetaData: ProposalMetaData | null;
 }): ProposalInfo => {
   const state = getProposalState({
     proposalData: proposalData.accountInfo.data,
-    quorumVotes: governorData.accountInfo.data.params.quorumVotes,
   });
   return {
     proposalKey: proposalData.accountId,
@@ -110,7 +103,6 @@ export const useProposal = (index: number) => {
   const state = proposalData
     ? getProposalState({
         proposalData: proposalData.accountInfo.data,
-        quorumVotes: proposalData.accountInfo.data.quorumVotes,
       })
     : null;
 

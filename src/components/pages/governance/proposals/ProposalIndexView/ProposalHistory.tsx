@@ -60,7 +60,7 @@ const extractEvents = (
     makeDate(proposalData.votingEndsAt) <= new Date()
   ) {
     // TODO: update quorum
-    const state = getProposalState({ proposalData, quorumVotes: new BN(0) });
+    const state = getProposalState({ proposalData });
     events.push({
       title: startCase(
         PROPOSAL_STATE_LABELS[
