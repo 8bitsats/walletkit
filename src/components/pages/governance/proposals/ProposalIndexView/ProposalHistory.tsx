@@ -70,6 +70,15 @@ const extractEvents = (
       date: makeDate(proposalData.votingEndsAt),
     });
   }
+  if (tx?.accountInfo.data.executedAt.gt(new BN(0))) {
+    events.push({
+      title: "Executed",
+      date: makeDate(tx.accountInfo.data.executedAt),
+      link: tx
+        ? `https://beta.goki.so/#/wallets/${tx.accountInfo.data.smartWallet.toString()}/tx/${tx.accountInfo.data.index.toString()}`
+        : null,
+    });
+  }
   return events.sort((a, b) => (a.date < b.date ? -1 : 1));
 };
 

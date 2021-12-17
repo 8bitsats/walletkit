@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { FaCode, FaEllipsisH, FaTwitter } from "react-icons/fa";
 
-import appInfo from "../../../../app.json";
+import { APP_CONFIG } from "../../../../config";
 import { Drop } from "../../../common/Drop";
 
 export const MoreInfo: React.FC = () => {
@@ -11,24 +11,24 @@ export const MoreInfo: React.FC = () => {
     // {
     //   label: "Medium",
     //   slug: "medium",
-    //   href: `https://medium.com/${appInfo.socials.medium}`,
+    //   href: `https://medium.com/${APP_CONFIG.socials.medium}`,
     //   icon: <FaMedium />,
     // },
     {
       label: "Twitter",
       slug: "twitter",
-      href: `https://twitter.com/${appInfo.socials.twitter}`,
+      href: `https://twitter.com/${APP_CONFIG.socials.twitter}`,
       icon: <FaTwitter />,
     },
     // {
     //   label: "Chat",
-    //   href: `https://keybase.io/team/${appInfo.socials.keybase}`,
+    //   href: `https://keybase.io/team/${APP_CONFIG.socials.keybase}`,
     //   slug: "chat",
     //   icon: <IoMdChatboxes />,
     // },
     {
       label: "Code",
-      href: appInfo.code,
+      href: APP_CONFIG.code,
       slug: "code",
       icon: <FaCode />,
     },

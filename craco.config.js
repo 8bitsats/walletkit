@@ -1,11 +1,11 @@
 const webpack = require("webpack");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
-const appInfo = require("./src/app.json");
 const deepMerge = require("deepmerge");
 const fs = require("fs");
 const path = require("path");
 const SentryWebpackPlugin = require("@sentry/webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const appConfigs = require("./src/config/app.json");
 
 const now = Math.floor(new Date().getTime() / 1000);
 
@@ -52,6 +52,8 @@ module.exports = {
       if (!htmlWebpackPlugin) {
         throw new Error("Can't find HtmlWebpackPlugin");
       }
+
+      const appInfo = appConfigs[process.env.REACT_APP_APP_CONFIG ?? "goki"];
 
       config.plugins.unshift(
         new webpack.ProvidePlugin({

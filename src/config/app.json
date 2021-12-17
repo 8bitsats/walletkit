@@ -1,0 +1,36 @@
+{
+  "tribeca": {
+    "name": "Tribeca",
+    "fullName": "Tribeca DAO Platform",
+    "description": "Tribeca is a Solana-based governance platform built by DAOs, for DAOs.",
+    "url": "https://tribeca.so",
+    "image": "https://tribeca.so/images/tribeca.png",
+    "imageAlt": "A Solana-based governance platform built by DAOs, for DAOs.",
+    "themeColor": "#282A2C",
+    "socials": {
+      "twitter": "TribecaDAO",
+      "medium": "",
+      "github": "TribecaHQ",
+      "discord": "",
+      "keybase": ""
+    },
+    "code": "https://github.com/TribecaHQ/tribeca"
+  },
+  "goki": {
+    "name": "Goki",
+    "fullName": "Goki Smart Wallet",
+    "description": "A multisig wallet and auditable timelock on Solana.",
+    "url": "https://goki.so",
+    "image": "https://goki.so/images/og-image.png",
+    "imageAlt": "A multisig wallet and auditable timelock on Solana.",
+    "themeColor": "#192908",
+    "socials": {
+      "twitter": "GokiProtocol",
+      "medium": "GokiProtocol",
+      "github": "GokiProtocol",
+      "discord": "",
+      "keybase": "gokihelp"
+    },
+    "code": "https://github.com/GokiProtocol/goki"
+  }
+}

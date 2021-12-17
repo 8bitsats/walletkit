@@ -11,7 +11,7 @@
     "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@gokiprotocol/client": "^0.5.3",
+    "@gokiprotocol/client": "^0.5.4",
     "@gokiprotocol/walletkit": "^1.5.1",
     "@highlight-run/react": "^1.0.5",
     "@popperjs/core": "^2.11.0",

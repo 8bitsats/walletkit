@@ -7,6 +7,7 @@ import { ProposalSubtitle } from "../../GovernanceOverviewView/ProposalsList/Pro
 import { useGovWindowTitle } from "../../hooks/useGovernor";
 import { useProposal } from "../../hooks/useProposals";
 import { ProposalActivate } from "./actions/ProposalActivate";
+import { ProposalExecute } from "./actions/ProposalExecute";
 import { ProposalQueue } from "./actions/ProposalQueue";
 import { ProposalVote } from "./actions/ProposalVote";
 import { ProposalDetails } from "./ProposalDetails";
@@ -68,6 +69,14 @@ export const ProposalIndexView: React.FC = () => {
             )}
             {proposal.data?.state === ProposalState.Succeeded && (
               <ProposalQueue
+                proposal={proposal.data}
+                onActivate={() => {
+                  void proposal.refetch();
+                }}
+              />
+            )}
+            {proposal.data?.state === ProposalState.Queued && (
+              <ProposalExecute
                 proposal={proposal.data}
                 onActivate={() => {
                   void proposal.refetch();

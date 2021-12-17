@@ -5,7 +5,7 @@ import * as Sentry from "@sentry/react";
 import React from "react";
 import { isMobile } from "react-device-detect";
 
-import appInfo from "../../app.json";
+import { APP_CONFIG } from "../../config";
 import { environments } from "../../utils/environments";
 import { notify } from "../../utils/notifications";
 import { EnvironmentProvider } from "../../utils/useEnvironment";
@@ -70,7 +70,7 @@ export const WalletConnectorProvider: React.FC<Props> = ({
     <WalletKitProvider
       defaultNetwork="devnet"
       app={{
-        name: appInfo.name,
+        name: APP_CONFIG.name,
         icon: (
           <img
             css={css`
@@ -78,7 +78,7 @@ export const WalletConnectorProvider: React.FC<Props> = ({
               height: 48px;
             `}
             src="/images/icon.png"
-            alt={`${appInfo.name} Logo`}
+            alt={`${APP_CONFIG.name} Logo`}
           />
         ),
       }}

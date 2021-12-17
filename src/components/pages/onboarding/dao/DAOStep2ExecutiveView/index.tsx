@@ -20,7 +20,7 @@ import { InputText } from "../../../../common/inputs/InputText";
 export const DAOStep2ExecutiveView: React.FC = () => {
   const [baseKP, setBaseKP] = useState<Keypair>(Keypair.generate());
   const { data: smartWalletKey } = useSmartWalletAddress(baseKP.publicKey);
-  const { data: ownerInvokerKey } = useOwnerInvokerAddress(baseKP.publicKey);
+  const { data: ownerInvokerKey } = useOwnerInvokerAddress(smartWalletKey);
   const { sdkMut } = useSDK();
   const { handleTX } = useSail();
   const history = useHistory();
@@ -88,13 +88,19 @@ export const DAOStep2ExecutiveView: React.FC = () => {
               onClick={async () => {
                 try {
                   invariant(sdkMut && ownerInvokerKey, "sdk");
-                  const { tx } = await sdkMut.newSmartWallet({
-                    owners: [sdkMut.provider.wallet.publicKey],
-                    threshold: new BN(1),
-                    // default to 11 max owners
-                    // if people complain about cost, we can reduce this
-                    numOwners: 11,
-                    base: baseKP,
+                  const { tx, smartWalletWrapper } =
+                    await sdkMut.newSmartWallet({
+                      owners: [sdkMut.provider.wallet.publicKey],
+                      threshold: new BN(1),
+                      // default to 11 max owners
+                      // if people complain about cost, we can reduce this
+                      numOwners: 11,
+                      base: baseKP,
+                    });
+                  const subaccountTX = await sdkMut.createSubaccountInfo({
+                    smartWallet: smartWalletWrapper.key,
+                    index: 0,
+                    type: "ownerInvoker",
                   });
                   notify({
                     message: "Creating the Executive Council",
@@ -102,7 +108,7 @@ export const DAOStep2ExecutiveView: React.FC = () => {
                       "Please sign the transaction in your wallet to continue.",
                   });
                   const { pending, success } = await handleTX(
-                    tx,
+                    tx.combine(subaccountTX),
                     "Create Executive Council"
                   );
                   if (!success || !pending) {
