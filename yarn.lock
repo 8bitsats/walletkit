@@ -3294,6 +3294,7 @@ __metadata:
     "@types/react-router": ^5.1.17
     "@types/react-router-dom": ^5.3.2
     "@types/webpack-bundle-analyzer": ^4.4.1
+    "@types/webpack-sources": ^3
     "@types/yup": ^0.29.13
     assert: ^2.0.0
     autoprefixer: ^10.4.0
@@ -3354,6 +3355,7 @@ __metadata:
     use-debounce: ^7.0.1
     webpack: ^5.65.0
     webpack-bundle-analyzer: ^4.5.0
+    webpack-sources: ^3.2.2
     yup: ^0.32.11
   dependenciesMeta:
     "@react-spring/core":
@@ -5857,6 +5859,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/source-list-map@npm:*":
+  version: 0.1.2
+  resolution: "@types/source-list-map@npm:0.1.2"
+  checksum: fda8f37537aca9d3ed860d559289ab1dddb6897e642e6f53e909bbd18a7ac3129a8faa2a7d093847c91346cf09c86ef36e350c715406fba1f2271759b449adf6
+  languageName: node
+  linkType: hard
+
 "@types/stack-utils@npm:^2.0.0":
   version: 2.0.0
   resolution: "@types/stack-utils@npm:2.0.0"
@@ -5886,6 +5895,17 @@ __metadata:
     tapable: ^2.2.0
     webpack: ^5
   checksum: 50afdbd2a40545a8acda4adda09b98772dd646dea894dfa95d9f86d224d3df462405b5d0c04077958e87399cda4c9bac7451bbb7285c99e7220806b439ae7f72
+  languageName: node
+  linkType: hard
+
+"@types/webpack-sources@npm:^3":
+  version: 3.2.0
+  resolution: "@types/webpack-sources@npm:3.2.0"
+  dependencies:
+    "@types/node": "*"
+    "@types/source-list-map": "*"
+    source-map: ^0.7.3
+  checksum: fa23dcfb99f79cc0ba8e6ca41cb8dedb406f8d7772e8e3d3d9b443bfb36557a1a78f4de2b97905554db98beee1a2ef6f930e188977adde6452392a64dd4b7c2a
   languageName: node
   linkType: hard
 
