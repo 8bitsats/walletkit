@@ -29,6 +29,8 @@ jobs:
             ${{ runner.os }}-modules-
       - run: yarn install
       - run: yarn build:production
+        env:
+          REACT_APP_APP_CONFIG: goki
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -55,6 +57,8 @@ jobs:
             ${{ runner.os }}-modules-
       - run: yarn install
       - run: yarn build:production
+        env:
+          REACT_APP_APP_CONFIG: tribeca
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
