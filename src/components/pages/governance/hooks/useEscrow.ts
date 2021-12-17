@@ -1,4 +1,4 @@
-import { useParsedAccountData, useSail } from "@saberhq/sail";
+import { useParsedAccountData } from "@saberhq/sail";
 import { TokenAmount } from "@saberhq/token-utils";
 import { useSolana } from "@saberhq/use-solana";
 import type { KeyedAccountInfo, PublicKey } from "@solana/web3.js";
@@ -34,33 +34,39 @@ export const useEscrow = (owner?: PublicKey) => {
   const lockerKey = governorData
     ? governorData.accountInfo.data.electorate
     : governorData;
-  const { fetchKeys } = useSail();
+
+  const escrowKey = useQuery(
+    ["escrowKey", network, lockerKey?.toString(), owner?.toString()],
+    async () => {
+      invariant(lockerKey && owner);
+      const [escrowKey] = await findEscrowAddress(lockerKey, owner);
+      return escrowKey;
+    },
+    {
+      enabled: !!(lockerKey && owner),
+    }
+  );
+  const { data: escrow } = useParsedAccountData(escrowKey.data, parseEscrow);
 
   const result = useQuery(
-    ["escrow", network, lockerKey?.toString(), owner?.toString()],
+    ["escrow", escrow?.accountId.toString()],
     async () => {
-      invariant(lockerKey && owner && tribecaMut);
-      const [escrowKey] = await findEscrowAddress(lockerKey, owner);
-      const [escrowData] = await fetchKeys([escrowKey]);
-      if (!escrowData || !escrowData.data) {
-        return null;
-      }
-      const escrow = parseEscrow(escrowData.data);
+      invariant(lockerKey && owner && tribecaMut && escrow);
       const escrowW = new VoteEscrow(
         tribecaMut,
         lockerKey,
         governor,
-        escrowKey,
+        escrow.accountId,
         owner
       );
       return {
-        escrow,
+        escrow: escrow.accountInfo.data,
         escrowW,
         calculateVotingPower: await escrowW.makeCalculateVotingPower(),
       };
     },
     {
-      enabled: !!governorData && !!lockerKey && !!owner && !!tribecaMut,
+      enabled: !!governorData && !!(lockerKey && owner && tribecaMut && escrow),
     }
   );
 
