@@ -7,7 +7,11 @@ import { Button } from "../../../common/Button";
 import { Drop } from "../../../common/Drop";
 import { AccountPopover } from "../../MainLayout/Header/WalletDropdown/AccountPopover";
 
-export const WalletDropdown: React.FC = () => {
+interface Props {
+  className?: string;
+}
+
+export const WalletDropdown: React.FC<Props> = ({ className }: Props) => {
   const { connect } = useWalletKit();
   const wallet = useConnectedWallet();
   const { walletProviderInfo } = useWallet();
@@ -20,7 +24,8 @@ export const WalletDropdown: React.FC = () => {
       {wallet ? (
         <>
           <button
-            tw="px-3 py-1 flex items-center gap-2 justify-between rounded text-white bg-warmGray-800 hover:bg-coolGray-800 z-20 md:z-auto"
+            className={className}
+            tw="px-3 py-1 flex items-center gap-2 justify-between rounded border dark:(text-white border-none bg-warmGray-800 hover:bg-coolGray-800) z-20 md:z-auto"
             ref={setTargetRef}
             onClick={() => {
               setShowAccountPopover((p) => !p);

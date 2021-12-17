@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 
 import { ReactComponent as Icon } from "../../../common/svgs/Icon.svg";
 import { ReactComponent as Logo } from "../../../common/svgs/logo-dark.svg";
+import { WalletDropdown } from "../../GovernorLayout/Header/WalletDropdown";
 import { MoreInfo } from "./MoreInfo";
 
 export const Header: React.FC = () => {
@@ -31,6 +32,7 @@ export const Header: React.FC = () => {
             {startCase(network)}
           </span>
         )}
+        <WalletDropdown />
         <MoreInfo />
       </div>
     </div>
