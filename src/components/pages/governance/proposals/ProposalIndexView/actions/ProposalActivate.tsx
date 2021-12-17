@@ -1,5 +1,6 @@
 import { useSail } from "@saberhq/sail";
 import { sleep } from "@saberhq/token-utils";
+import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import invariant from "tiny-invariant";
 
@@ -25,13 +26,28 @@ export const ProposalActivate: React.FC<Props> = ({
   const { handleTX } = useSail();
   const { governorW } = useGovernor();
 
-  const earliestActivationTime = governorData
-    ? new Date(
-        proposal.proposalData.createdAt
-          .add(governorData.accountInfo.data.params.votingDelay)
-          .toNumber() * 1_000
-      )
-    : null;
+  const earliestActivationTime = useMemo(
+    () =>
+      governorData
+        ? new Date(
+            proposal.proposalData.createdAt
+              .add(governorData.accountInfo.data.params.votingDelay)
+              .toNumber() * 1_000
+          )
+        : null,
+    [governorData, proposal.proposalData.createdAt]
+  );
+
+  useEffect(() => {
+    if (!earliestActivationTime) {
+      return;
+    }
+    const remainingTime = earliestActivationTime.getTime() - Date.now();
+    const timeout = setTimeout(() => {
+      void refetch();
+    }, remainingTime + 1);
+    return () => clearTimeout(timeout);
+  }, [earliestActivationTime, refetch]);
 
   return (
     <Card title="Actions">

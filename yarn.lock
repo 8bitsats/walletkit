@@ -3248,7 +3248,7 @@ __metadata:
     "@gokiprotocol/walletkit": ^1.5.1
     "@highlight-run/react": ^1.0.5
     "@popperjs/core": ^2.11.0
-    "@project-serum/anchor": ^0.19.0
+    "@project-serum/anchor": ^0.19.1-beta.1
     "@project-serum/serum": ^0.13.61
     "@quarryprotocol/quarry-sdk": ^1.11.2
     "@quarryprotocol/react-quarry": ^0.12.12
@@ -3257,14 +3257,14 @@ __metadata:
     "@reach/slider": ^0.16.0
     "@react-spring/web": ^9.3.1
     "@rushstack/eslint-patch": ^1.1.0
-    "@saberhq/anchor-contrib": ^1.11.1
-    "@saberhq/eslint-config-react": ^1.11.1
-    "@saberhq/sail": ^2.9.1
-    "@saberhq/solana-contrib": ^1.11.1
-    "@saberhq/spl-token-icons": ^0.1.112
-    "@saberhq/stableswap-sdk": ^1.11.1
-    "@saberhq/token-utils": ^1.11.1
-    "@saberhq/use-solana": ^1.11.1
+    "@saberhq/anchor-contrib": ^1.11.2
+    "@saberhq/eslint-config-react": ^1.11.2
+    "@saberhq/sail": ^2.9.3
+    "@saberhq/solana-contrib": ^1.11.2
+    "@saberhq/spl-token-icons": ^0.1.113
+    "@saberhq/stableswap-sdk": ^1.11.2
+    "@saberhq/token-utils": ^1.11.2
+    "@saberhq/use-solana": ^1.11.2
     "@sentry/integrations": ^6.16.1
     "@sentry/react": ^6.16.1
     "@sentry/tracing": ^6.16.1
@@ -3273,7 +3273,7 @@ __metadata:
     "@simbathesailor/babel-plugin-use-what-changed": ^2.1.0
     "@simbathesailor/use-what-changed": ^2.0.0
     "@solana/buffer-layout": ^4.0.0
-    "@solana/wallet-adapter-base": ^0.8.0
+    "@solana/wallet-adapter-base": ^0.8.1
     "@solana/web3.js": ^1.31.0
     "@sunnyag/react-coingecko": ^2.1.0
     "@tailwindcss/aspect-ratio": ^0.4.0
@@ -3337,14 +3337,14 @@ __metadata:
     react-icons: ^4.3.1
     react-markdown: ^7.1.1
     react-popper: ^2.2.5
-    react-query: ^3.34.4
+    react-query: ^3.34.5
     react-router: ^5.2.1
     react-router-dom: ^5.3.0
     react-scripts: ^5.0.0
     react-use-gesture: ^9.1.3
     superstruct: ^0.15.3
     swr: ^1.1.2-beta.0
-    tailwindcss: ^3.0.6
+    tailwindcss: ^3.0.7
     tiny-invariant: ^1.2.0
     tslib: ^2.3.1
     twin.macro: ^2.8.2
@@ -4076,15 +4076,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/devices@npm:^6.19.0":
-  version: 6.19.0
-  resolution: "@ledgerhq/devices@npm:6.19.0"
+"@ledgerhq/devices@npm:^6.20.0":
+  version: 6.20.0
+  resolution: "@ledgerhq/devices@npm:6.20.0"
   dependencies:
     "@ledgerhq/errors": ^6.10.0
     "@ledgerhq/logs": ^6.10.0
     rxjs: 6
     semver: ^7.3.5
-  checksum: a5a2e14e69993f08a4c53521f7a173e6e43b403cd50aeff60f701795e3c84f73a98ec4643e9ce863d94292e7d6b7e1563900d65d34799d3e256bce8637087473
+  checksum: 67246ffe6d6b95e3ec2f6ce2f02eeb138397911f7018c1055ec8ed103e9790b4f825754e2f0e64f554e90f698fec05e2c80abf2bf3ec3c0eecc490acf4c21ad7
   languageName: node
   linkType: hard
 
@@ -4095,26 +4095,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport-webusb@npm:^6.19.0":
-  version: 6.19.0
-  resolution: "@ledgerhq/hw-transport-webusb@npm:6.19.0"
+"@ledgerhq/hw-transport-webusb@npm:^6.20.0":
+  version: 6.20.0
+  resolution: "@ledgerhq/hw-transport-webusb@npm:6.20.0"
   dependencies:
-    "@ledgerhq/devices": ^6.19.0
+    "@ledgerhq/devices": ^6.20.0
     "@ledgerhq/errors": ^6.10.0
-    "@ledgerhq/hw-transport": ^6.19.0
+    "@ledgerhq/hw-transport": ^6.20.0
     "@ledgerhq/logs": ^6.10.0
-  checksum: 3be458bda0ca223b7ed7772a4cde7a06af3875a51f5dfd1d81eecf0b717b7f09fdd5949fce1983ba8665941d4dbb001572083f0ca1e14cb31f8224a49beaf1e6
+  checksum: 428544f11aee3e57c0160924e5b1b5d925e27f4090226d1f3a571a8520bf6e85fa8d3eabcec94f3665a05cf14ca08924b8f2273018b5cf2823c3b43fc3c99909
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport@npm:^6.19.0":
-  version: 6.19.0
-  resolution: "@ledgerhq/hw-transport@npm:6.19.0"
+"@ledgerhq/hw-transport@npm:^6.20.0":
+  version: 6.20.0
+  resolution: "@ledgerhq/hw-transport@npm:6.20.0"
   dependencies:
-    "@ledgerhq/devices": ^6.19.0
+    "@ledgerhq/devices": ^6.20.0
     "@ledgerhq/errors": ^6.10.0
     events: ^3.3.0
-  checksum: adfede7b58cbaef1c925342777dd1d22836b5bddab0e5c322ece90eb78cf6e556aa0ea4d811cbdfb51e6630f8333e53a7fab4e0a99515fc92c16ed40934fa772
+  checksum: 89ecfeba2b2e179a665325603d74c7aa85042d1268bbb6f0cd023e15510cda468a3f162ba9140134fe1c1f24832765fbe5a99f396caaa67b2a5914ea02ab07c4
   languageName: node
   linkType: hard
 
@@ -4237,9 +4237,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@project-serum/anchor@npm:^0.19.0":
-  version: 0.19.0
-  resolution: "@project-serum/anchor@npm:0.19.0"
+"@project-serum/anchor@npm:^0.19.1-beta.1":
+  version: 0.19.1-beta.1
+  resolution: "@project-serum/anchor@npm:0.19.1-beta.1"
   dependencies:
     "@project-serum/borsh": ^0.2.2
     "@solana/web3.js": ^1.17.0
@@ -4255,7 +4255,7 @@ __metadata:
     pako: ^2.0.3
     snake-case: ^3.0.4
     toml: ^3.0.0
-  checksum: 06c696e79724fee4700d9e32cf5f0ff661a46c59f5cfdf3134d8f32a7122b0d3ae8dcf19018e5163c806804d802fc4463dc9295332e8ce13138558fd58064cee
+  checksum: fc32f06d9760b2b20e36e9d6cee7ff56ef55ee8106e28a62da5b940923da44874dc0fdd695ebb66f0648f7783509f3c7a275d4561833af1cab77b13507a0dd34
   languageName: node
   linkType: hard
 
@@ -4560,11 +4560,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@saberhq/anchor-contrib@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "@saberhq/anchor-contrib@npm:1.11.1"
+"@saberhq/anchor-contrib@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "@saberhq/anchor-contrib@npm:1.11.2"
   dependencies:
-    "@saberhq/solana-contrib": ^1.11.1
+    "@saberhq/solana-contrib": ^1.11.2
     eventemitter3: ^4.0.7
     lodash.camelcase: ^4.3.0
     lodash.mapvalues: ^4.6.0
@@ -4572,27 +4572,27 @@ __metadata:
   peerDependencies:
     "@project-serum/anchor": ^0.17 || ^0.18 || ^0.19
     "@solana/web3.js": ">=1.29.2"
-  checksum: 575f9b34d990b3ce83b1fc8e8b5bdc0a182d5a801db04211682bef916c197497d3ffe2386d9a6240dd80ab7e79f10b45236b223e9e3c08fa9df5fc5d9993e529
+  checksum: 65f30c89734becce3a94348bbe21b9f9d9c30cb0843c0da4c192c67e87254f34f563af4b4277dfa8f088eedb86c1b44bbbfca283663a8923b0f8d5614031859d
   languageName: node
   linkType: hard
 
-"@saberhq/eslint-config-react@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "@saberhq/eslint-config-react@npm:1.11.1"
+"@saberhq/eslint-config-react@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "@saberhq/eslint-config-react@npm:1.11.2"
   dependencies:
-    "@saberhq/eslint-config": ^1.11.1
+    "@saberhq/eslint-config": ^1.11.2
     eslint-plugin-jsx-a11y: ^6.5.1
     eslint-plugin-react: ^7.27.1
     eslint-plugin-react-hooks: ^4.3.0
   peerDependencies:
     eslint: ">=7"
-  checksum: 5f838b7bf712495ddeba9efad123e130aad9c8a8539f622e49393e88c31151745ce88253d3f940692ae3172b49bd063ae1f388d7f8b0a7e1fb45236b483bdce2
+  checksum: f9245aa03e1e07772d8a6eb67007c8a8545f36456edacdb830631cd773ea3b1ce81233171c1e761ecb70404bc620247570583d739bb4ba4111a6d6743c7f2b83
   languageName: node
   linkType: hard
 
-"@saberhq/eslint-config@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "@saberhq/eslint-config@npm:1.11.1"
+"@saberhq/eslint-config@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "@saberhq/eslint-config@npm:1.11.2"
   dependencies:
     "@typescript-eslint/eslint-plugin": ^5.7.0
     "@typescript-eslint/parser": ^5.7.0
@@ -4605,17 +4605,18 @@ __metadata:
     prettier: ^2.5.1
   peerDependencies:
     eslint: ">=7"
-  checksum: 6a0e3e6a0d54ee8caf1cd5e21fef57410aec3dd6feddc94f5f2b1bfb1f61ddba30d75e7350ff75d398959d246c624387937e82ddc712f410ab01ff846251c783
+  checksum: 51383fed4054be56563adbdd95e9cbf0fcc0cc94bc10aa62da36eb2e59c6fc9092a7be59532c2c7974e727429c89b1684f0899c404d8eb38a0011e5fc798bcac
   languageName: node
   linkType: hard
 
-"@saberhq/sail@npm:^2.9.1":
-  version: 2.9.1
-  resolution: "@saberhq/sail@npm:2.9.1"
+"@saberhq/sail@npm:^2.9.3":
+  version: 2.9.3
+  resolution: "@saberhq/sail@npm:2.9.3"
   dependencies:
     dataloader: ^2.0.0
     eventemitter3: ^4.0.7
     lodash.chunk: ^4.2.0
+    lodash.mapvalues: ^4.6.0
     lodash.zip: ^4.2.0
     retry: ^0.13.1
     tiny-invariant: ^1.2.0
@@ -4623,6 +4624,8 @@ __metadata:
     unstated-next: ^1.1.0
     use-debounce: ^7.0.1
   peerDependencies:
+    "@project-serum/anchor": "*"
+    "@saberhq/anchor-contrib": "*"
     "@saberhq/solana-contrib": ^1.7.1
     "@saberhq/token-utils": ^1.7.1
     "@saberhq/use-solana": ^1.7.1
@@ -4631,13 +4634,13 @@ __metadata:
     jsbi: ^3 || ^4
     react: ^17.0.2
     react-dom: ^17.0.2
-  checksum: f96eeaaccf5d6d037e1ecfc9db2e48c65cf21708138f61071a98027fc1d19c70a389bb9d6ad34c8fd8c4f693254f6ae84ac6e1bc2164b32a7f998d1a2ff8fa37
+  checksum: 4156162ed0cb35103d4faa3577f8543ab6f42df5eac376c8e7edc91a60b43a2ad0e50923c912db6ccc0b6eac3280ac0c0993a26581629184ee00d871ccd5f518
   languageName: node
   linkType: hard
 
-"@saberhq/solana-contrib@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "@saberhq/solana-contrib@npm:1.11.1"
+"@saberhq/solana-contrib@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "@saberhq/solana-contrib@npm:1.11.2"
   dependencies:
     "@types/promise-retry": ^1.1.3
     "@types/retry": ^0.12.1
@@ -4647,26 +4650,26 @@ __metadata:
     tslib: ^2.3.1
   peerDependencies:
     "@solana/web3.js": ^1.29.2
-  checksum: 9444aefee43de9f049a0dbebac4ecd6d52362754932afbc84c4465161879fc43be582866b4c7d01e379abfe1de4d19d0120772ae38ba87036fa19d18c5905e1a
+  checksum: 977b3d8883a171e4246d918f69f026a22d282cf8d88f72a27a1c3ecd79585c24bd8019f23e9cdb4b715f146bdd9a7252883f6162c833ad3f76f79840a9e48a5d
   languageName: node
   linkType: hard
 
-"@saberhq/spl-token-icons@npm:^0.1.112":
-  version: 0.1.112
-  resolution: "@saberhq/spl-token-icons@npm:0.1.112"
+"@saberhq/spl-token-icons@npm:^0.1.113":
+  version: 0.1.113
+  resolution: "@saberhq/spl-token-icons@npm:0.1.113"
   dependencies:
     "@solana/spl-token-registry": ^0.2.819
     tslib: ^2.3.1
-  checksum: 82926a3c832ac7b6e94cd519974db8e6fdef63c8c575a48e0aebbc5b762b5e6d61e7f25cc4d34d20e1a29092a4082bc9e856897e668a542e0500bb6c4361c0dd
+  checksum: 586a5fc9428cb434f6475d128ea5f40d642cfbd6395afc2ea2413a7da74b6cc6aaa0b54705cb7279304cd499469b9278df32e70c80c3428cde6a01372735a2af
   languageName: node
   linkType: hard
 
-"@saberhq/stableswap-sdk@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "@saberhq/stableswap-sdk@npm:1.11.1"
+"@saberhq/stableswap-sdk@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "@saberhq/stableswap-sdk@npm:1.11.2"
   dependencies:
-    "@saberhq/solana-contrib": ^1.11.1
-    "@saberhq/token-utils": ^1.11.1
+    "@saberhq/solana-contrib": ^1.11.2
+    "@saberhq/token-utils": ^1.11.2
     "@solana/buffer-layout": ^4.0.0
     lodash.mapvalues: ^4.6.0
     tslib: ^2.3.1
@@ -4674,15 +4677,15 @@ __metadata:
     "@solana/web3.js": ">=1.29.2"
     bn.js: ">=5"
     jsbi: ^3 || ^4
-  checksum: b52d78439a882f8121cff8e5caa5486f6e9232fe151ca0107a49964ba0b585d0caaa52adce0b38f117993775618ab838173e23dea7146dc2d7337571b484c0aa
+  checksum: 452a27fc415e54748cb6becc7fe13d36819bc12f77a21229e5ff9a171fc77731135ce1c5a0e6491345dea62f2ba82edfc484288994e7f01ab2879ee636e655c2
   languageName: node
   linkType: hard
 
-"@saberhq/token-utils@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "@saberhq/token-utils@npm:1.11.1"
+"@saberhq/token-utils@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "@saberhq/token-utils@npm:1.11.2"
   dependencies:
-    "@saberhq/solana-contrib": ^1.11.1
+    "@saberhq/solana-contrib": ^1.11.2
     "@solana/buffer-layout": ^4.0.0
     "@solana/spl-token": ^0.1.8
     "@ubeswap/token-math": ^4.4.1
@@ -4692,23 +4695,23 @@ __metadata:
     "@solana/web3.js": ^1.29.2
     bn.js: ^5.2
     jsbi: ^3 || ^4
-  checksum: fb5b3c408528854baac4f0565534bc9718d6deb6e7424b2572f1e716a77462037cb7a1aef6f2e2ee81631bffe3fe59a7a93dba54c07b3d66651c1c5feb561547
+  checksum: 1c2d59ea350dc0cb32916cfe0db2319e97e85101e7b0c64d4b5cc045026c0834f19d9ee661fea0e10088df7c009e1e9b3d0b40be9a7e86157cfcdd2ff11ffc79
   languageName: node
   linkType: hard
 
-"@saberhq/use-solana@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "@saberhq/use-solana@npm:1.11.1"
+"@saberhq/use-solana@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "@saberhq/use-solana@npm:1.11.2"
   dependencies:
-    "@ledgerhq/hw-transport": ^6.19.0
-    "@ledgerhq/hw-transport-webusb": ^6.19.0
-    "@saberhq/solana-contrib": ^1.11.1
-    "@solana/wallet-adapter-base": ^0.8.0
+    "@ledgerhq/hw-transport": ^6.20.0
+    "@ledgerhq/hw-transport-webusb": ^6.20.0
+    "@saberhq/solana-contrib": ^1.11.2
+    "@solana/wallet-adapter-base": ^0.8.1
     "@solana/wallet-adapter-coin98": ^0.4.0
     "@solana/wallet-adapter-phantom": ^0.8.0
     "@solana/wallet-adapter-slope": ^0.4.0
     "@solana/wallet-adapter-solflare": ^0.5.0
-    "@solana/wallet-adapter-sollet": ^0.9.1
+    "@solana/wallet-adapter-sollet": ^0.9.2
     bs58: ^4.0.1
     eventemitter3: ^4.0.7
     fast-json-stable-stringify: ^2.1.0
@@ -4718,7 +4721,7 @@ __metadata:
   peerDependencies:
     "@solana/web3.js": ^1.29.2
     react: ^17.0.2
-  checksum: 175a327288a7a7ffc5fd5704b6e975d540c786185246cb7b50f68c0591536cbff11168780b7bb149e7e09fd3ce1ecd8f55162abd58182e02eb7e9d86c014f7e3
+  checksum: bb98629f6507faa7604dbf6ca52e07e74fce02784cfc6fcff5925ae600c23f0b3cb2a8d5ded52a989bded2f066f5b81ccd9f30b9a5f2bbe63171b20bfe4ccbcb
   languageName: node
   linkType: hard
 
@@ -4953,14 +4956,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solana/wallet-adapter-base@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "@solana/wallet-adapter-base@npm:0.8.0"
+"@solana/wallet-adapter-base@npm:^0.8.1":
+  version: 0.8.1
+  resolution: "@solana/wallet-adapter-base@npm:0.8.1"
   dependencies:
     eventemitter3: ^4.0.7
   peerDependencies:
     "@solana/web3.js": ^1.20.0
-  checksum: 152671cab77f8e1429ef33bf52ed92e6de8482bd4277674a62a42c275e5aa83c6ea08cde7e36560575aa1de099c6ffd3386cd41010a2cad539b0c7b8b939dd4a
+  checksum: 015de74ca61df49715b005703a7371da3a9fb4e0ce2581973ef96431ee8fb61fc587d7b2a72e446620bb85a0024a77a4751a2ebcb39babc4a43165fabcfe4c40
   languageName: node
   linkType: hard
 
@@ -5010,15 +5013,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solana/wallet-adapter-sollet@npm:^0.9.1":
-  version: 0.9.1
-  resolution: "@solana/wallet-adapter-sollet@npm:0.9.1"
+"@solana/wallet-adapter-sollet@npm:^0.9.2":
+  version: 0.9.2
+  resolution: "@solana/wallet-adapter-sollet@npm:0.9.2"
   dependencies:
     "@project-serum/sol-wallet-adapter": ^0.2.6
   peerDependencies:
-    "@solana/wallet-adapter-base": ^0.8.0
+    "@solana/wallet-adapter-base": ^0.8.1
     "@solana/web3.js": ^1.20.0
-  checksum: 26f5e4936d50eb6714c6b10deb5cc8a43f9c6fccfc5d8217f342f1978fbd834ee1da83002b07f2783f3d3e317c2089673e13673bb50a55de5ac7aaa7b0d6ed1b
+  checksum: d794c3fe24d8721da08424e3a8c82f151191b21d24766cab9e2f1034eeb91b66bdad99fbb4678b875f5c0b41db590f162b9f92510c4273e2b038a6cb9b99feee
   languageName: node
   linkType: hard
 
@@ -16769,9 +16772,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.34.4":
-  version: 3.34.4
-  resolution: "react-query@npm:3.34.4"
+"react-query@npm:^3.34.5":
+  version: 3.34.5
+  resolution: "react-query@npm:3.34.5"
   dependencies:
     "@babel/runtime": ^7.5.5
     broadcast-channel: ^3.4.1
@@ -16783,7 +16786,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 8fdebc78ad2191542890a91ecd3795e346bcbbb93d84bf1cc023134714451ec12168e58208f1928bf80267e35993cab397582fddbfa2ec92c730444aade3a989
+  checksum: c33b7b438863fa405a229c35a5dd972f9a9c6e1702eb27a1d54b96428b0046af6aebe29cfaa5c0f807e4fd1b3562a1d46f67151b9eeea032adf61fd96374bcee
   languageName: node
   linkType: hard
 
@@ -18701,9 +18704,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.0.6":
-  version: 3.0.6
-  resolution: "tailwindcss@npm:3.0.6"
+"tailwindcss@npm:^3.0.7":
+  version: 3.0.7
+  resolution: "tailwindcss@npm:3.0.7"
   dependencies:
     arg: ^5.0.1
     chalk: ^4.1.2
@@ -18732,7 +18735,7 @@ resolve@^2.0.0-next.3:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 9b381caadb1d058fbfede02d87a3f3ce2d64de08fd1b13528b2bdc8aebb31d66af254355dbe96195cb5fb7769631803396494a452cb3b373b0e4f79a8fe1169a
+  checksum: 0b33d7c6a0860fae22bce9efbbd990ac635e1fc1a616eaca9ca5e7d3ed78c6efed5ca10ebcc186289cf731ece0769329eef715ca2cb641134550780e6ae39b39
   languageName: node
   linkType: hard
 

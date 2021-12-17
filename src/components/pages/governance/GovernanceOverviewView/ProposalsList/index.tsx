@@ -53,7 +53,7 @@ export const ProposalsList: React.FC<Props> = ({
         .map((proposal, i) =>
           proposal && proposal.data ? (
             <ProposalCard
-              key={proposal.data?.proposalKey.toString()}
+              key={proposal.data.proposalKey.toString()}
               proposalInfo={proposal.data}
             />
           ) : (

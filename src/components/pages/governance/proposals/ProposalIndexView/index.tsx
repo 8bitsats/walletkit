@@ -1,4 +1,5 @@
 import { ProposalState, VoteSide } from "@tribecahq/tribeca-sdk";
+import { noop } from "lodash";
 import { useParams } from "react-router-dom";
 
 import { GovernancePage } from "../../../../common/governance/GovernancePage";
@@ -18,72 +19,52 @@ export const ProposalIndexView: React.FC = () => {
   const { proposalIndex: proposalIndexStr } = useParams<{
     proposalIndex: string;
   }>();
-  const { index, ...proposal } = useProposal(parseInt(proposalIndexStr));
+  const { index, info: proposalInfo } = useProposal(parseInt(proposalIndexStr));
   useGovWindowTitle(`Proposal Detail #${index}`);
 
   return (
     <GovernancePage
-      title={proposal.data?.proposalMetaData?.title ?? "Proposal"}
+      title={proposalInfo?.proposalMetaData?.title ?? "Proposal"}
       header={
         <div tw="flex items-center gap-2 mt-2">
-          {proposal.data && <ProposalSubtitle proposalInfo={proposal.data} />}
+          {proposalInfo && <ProposalSubtitle proposalInfo={proposalInfo} />}
         </div>
       }
       right={
-        proposal.data ? (
-          <Profile address={proposal.data.proposalData.proposer} />
+        proposalInfo ? (
+          <Profile address={proposalInfo.proposalData.proposer} />
         ) : undefined
       }
     >
       <div tw="grid gap-4 mb-20">
-        {proposal.data && (
+        {proposalInfo && (
           <div tw="grid md:grid-cols-2 gap-4">
             <VotesCard
               side={VoteSide.For}
-              proposal={proposal.data.proposalData}
+              proposal={proposalInfo.proposalData}
             />
             <VotesCard
               side={VoteSide.Against}
-              proposal={proposal.data.proposalData}
+              proposal={proposalInfo.proposalData}
             />
           </div>
         )}
         <div tw="flex flex-col md:(flex-row items-start) gap-4">
-          <ProposalDetails tw="flex-grow[2]" proposalInfo={proposal.data} />
+          <ProposalDetails tw="flex-grow[2]" proposalInfo={proposalInfo} />
           <div tw="flex-basis[350px] flex flex-col gap-4">
-            {proposal.data?.state === ProposalState.Draft && (
-              <ProposalActivate
-                proposal={proposal.data}
-                onActivate={() => {
-                  void proposal.refetch();
-                }}
-              />
+            {proposalInfo?.state === ProposalState.Draft && (
+              <ProposalActivate proposal={proposalInfo} onActivate={noop} />
             )}
-            {proposal.data?.state === ProposalState.Active && (
-              <ProposalVote
-                proposalInfo={proposal.data}
-                onVote={() => {
-                  void proposal.refetch();
-                }}
-              />
+            {proposalInfo?.state === ProposalState.Active && (
+              <ProposalVote proposalInfo={proposalInfo} onVote={noop} />
             )}
-            {proposal.data?.state === ProposalState.Succeeded && (
-              <ProposalQueue
-                proposal={proposal.data}
-                onActivate={() => {
-                  void proposal.refetch();
-                }}
-              />
+            {proposalInfo?.state === ProposalState.Succeeded && (
+              <ProposalQueue proposal={proposalInfo} onActivate={noop} />
             )}
-            {proposal.data?.state === ProposalState.Queued && (
-              <ProposalExecute
-                proposal={proposal.data}
-                onActivate={() => {
-                  void proposal.refetch();
-                }}
-              />
+            {proposalInfo?.state === ProposalState.Queued && (
+              <ProposalExecute proposal={proposalInfo} onActivate={noop} />
             )}
-            <ProposalHistory proposalInfo={proposal.data} />
+            <ProposalHistory proposalInfo={proposalInfo} />
           </div>
         </div>
       </div>

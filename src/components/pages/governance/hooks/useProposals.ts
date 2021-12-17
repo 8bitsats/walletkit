@@ -1,5 +1,5 @@
-import type { AccountFetchResult, ParsedAccountInfo } from "@saberhq/sail";
-import { useSail } from "@saberhq/sail";
+import type { ParsedAccountInfo } from "@saberhq/sail";
+import { getCacheKeyOfPublicKey } from "@saberhq/sail";
 import { u64 } from "@saberhq/token-utils";
 import { useSolana } from "@saberhq/use-solana";
 import type { PublicKey } from "@solana/web3.js";
@@ -13,11 +13,17 @@ import {
   findProposalAddress,
   findProposalMetaAddress,
   getProposalState,
-  TRIBECA_CODERS,
 } from "@tribecahq/tribeca-sdk";
+import { useMemo } from "react";
 import { useQueries, useQuery } from "react-query";
 import invariant from "tiny-invariant";
 
+import {
+  useParsedProposal,
+  useParsedProposalMeta,
+  useParsedProposalMetas,
+  useParsedProposals,
+} from "../../../../utils/parsers";
 import { useGovernor } from "./useGovernor";
 
 export interface ProposalInfo {
@@ -28,47 +34,26 @@ export interface ProposalInfo {
   state: ProposalState;
 }
 
-const fetchProposal = async ({
+const buildProposalInfo = ({
   index,
   governorData,
-  fetchKeys,
+  proposalData,
+  proposalMetaData,
 }: {
   index: number;
   governorData: ParsedAccountInfo<GovernorData>;
-  fetchKeys: (
-    keys: (PublicKey | null | undefined)[]
-  ) => Promise<AccountFetchResult[]>;
-}): Promise<ProposalInfo | null> => {
-  const [proposalKey] = await findProposalAddress(
-    governorData.accountId,
-    new u64(index)
-  );
-  const [proposalMetaKey] = await findProposalMetaAddress(proposalKey);
-  const [proposalDataRaw, proposalMetaRaw] = await fetchKeys([
-    proposalKey,
-    proposalMetaKey,
-  ]);
-  if (!proposalDataRaw?.data) {
-    return null;
-  }
-  const proposalData = TRIBECA_CODERS.Govern.accountParsers.proposal(
-    proposalDataRaw.data.accountInfo.data
-  );
+  proposalData: ParsedAccountInfo<ProposalData>;
+  proposalMetaData: ProposalMetaData | null;
+}): ProposalInfo | null => {
   const state = getProposalState({
-    proposalData,
+    proposalData: proposalData.accountInfo.data,
     quorumVotes: governorData.accountInfo.data.params.quorumVotes,
   });
-  const proposalMetaData = proposalMetaRaw?.data
-    ? TRIBECA_CODERS.Govern.accountParsers.proposalMeta(
-        proposalMetaRaw.data.accountInfo.data
-      )
-    : null;
-
   return {
-    proposalKey,
+    proposalKey: proposalData.accountId,
     index,
-    proposalData,
-    proposalMetaData,
+    proposalData: proposalData.accountInfo.data,
+    proposalMetaData: proposalMetaData,
     state,
   };
 };
@@ -79,22 +64,44 @@ const fetchProposal = async ({
 export const useProposal = (index: number) => {
   const { network } = useSolana();
   const { governor, governorData } = useGovernor();
-  const { fetchKeys } = useSail();
   const id = `000${index}`.slice(-4);
-  const proposalInfo = useQuery({
-    queryKey: ["proposalInfo", network, governor.toString(), index],
-    queryFn: async (): Promise<ProposalInfo | null> => {
+
+  const proposalKeys = useQuery(
+    ["proposalKeys", network, governor.toString(), index],
+    async () => {
       invariant(governorData);
-      return await fetchProposal({
-        index,
-        governorData,
-        fetchKeys,
-      });
+      const [proposalKey] = await findProposalAddress(
+        governorData.accountId,
+        new u64(index)
+      );
+      const [proposalMetaKey] = await findProposalMetaAddress(proposalKey);
+      return { proposalKey, proposalMetaKey };
     },
-    enabled: !!governorData,
-  });
+    { enabled: !!governorData }
+  );
+
+  const { data: proposalData } = useParsedProposal(
+    proposalKeys.data?.proposalKey
+  );
+  const { data: proposalMetaData } = useParsedProposalMeta(
+    proposalKeys.data?.proposalMetaKey
+  );
+
+  const proposalInfo = useMemo(() => {
+    if (!governorData || !proposalData || proposalMetaData === undefined) {
+      return null;
+    }
+    return buildProposalInfo({
+      index,
+      governorData,
+      proposalData,
+      proposalMetaData: proposalMetaData
+        ? proposalMetaData.accountInfo.data
+        : null,
+    });
+  }, [governorData, index, proposalData, proposalMetaData]);
   return {
-    ...proposalInfo,
+    info: proposalInfo,
     id,
     index,
   };
@@ -111,7 +118,52 @@ export const useProposal = (index: number) => {
 export const useProposals = () => {
   const { network } = useSolana();
   const { governor, governorData, proposalCount } = useGovernor();
-  const { fetchKeys } = useSail();
+  const proposalsKeys = useQueries(
+    proposalCount
+      ? Array(proposalCount)
+          .fill(null)
+          .map((_, i) => proposalCount - i - 1)
+          .map((i) => ({
+            queryKey: ["proposalKeys", network, governor.toString(), i],
+            queryFn: async () => {
+              invariant(governorData);
+              const [proposalKey] = await findProposalAddress(
+                governorData.accountId,
+                new u64(i)
+              );
+              const [proposalMetaKey] = await findProposalMetaAddress(
+                proposalKey
+              );
+              return { proposalKey, proposalMetaKey };
+            },
+            enabled: !!governorData,
+          }))
+      : []
+  );
+
+  const proposalsKeysCache = proposalsKeys
+    .map((p) => (p.data ? getCacheKeyOfPublicKey(p.data.proposalKey) : ""))
+    .join(",");
+  const proposalsData = useParsedProposals(
+    useMemo(
+      () => proposalsKeys.map((p) => p.data?.proposalKey),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [proposalsKeysCache]
+    )
+  );
+  const proposalsMetaData = useParsedProposalMetas(
+    useMemo(
+      () => proposalsKeys.map((p) => p.data?.proposalMetaKey),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [proposalsKeysCache]
+    )
+  );
+
+  const isLoading =
+    !governorData ||
+    !proposalsData.every((p) => p !== undefined) ||
+    !proposalsMetaData.every((p) => p !== undefined);
+
   return useQueries(
     proposalCount
       ? Array(proposalCount)
@@ -119,15 +171,27 @@ export const useProposals = () => {
           .map((_, i) => proposalCount - i - 1)
           .map((i) => ({
             queryKey: ["proposalInfo", network, governor.toString(), i],
-            queryFn: async (): Promise<ProposalInfo | null> => {
+            queryFn: (): ProposalInfo | null => {
               invariant(governorData);
-              return await fetchProposal({
-                index: i,
+              const proposalData = proposalsData.find(
+                (p) => p?.accountInfo.data.index.toNumber() === i
+              );
+              if (!proposalData) {
+                return null;
+              }
+              const proposalMetaData = proposalsMetaData.find((p) =>
+                p?.accountInfo.data.proposal.equals(proposalData.accountId)
+              );
+              return buildProposalInfo({
+                index: proposalData.accountInfo.data.index.toNumber(),
                 governorData,
-                fetchKeys,
+                proposalData,
+                proposalMetaData: proposalMetaData
+                  ? proposalMetaData.accountInfo.data
+                  : null,
               });
             },
-            enabled: !!governorData,
+            enabled: !isLoading,
           }))
       : []
   );
