@@ -10,6 +10,9 @@ import { useGovernor } from "./useGovernor";
 const parseSmartWallet = (data: KeyedAccountInfo) =>
   GOKI_CODERS.SmartWallet.accountParsers.smartWallet(data.accountInfo.data);
 
+export const parseGokiTransaction = (data: KeyedAccountInfo) =>
+  GOKI_CODERS.SmartWallet.accountParsers.transaction(data.accountInfo.data);
+
 const parseSubaccountInfo = (data: KeyedAccountInfo) =>
   GOKI_CODERS.SmartWallet.accountParsers.subaccountInfo(data.accountInfo.data);
 

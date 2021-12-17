@@ -1,10 +1,15 @@
-import { useSail } from "@saberhq/sail";
+import { useParsedAccountData, useSail } from "@saberhq/sail";
 import invariant from "tiny-invariant";
 
 import { useSDK } from "../../../../../../contexts/sdk";
+import { gokiTXLink, tsToDate } from "../../../../../../utils/utils";
 import { AsyncButton } from "../../../../../common/AsyncButton";
 import { Card } from "../../../../../common/governance/Card";
-import { useExecutiveCouncil } from "../../../hooks/useExecutiveCouncil";
+import { ExternalLink } from "../../../../../common/typography/ExternalLink";
+import {
+  parseGokiTransaction,
+  useExecutiveCouncil,
+} from "../../../hooks/useExecutiveCouncil";
 import { useGovernor } from "../../../hooks/useGovernor";
 import type { ProposalInfo } from "../../../hooks/useProposals";
 
@@ -21,21 +26,29 @@ export const ProposalExecute: React.FC<Props> = ({
   const { sdkMut } = useSDK();
   const { handleTX } = useSail();
   const { ecWallet, isMemberOfEC } = useExecutiveCouncil();
+  const { data: gokiTransactionData } = useParsedAccountData(
+    proposal.proposalData.queuedTransaction,
+    parseGokiTransaction
+  );
 
-  if (!isMemberOfEC) {
+  if (!isMemberOfEC || !gokiTransactionData) {
     return <></>;
   }
 
-  const votingEndedAt = new Date(
-    proposal.proposalData.votingEndsAt.toNumber() * 1_000
-  );
+  const votingEndedAt = tsToDate(proposal.proposalData.queuedAt);
 
   return (
     <Card title="Execute Proposal">
       <div tw="px-7 py-4 text-sm">
         <p tw="mb-4">
-          The proposal passed successfully on {votingEndedAt.toLocaleString()}.
+          The proposal was queued on {votingEndedAt.toLocaleString()}.
         </p>
+        <ExternalLink
+          tw="mb-4"
+          href={gokiTXLink(gokiTransactionData.accountInfo.data)}
+        >
+          View on Goki
+        </ExternalLink>
         <AsyncButton
           disabled={!governorW || !ecWallet.data}
           size="md"

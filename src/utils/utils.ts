@@ -1,3 +1,4 @@
+import type { SmartWalletTransactionData } from "@gokiprotocol/client";
 import type BN from "bn.js";
 import { useCallback, useState } from "react";
 
@@ -52,3 +53,6 @@ export function shortenAddress(address: string, chars = 5): string {
  * @returns
  */
 export const tsToDate = (num: BN): Date => new Date(num.toNumber() * 1_000);
+
+export const gokiTXLink = (tx: SmartWalletTransactionData) =>
+  `https://beta.goki.so/#/wallets/${tx.smartWallet.toString()}/tx/${tx.index.toString()}`;

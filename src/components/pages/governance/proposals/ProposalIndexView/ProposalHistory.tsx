@@ -27,7 +27,7 @@ interface ProposalEvent {
   link?: string | null;
 }
 
-const makeDate = (num: BN): Date => new Date(num.toNumber() * 1_000);
+export const makeDate = (num: BN): Date => new Date(num.toNumber() * 1_000);
 
 const extractEvents = (
   proposalData: ProposalData,
