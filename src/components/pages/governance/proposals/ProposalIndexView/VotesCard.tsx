@@ -16,17 +16,18 @@ export const VOTE_SIDE_LABEL = {
 
 interface Props {
   side: VoteSide.For | VoteSide.Against;
-  proposal: ProposalData;
+  proposal: ProposalData | null;
 }
 
 export const VotesCard: React.FC<Props> = ({ side, proposal }: Props) => {
   const { veToken } = useGovernor();
-  const voteCount =
-    side === VoteSide.For
-      ? proposal.forVotes.toNumber()
-      : side === VoteSide.Against
-      ? proposal.againstVotes.toNumber()
-      : 0;
+  const voteCount = !proposal
+    ? null
+    : side === VoteSide.For
+    ? proposal.forVotes.toNumber()
+    : side === VoteSide.Against
+    ? proposal.againstVotes.toNumber()
+    : 0;
   const voteCountFmt =
     veToken && voteCount !== null ? (
       (voteCount / 10 ** veToken.decimals).toLocaleString(undefined, {
@@ -36,9 +37,9 @@ export const VotesCard: React.FC<Props> = ({ side, proposal }: Props) => {
       <LoadingSpinner />
     );
 
-  const totalDeterminingVotes = proposal.forVotes
-    .add(proposal.againstVotes)
-    .toNumber();
+  const totalDeterminingVotes = !proposal
+    ? null
+    : proposal.forVotes.add(proposal.againstVotes).toNumber();
 
   return (
     <Card
@@ -49,8 +50,8 @@ export const VotesCard: React.FC<Props> = ({ side, proposal }: Props) => {
             <div>{voteCountFmt}</div>
           </div>
           <Meter
-            value={voteCount}
-            max={Math.max(totalDeterminingVotes, 1)}
+            value={voteCount ?? 0}
+            max={Math.max(totalDeterminingVotes ?? 0, 1)}
             barColor={
               side === VoteSide.For
                 ? theme`colors.primary`

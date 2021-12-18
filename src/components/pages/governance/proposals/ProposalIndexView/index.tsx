@@ -2,8 +2,10 @@ import { ProposalState, VoteSide } from "@tribecahq/tribeca-sdk";
 import { noop } from "lodash";
 import { useParams } from "react-router-dom";
 
+import { ContentLoader } from "../../../../common/ContentLoader";
 import { GovernancePage } from "../../../../common/governance/GovernancePage";
 import { Profile } from "../../../../common/governance/Profile";
+import { PlaceholderSubtitle } from "../../GovernanceOverviewView/ProposalsList/PlaceholderCard";
 import { ProposalSubtitle } from "../../GovernanceOverviewView/ProposalsList/ProposalSubtitle";
 import { useGovWindowTitle } from "../../hooks/useGovernor";
 import { useProposal } from "../../hooks/useProposals";
@@ -24,10 +26,24 @@ export const ProposalIndexView: React.FC = () => {
 
   return (
     <GovernancePage
-      title={proposalInfo?.proposalMetaData?.title ?? "Proposal"}
+      title={
+        <div tw="h-9 flex items-center">
+          {proposalInfo ? (
+            proposalInfo?.proposalMetaData?.title ?? "Proposal"
+          ) : (
+            <ContentLoader tw="w-40 h-7" />
+          )}
+        </div>
+      }
       header={
         <div tw="flex items-center gap-2 mt-2">
-          {proposalInfo && <ProposalSubtitle proposalInfo={proposalInfo} />}
+          <div tw="h-5">
+            {proposalInfo ? (
+              <ProposalSubtitle proposalInfo={proposalInfo} />
+            ) : (
+              <PlaceholderSubtitle />
+            )}
+          </div>
         </div>
       }
       right={
@@ -37,18 +53,16 @@ export const ProposalIndexView: React.FC = () => {
       }
     >
       <div tw="grid gap-4 mb-20">
-        {proposalInfo && (
-          <div tw="grid md:grid-cols-2 gap-4">
-            <VotesCard
-              side={VoteSide.For}
-              proposal={proposalInfo.proposalData}
-            />
-            <VotesCard
-              side={VoteSide.Against}
-              proposal={proposalInfo.proposalData}
-            />
-          </div>
-        )}
+        <div tw="grid md:grid-cols-2 gap-4">
+          <VotesCard
+            side={VoteSide.For}
+            proposal={proposalInfo ? proposalInfo.proposalData : null}
+          />
+          <VotesCard
+            side={VoteSide.Against}
+            proposal={proposalInfo ? proposalInfo.proposalData : null}
+          />
+        </div>
         <div tw="flex flex-col md:(flex-row items-start) gap-4">
           <ProposalDetails tw="flex-grow[2]" proposalInfo={proposalInfo} />
           <div tw="flex-basis[350px] flex flex-col gap-4">
