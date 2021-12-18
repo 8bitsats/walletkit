@@ -77,7 +77,6 @@ export const ProposalsList: React.FC<Props> = ({
 };
 
 const calcPageTotal = (numProposals: number): number => {
-  const totalProposals = numProposals + NUM_PLACEHOLDERS;
-  const div = Math.floor(totalProposals / PROPOSALS_PER_PAGE);
-  return div + (totalProposals % PROPOSALS_PER_PAGE ? 1 : 0);
+  const div = Math.floor(numProposals / PROPOSALS_PER_PAGE);
+  return div + (numProposals % PROPOSALS_PER_PAGE ? 1 : 0);
 };
