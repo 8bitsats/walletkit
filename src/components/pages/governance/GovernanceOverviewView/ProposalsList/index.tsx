@@ -1,3 +1,4 @@
+import { ProposalState } from "@tribecahq/tribeca-sdk";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -13,10 +14,12 @@ const PROPOSALS_PER_PAGE = 20;
 
 interface Props {
   maxCount?: number;
+  showDrafts?: boolean;
 }
 
 export const ProposalsList: React.FC<Props> = ({
   maxCount = 9_999_999,
+  showDrafts = false,
 }: Props) => {
   const { path, proposalCount } = useGovernor();
   const proposals = useProposals();
@@ -25,7 +28,11 @@ export const ProposalsList: React.FC<Props> = ({
   const allProposals = [
     ...proposals,
     ...new Array<null>(NUM_PLACEHOLDERS).fill(null),
-  ].slice(0, maxCount);
+  ]
+    .slice(0, maxCount)
+    .filter((p) =>
+      showDrafts ? true : p?.data?.state !== ProposalState.Draft
+    );
 
   const startCursor = currentPage * PROPOSALS_PER_PAGE;
 

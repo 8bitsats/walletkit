@@ -3246,6 +3246,7 @@ __metadata:
     "@emotion/styled": ^11.6.0
     "@gokiprotocol/client": ^0.5.4
     "@gokiprotocol/walletkit": ^1.5.1
+    "@headlessui/react": ^1.4.2
     "@highlight-run/react": ^1.0.5
     "@popperjs/core": ^2.11.0
     "@project-serum/anchor": ^0.19.1-beta.1
@@ -3383,6 +3384,16 @@ __metadata:
     react: ^17
     react-dom: ^17
   checksum: 578d287342cdff19e8e26c5d22f7d5164f714180ad8a1e285d6dbe10b20e059c8836a5e164422dfc1af2dfd0b3bd3904147c5ad48cf3e1e3a91af88486d4ba31
+  languageName: node
+  linkType: hard
+
+"@headlessui/react@npm:^1.4.2":
+  version: 1.4.2
+  resolution: "@headlessui/react@npm:1.4.2"
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+    react-dom: ^16 || ^17 || ^18
+  checksum: 28c36204430365190c05cbd48235f8239897360c8d55189583c03868fe640b171051238a8672a501b441de79281bb08285966105bfeb4534ca0e612382dcd41f
   languageName: node
   linkType: hard
 

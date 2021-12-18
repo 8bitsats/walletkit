@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.6.0",
     "@gokiprotocol/client": "^0.5.4",
     "@gokiprotocol/walletkit": "^1.5.1",
+    "@headlessui/react": "^1.4.2",
     "@highlight-run/react": "^1.0.5",
     "@popperjs/core": "^2.11.0",
     "@project-serum/anchor": "^0.19.1-beta.1",
