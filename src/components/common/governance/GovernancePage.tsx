@@ -8,6 +8,7 @@ interface Props {
   preContent?: React.ReactNode;
   children?: React.ReactNode;
   contentStyles?: React.CSSProperties;
+  containerStyles?: React.CSSProperties;
   hideDAOName?: boolean;
 }
 
@@ -18,6 +19,7 @@ export const GovernancePage: React.FC<Props> = ({
   preContent,
   children,
   contentStyles,
+  containerStyles,
   hideDAOName = false,
 }: Props) => {
   const { govToken, daoName } = useGovernor();
@@ -32,7 +34,7 @@ export const GovernancePage: React.FC<Props> = ({
             </div>
           )}
         </div>
-        <div tw="max-w-5xl w-11/12 mx-auto">
+        <div tw="max-w-5xl w-11/12 mx-auto" style={containerStyles}>
           <div tw="flex gap-8 flex-row flex-wrap items-center justify-between w-full mt-16">
             <div tw="flex flex-col">
               <h1 tw="text-2xl md:text-3xl font-bold text-white tracking-tighter">
@@ -46,7 +48,9 @@ export const GovernancePage: React.FC<Props> = ({
         </div>
       </div>
       <main tw="w-full -mt-16 mb-20" style={contentStyles}>
-        <div tw="max-w-5xl w-11/12 mx-auto">{children}</div>
+        <div tw="max-w-5xl w-full mx-auto" style={containerStyles}>
+          {children}
+        </div>
       </main>
     </div>
   );
