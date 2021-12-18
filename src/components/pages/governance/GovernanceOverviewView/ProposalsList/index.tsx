@@ -29,10 +29,8 @@ export const ProposalsList: React.FC<Props> = ({
     ...proposals,
     ...new Array<null>(NUM_PLACEHOLDERS).fill(null),
   ]
-    .slice(0, maxCount)
-    .filter((p) =>
-      showDrafts ? true : p?.data?.state !== ProposalState.Draft
-    );
+    .filter((p) => (showDrafts ? true : p?.data?.state !== ProposalState.Draft))
+    .slice(0, maxCount);
 
   const startCursor = currentPage * PROPOSALS_PER_PAGE;
 

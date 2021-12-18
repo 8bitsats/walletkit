@@ -1,10 +1,21 @@
+import tw from "twin.macro";
+
 interface Props {
   children?: React.ReactNode;
+  variant?: "primary" | "muted";
 }
 
-export const HelperCard: React.FC<Props> = ({ children }: Props) => {
+export const HelperCard: React.FC<Props> = ({
+  children,
+  variant = "primary",
+}: Props) => {
   return (
-    <div tw="px-4 py-2 rounded border border-primary bg-primary bg-opacity-20 text-primary-100 text-sm">
+    <div
+      css={[
+        variant === "primary" && tw`border-primary bg-primary text-primary-100`,
+        tw`px-4 py-2 rounded border bg-opacity-20  text-sm`,
+      ]}
+    >
       {children}
     </div>
   );
