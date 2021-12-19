@@ -4,14 +4,13 @@ import React from "react";
 import toast, { resolveValue, Toaster } from "react-hot-toast";
 import { VscClose } from "react-icons/vsc";
 import { HashRouter } from "react-router-dom";
-import tw, { styled } from "twin.macro";
 
 import { globalStyles } from "./globalStyles";
 import { Routes } from "./routes";
 
 export const App: React.FC = () => {
   return (
-    <AppWrapperInner tw="h-full w-full" className="App">
+    <div tw="h-full w-full" className="App">
       {globalStyles}
       <HashRouter basename="/">
         <Routes />
@@ -34,10 +33,6 @@ export const App: React.FC = () => {
           </div>
         )}
       </Toaster>
-    </AppWrapperInner>
+    </div>
   );
 };
-
-const AppWrapperInner = styled.div`
-  ${tw`font-sans bg-white text-DEFAULT dark:(bg-warmGray-800 text-gray-300)`};
-`;

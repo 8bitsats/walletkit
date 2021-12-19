@@ -4,7 +4,7 @@ import { Route, Switch, useLocation } from "react-router-dom";
 import { TransactionBuilder } from "./components/common/TransactionBuilder";
 import { MainLayout } from "./components/layout/MainLayout";
 import { GovernanceView } from "./components/pages/governance/GovernanceView";
-import { IndexView } from "./components/pages/IndexView";
+import { IndexView } from "./components/pages/landing";
 import { DAOStep1IntroView } from "./components/pages/onboarding/dao/DAOStep1IntroView";
 import { DAOStep2ExecutiveView } from "./components/pages/onboarding/dao/DAOStep2ExecutiveView";
 import { DAOStep3EmergencyView } from "./components/pages/onboarding/dao/DAOStep3EmergencyView";
@@ -19,6 +19,7 @@ export const Routes: React.FC = () => {
   const location = useLocation();
   useEffect(() => {
     if (
+      process.env.REACT_APP_APP_CONFIG === "tribeca" ||
       location.pathname.startsWith("/gov") ||
       location.pathname.startsWith("/onboarding/dao")
     ) {

@@ -5271,7 +5271,7 @@ __metadata:
     "@saberhq/token-utils": ^1.10.6
     "@solana/web3.js": ^1.29.2
     bn.js: ^5.2.0
-  checksum: 602a3c6bcf9cecf0b3d3c88a04702452160e48deeac5248e0392601fe60edfe1519b5dd235e549a62317896c6ddc6a0e102740d804271331dc77fc3289ade411
+  checksum: b5950ec7abc7027842be356003fb6b5eaa204587f2355e4f5ac1bc67ec2171242eca96fb846ae0599e89bf504f0670cec446ff25959a78f27c5265bf6cfe2469
   languageName: node
   linkType: hard
 

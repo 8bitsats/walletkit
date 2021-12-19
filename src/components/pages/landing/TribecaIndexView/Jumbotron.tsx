@@ -1,35 +1,32 @@
 import { FaArrowRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { css, theme } from "twin.macro";
 import Typewriter from "typewriter-effect";
 
-import { Button } from "../../common/Button";
+import { Button } from "../../../common/Button";
 
 export const Jumbotron: React.FC = () => {
   return (
     <header tw="text-center w-full mx-auto flex flex-col items-center gap-6">
       <div tw="max-w-2xl flex flex-col items-center gap-6">
-        <h2 tw="text-primary uppercase font-semibold tracking-widest">
-          For DAOs, teams, and secure individuals
+        <h2 tw="text-primary uppercase font-semibold letter-spacing[0.2em]">
+          Built for DAOs, by DAOS
         </h2>
-        <h1 tw="text-5xl font-black leading-tight">
-          Solana multisig
-          <br />
-          made for humans.
+        <h1 tw="text-5xl font-black leading-tight text-white">
+          Vote on your own terms.
         </h1>
-        <span tw="text-2xl font-black inline-flex">
-          <span>The safest way to&nbsp;</span>
+        <span tw="text-2xl font-black inline-flex text-white">
+          <span>The easiest way to&nbsp;</span>
           <span tw="text-secondary">
             <Typewriter
               options={{
                 strings: [
-                  "manage your admin keys.",
-                  "run your DAO.",
-                  "store your company treasury.",
+                  "decentralize.",
+                  "run a DAO.",
+                  "launch a token.",
+                  "manage a DAO's treasury.",
+                  "vote.",
+                  "manage protocol-owned liquidity.",
                   "upgrade programs.",
-                  "grow your savings.",
-                  "audit a DAO.",
-                  "create a Timelock.",
                 ],
                 autoStart: true,
                 loop: true,
@@ -37,21 +34,24 @@ export const Jumbotron: React.FC = () => {
             />
           </span>
         </span>
-        <p tw="text-secondary font-semibold text-xl">
-          Goki provides an interface to create, manage, and
-          <br />
-          audit multisig wallets on Solana.
+        <p tw="text-gray-400 font-semibold text-2xl leading-relaxed">
+          Tribeca lets you create, manage, and interact with decentralized
+          autonomous organizations on Solana.
         </p>
       </div>
-      <Link to="/onboarding/new">
+      <a
+        target="_blank"
+        href="https://forms.gle/mLPHEjqMxL4eoCo56"
+        rel="noreferrer"
+      >
         <Button
           variant="primary"
-          tw="flex items-center gap-4 h-12 w-[200px] mt-6 text-base"
+          tw="flex font-semibold items-center gap-4 h-12 w-[200px] mt-6 text-base"
         >
-          <span>Get Started</span>
+          <span>Sign up for the Waitlist</span>
           <FaArrowRight />
         </Button>
-      </Link>
+      </a>
       <div tw="relative w-full mt-12">
         <div
           tw="absolute -left-24 top-0 -right-24 -mt-10 bottom-0 w-full"
