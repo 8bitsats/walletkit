@@ -21,7 +21,13 @@ export const CastVoteButton: React.FC<Props> = ({
         variant: "outline",
         css: tw`border-white hover:(border-primary bg-primary bg-opacity-20)`,
       }}
-      buttonLabel={side === VoteSide.Pending ? "Cast Vote" : "Change Vote"}
+      buttonLabel={
+        side === null // Vote account not yet created
+          ? "Cast Vote"
+          : side === VoteSide.Pending
+          ? "Cast Vote"
+          : "Change Vote"
+      }
     >
       <CastVoteModal proposalInfo={proposalInfo} />
     </ModalButton>
