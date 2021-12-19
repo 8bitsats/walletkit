@@ -48,7 +48,7 @@ export const Jumbotron: React.FC = () => {
           variant="primary"
           tw="flex font-semibold items-center gap-4 h-12 w-[200px] mt-6 text-base"
         >
-          <span>Sign up for the Waitlist</span>
+          <span>Join the Waitlist</span>
           <FaArrowRight />
         </Button>
       </a>
