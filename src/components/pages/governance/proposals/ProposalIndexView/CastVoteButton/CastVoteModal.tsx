@@ -1,13 +1,11 @@
 import { useSail } from "@saberhq/sail";
 import { createMemoInstruction } from "@saberhq/solana-contrib";
-import { TokenAmount } from "@saberhq/token-utils";
 import type { VoteSide } from "@tribecahq/tribeca-sdk";
 import { useState } from "react";
 import invariant from "tiny-invariant";
 
 import { ModalInner } from "../../../../../common/Modal/ModalInner";
 import { useUserEscrow } from "../../../hooks/useEscrow";
-import { useGovernor } from "../../../hooks/useGovernor";
 import type { ProposalInfo } from "../../../hooks/useProposals";
 import { VOTE_SIDE_LABEL } from "../VotesCard";
 import { VoteResult } from "./VoteResult";
@@ -18,17 +16,7 @@ interface Props {
 }
 
 export const CastVoteModal: React.FC<Props> = ({ proposalInfo }: Props) => {
-  const { veToken } = useGovernor();
   const { data: escrow } = useUserEscrow();
-  const vePower =
-    veToken && escrow
-      ? new TokenAmount(
-          veToken,
-          escrow.calculateVotingPower(
-            proposalInfo.proposalData.votingEndsAt.toNumber()
-          )
-        )
-      : null;
   const { handleTX } = useSail();
 
   const [side, setSide] = useState<VoteSide | null>(null);
