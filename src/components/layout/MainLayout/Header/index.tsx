@@ -3,10 +3,18 @@ import { startCase } from "lodash";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { ReactComponent as Icon } from "../../../common/svgs/Icon.svg";
-import { ReactComponent as Logo } from "../../../common/svgs/logo-dark.svg";
+import { ReactComponent as GokiIcon } from "../../../common/svgs/Icon.svg";
+import { ReactComponent as GokiLogo } from "../../../common/svgs/logo-dark.svg";
+import { ReactComponent as TribecaIcon } from "../../../common/svgs/tribeca/favicon.svg";
+import { ReactComponent as TribecaLogo } from "../../../common/svgs/tribeca/logo.svg";
 import { WalletDropdown } from "../../GovernorLayout/Header/WalletDropdown";
 import { MoreInfo } from "./MoreInfo";
+
+const Logo =
+  process.env.REACT_APP_APP_CONFIG === "tribeca" ? TribecaLogo : GokiLogo;
+
+const Icon =
+  process.env.REACT_APP_APP_CONFIG === "tribeca" ? TribecaIcon : GokiIcon;
 
 export const Header: React.FC = () => {
   const { network } = useSolana();
