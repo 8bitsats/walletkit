@@ -68,10 +68,9 @@ export const useEscrow = (owner?: PublicKey) => {
         )
       : null;
 
-  const govTokensLocked =
-    govToken && result.isFetched
-      ? new TokenAmount(govToken, result.data ? result.data.escrow.amount : 0)
-      : null;
+  const govTokensLocked = govToken
+    ? new TokenAmount(govToken, result.data ? result.data.escrow.amount : 0)
+    : null;
 
   return { ...result, veBalance, govTokensLocked };
 };
