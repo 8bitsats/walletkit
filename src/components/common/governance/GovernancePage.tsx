@@ -1,3 +1,5 @@
+import tw, { styled } from "twin.macro";
+
 import { useGovernor } from "../../pages/governance/hooks/useGovernor";
 import { TokenIcon } from "../TokenIcon";
 
@@ -34,7 +36,7 @@ export const GovernancePage: React.FC<Props> = ({
             </div>
           )}
         </div>
-        <div tw="max-w-5xl w-11/12 mx-auto" style={containerStyles}>
+        <PageContainer style={containerStyles}>
           <div tw="flex gap-8 flex-row flex-wrap items-center justify-between w-full mt-16">
             <div tw="flex flex-col">
               <h1 tw="text-2xl md:text-3xl font-bold text-white tracking-tighter">
@@ -45,13 +47,15 @@ export const GovernancePage: React.FC<Props> = ({
             <div>{right}</div>
           </div>
           {preContent && <div tw="mt-8">{preContent}</div>}
-        </div>
+        </PageContainer>
       </div>
-      <main tw="w-full -mt-16 mb-20" style={contentStyles}>
-        <div tw="max-w-5xl w-full mx-auto" style={containerStyles}>
+      <PageContainer style={containerStyles}>
+        <main tw="w-full -mt-16 mb-20" style={contentStyles}>
           {children}
-        </div>
-      </main>
+        </main>
+      </PageContainer>
     </div>
   );
 };
+
+const PageContainer = styled.div(() => tw`max-w-5xl w-11/12 mx-auto`);

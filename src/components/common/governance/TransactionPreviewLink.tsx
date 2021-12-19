@@ -3,7 +3,8 @@ import { useSolana } from "@saberhq/use-solana";
 import { PublicKey } from "@solana/web3.js";
 import type { ProposalInstruction } from "@tribecahq/tribeca-sdk";
 import { useMemo } from "react";
-import { FaExternalLinkAlt } from "react-icons/fa";
+
+import { ExternalLink } from "../typography/ExternalLink";
 
 interface Props {
   instructions: ProposalInstruction[];
@@ -44,14 +45,8 @@ export const TransactionPreviewLink: React.FC<Props> = ({
   }
 
   return (
-    <a
-      tw="text-sm flex items-center gap-2 text-primary"
-      href={txEnv.generateInspectLink(network)}
-      target="_blank"
-      rel="noreferrer"
-    >
+    <ExternalLink href={txEnv.generateInspectLink(network)}>
       Preview on Solana Explorer
-      <FaExternalLinkAlt />
-    </a>
+    </ExternalLink>
   );
 };

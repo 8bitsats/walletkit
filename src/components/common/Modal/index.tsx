@@ -9,6 +9,8 @@ import { isMobile } from "react-device-detect";
 import { useGesture } from "react-use-gesture";
 import tw from "twin.macro";
 
+import { ModalProvider } from "./context";
+
 export interface ModalProps {
   children: React.ReactNode;
   isOpen: boolean;
@@ -74,7 +76,9 @@ export const Modal: React.FC<ModalProps> = ({
                     }
                   : {})}
               >
-                {children}
+                <ModalProvider initialState={onDismiss}>
+                  {children}
+                </ModalProvider>
               </ModalWrapper>
             </StyledDialogOverlay>
           )

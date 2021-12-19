@@ -1,30 +1,20 @@
-import { useParsedAccountData } from "@saberhq/sail";
 import { TokenAmount } from "@saberhq/token-utils";
 import { useSolana } from "@saberhq/use-solana";
-import type { KeyedAccountInfo, PublicKey } from "@solana/web3.js";
-import {
-  findEscrowAddress,
-  TRIBECA_CODERS,
-  VoteEscrow,
-} from "@tribecahq/tribeca-sdk";
+import type { PublicKey } from "@solana/web3.js";
+import { findEscrowAddress, VoteEscrow } from "@tribecahq/tribeca-sdk";
 import { useQuery } from "react-query";
 import invariant from "tiny-invariant";
 
 import { useSDK } from "../../../../contexts/sdk";
+import { useParsedEscrow, useParsedLocker } from "../../../../utils/parsers";
 import { useGovernor } from "./useGovernor";
-
-const parseLocker = (data: KeyedAccountInfo) =>
-  TRIBECA_CODERS.LockedVoter.accountParsers.locker(data.accountInfo.data);
-
-const parseEscrow = (data: KeyedAccountInfo) =>
-  TRIBECA_CODERS.LockedVoter.accountParsers.escrow(data.accountInfo.data);
 
 export const useLocker = () => {
   const { governorData } = useGovernor();
   const lockerKey = governorData
     ? governorData.accountInfo.data.electorate
     : governorData;
-  return useParsedAccountData(lockerKey, parseLocker);
+  return useParsedLocker(lockerKey);
 };
 
 export const useEscrow = (owner?: PublicKey) => {
@@ -46,7 +36,7 @@ export const useEscrow = (owner?: PublicKey) => {
       enabled: !!(lockerKey && owner),
     }
   );
-  const { data: escrow } = useParsedAccountData(escrowKey.data, parseEscrow);
+  const { data: escrow } = useParsedEscrow(escrowKey.data);
 
   const result = useQuery(
     ["escrow", escrow?.accountId.toString()],

@@ -10,6 +10,11 @@ export const FORMAT_PERCENT: Intl.NumberFormatOptions = {
   style: "percent",
 };
 
+export const FORMAT_VOTE_PERCENT = new Intl.NumberFormat(undefined, {
+  maximumFractionDigits: 2,
+  style: "percent",
+});
+
 export const fractionToFloat = (frac: Fraction): number => {
   if (JSBI.equal(frac.denominator, ZERO)) {
     return JSBI.greaterThan(frac.numerator, ZERO)

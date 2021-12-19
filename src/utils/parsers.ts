@@ -15,4 +15,5 @@ export const {
   locker: { useData: useParsedLockers, useSingleData: useParsedLocker },
   escrow: { useData: useParsedEscrows, useSingleData: useParsedEscrow },
   governor: { useData: useParsedGovernors, useSingleData: useParsedGovernor },
+  vote: { useData: useParsedVotes, useSingleData: useParsedVote },
 } = parserHooks;

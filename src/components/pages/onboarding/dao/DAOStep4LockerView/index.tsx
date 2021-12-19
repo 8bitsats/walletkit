@@ -142,7 +142,7 @@ export const DAOCreateSimpleView: React.FC = () => {
                     governanceParameters: {
                       quorumVotes: new BN(10),
                       votingDelay: new BN(30),
-                      votingPeriod: new BN(60),
+                      votingPeriod: new BN(600),
                       timelockDelaySeconds: new BN(60),
                     },
                     lockerParams: {
