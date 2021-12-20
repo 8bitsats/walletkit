@@ -77,33 +77,52 @@ export const EscrowInfo: React.FC<Props> = ({ className }: Props) => {
           <ButtonLoader />
         ) : (
           <>
-            <Link to={`${path}/locker/lock`} tw="flex-grow">
-              <Button
-                tw="w-full border-primary dark:text-primary hover:dark:text-white"
-                type="button"
-                size="md"
-                variant="outline"
-              >
-                Lock
-              </Button>
-            </Link>
-            {escrow && (
-              <Link to={`${path}/locker/extend`} tw="flex-grow">
+            <OuterButtonContainer escrowExists={!!escrow}>
+              <Link to={`${path}/locker/lock`} tw="flex-grow">
                 <Button
                   tw="w-full border-primary dark:text-primary hover:dark:text-white"
                   type="button"
                   size="md"
                   variant="outline"
                 >
-                  Extend
+                  Lock
                 </Button>
               </Link>
+            </OuterButtonContainer>
+            {escrow && (
+              <OuterButtonContainer escrowExists={!!escrow}>
+                <Link to={`${path}/locker/extend`} tw="flex-grow">
+                  <Button
+                    tw="w-full border-primary dark:text-primary hover:dark:text-white"
+                    type="button"
+                    size="md"
+                    variant="outline"
+                  >
+                    Extend
+                  </Button>
+                </Link>
+              </OuterButtonContainer>
             )}
           </>
         )}
       </div>
     </Card>
   );
+};
+
+interface OuterButtonContainerProps {
+  children: React.ReactNode;
+  escrowExists: boolean;
+}
+
+const OuterButtonContainer: React.FC<OuterButtonContainerProps> = ({
+  children,
+  escrowExists,
+}: OuterButtonContainerProps) => {
+  if (!escrowExists) {
+    return <div tw="w-full">{children}</div>;
+  }
+  return <div tw="w-1/2">{children}</div>;
 };
 
 const ButtonLoader = styled.div`
