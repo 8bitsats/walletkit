@@ -46,7 +46,7 @@ export const EscrowInfo: React.FC<Props> = ({ className }: Props) => {
       />
       <CardItem label={`${govToken?.symbol ?? "Token"} Balance`}>
         <div tw="flex items-center gap-2.5 h-7">
-          {govTokenBalance ? (
+          {govTokenBalance && !govTokenBalance.loading ? (
             <TokenAmountDisplay
               amount={govTokenBalance.balance}
               showSymbol={false}
