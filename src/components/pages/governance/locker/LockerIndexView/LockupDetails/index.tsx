@@ -9,12 +9,14 @@ interface Props {
 }
 
 export const LockupDetails: React.FC<Props> = ({ className }: Props) => {
-  const { data: userLockup, isLoading } = useUserEscrow();
+  const { data: userLockup, isLoading, isFetched } = useUserEscrow();
 
-  if (isLoading) {
+  if (isLoading || (!userLockup && !isFetched)) {
     return (
       <Card className={className} title="Your Lockup">
-        <LoadingPage />
+        <div tw="py-6">
+          <LoadingPage />
+        </div>
       </Card>
     );
   }
