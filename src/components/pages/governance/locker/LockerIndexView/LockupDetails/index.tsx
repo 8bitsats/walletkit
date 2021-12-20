@@ -1,3 +1,4 @@
+import { useSDK } from "../../../../../../contexts/sdk";
 import { Card } from "../../../../../common/governance/Card";
 import { LoadingPage } from "../../../../../common/LoadingPage";
 import { useUserEscrow } from "../../../hooks/useEscrow";
@@ -9,9 +10,10 @@ interface Props {
 }
 
 export const LockupDetails: React.FC<Props> = ({ className }: Props) => {
+  const { sdkMut } = useSDK();
   const { data: userLockup, isLoading, isFetched } = useUserEscrow();
 
-  if (isLoading || (!userLockup && !isFetched)) {
+  if (isLoading || (sdkMut && !userLockup && !isFetched)) {
     return (
       <Card className={className} title="Your Lockup">
         <div tw="py-6">
