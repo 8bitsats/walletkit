@@ -19,7 +19,7 @@ const Icon =
 export const Header: React.FC = () => {
   const { network } = useSolana();
   return (
-    <div tw="relative flex items-center justify-between py-4">
+    <div tw="relative flex items-center justify-between py-4 md:my-12">
       <div tw="z-50 flex items-center">
         <div tw="flex items-center">
           <NavLink

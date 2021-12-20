@@ -7,33 +7,35 @@ import { Button } from "../../../common/Button";
 export const Jumbotron: React.FC = () => {
   return (
     <header tw="text-center w-full mx-auto flex flex-col items-center gap-6">
-      <div tw="max-w-2xl flex flex-col items-center gap-6">
+      <div tw="max-w-4xl flex flex-col items-center gap-6">
         <h2 tw="text-primary uppercase font-semibold letter-spacing[0.2em]">
           Built for DAOs, by DAOS
         </h2>
-        <h1 tw="text-5xl font-black leading-tight text-white">
-          Vote on your own terms.
-        </h1>
-        <span tw="text-2xl font-black inline-flex text-white">
-          <span>The easiest way to&nbsp;</span>
-          <span tw="text-secondary">
-            <Typewriter
-              options={{
-                strings: [
-                  "decentralize.",
-                  "run a DAO.",
-                  "launch a token.",
-                  "manage a DAO's treasury.",
-                  "vote.",
-                  "manage protocol-owned liquidity.",
-                  "upgrade programs.",
-                ],
-                autoStart: true,
-                loop: true,
-              }}
-            />
+        <div tw="flex flex-col items-center gap-2">
+          <h1 tw="text-5xl font-black leading-tight text-white">
+            Vote on your own terms.
+          </h1>
+          <span tw="text-3xl font-black inline-flex text-white">
+            <span>The easiest way to&nbsp;</span>
+            <span tw="text-secondary">
+              <Typewriter
+                options={{
+                  strings: [
+                    "decentralize.",
+                    "run a DAO.",
+                    "launch a token.",
+                    "manage a DAO's treasury.",
+                    "vote.",
+                    "manage protocol-owned liquidity.",
+                    "upgrade programs.",
+                  ],
+                  autoStart: true,
+                  loop: true,
+                }}
+              />
+            </span>
           </span>
-        </span>
+        </div>
         <p tw="text-gray-400 font-semibold text-2xl leading-relaxed">
           Tribeca lets you create, manage, and interact with decentralized
           autonomous organizations on Solana.
