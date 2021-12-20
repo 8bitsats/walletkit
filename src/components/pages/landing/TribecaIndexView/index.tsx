@@ -11,7 +11,7 @@ export const TribecaIndexView: React.FC = () => {
   }, []);
 
   return (
-    <div tw="w-full overflow-x-hidden">
+    <div tw="w-11/12 overflow-x-hidden">
       <Jumbotron />
     </div>
   );
