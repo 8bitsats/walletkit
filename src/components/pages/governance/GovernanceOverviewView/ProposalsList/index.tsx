@@ -49,8 +49,19 @@ export const ProposalsList: React.FC<Props> = ({
     );
   }
 
-  const pageCount = calcPageTotal(allProposals.length ?? 0);
+  if (allProposals.length === 0 && typeof proposalCount !== "number") {
+    return (
+      <>
+        {Array(PROPOSALS_PER_PAGE)
+          .fill(null)
+          .map((_, i) => (
+            <PlaceholderCard key={i} />
+          ))}
+      </>
+    );
+  }
 
+  const pageCount = calcPageTotal(allProposals.length ?? 0);
   return (
     <>
       {allProposals
