@@ -83,6 +83,7 @@
   },
   "scripts": {
     "start": "craco start",
+    "start:tribeca": "REACT_APP_APP_CONFIG=tribeca craco start",
     "build": "craco build",
     "build:production": "npm run build && npm run delete-sourcemaps",
     "build:analyze": "ANALYZE=1 craco build",
