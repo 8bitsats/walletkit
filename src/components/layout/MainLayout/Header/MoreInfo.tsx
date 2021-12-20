@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { FaCode, FaEllipsisH, FaTwitter } from "react-icons/fa";
+import { FaCode, FaEllipsisH, FaMedium, FaTwitter } from "react-icons/fa";
 
 import { APP_CONFIG } from "../../../../config";
 import { Drop } from "../../../common/Drop";
@@ -8,13 +8,13 @@ export const MoreInfo: React.FC = () => {
   const [show, setShow] = useState(false);
   const targetRef = useRef(null);
   const MORE_ITEMS = [
-    // {
-    //   label: "Medium",
-    //   slug: "medium",
-    //   href: `https://medium.com/${APP_CONFIG.socials.medium}`,
-    //   icon: <FaMedium />,
-    // },
-    {
+    APP_CONFIG.socials.medium && {
+      label: "Medium",
+      slug: "medium",
+      href: `https://medium.com/${APP_CONFIG.socials.medium}`,
+      icon: <FaMedium />,
+    },
+    APP_CONFIG.socials.twitter && {
       label: "Twitter",
       slug: "twitter",
       href: `https://twitter.com/${APP_CONFIG.socials.twitter}`,
@@ -26,13 +26,22 @@ export const MoreInfo: React.FC = () => {
     //   slug: "chat",
     //   icon: <IoMdChatboxes />,
     // },
-    {
+    APP_CONFIG.code && {
       label: "Code",
       href: APP_CONFIG.code,
       slug: "code",
       icon: <FaCode />,
     },
-  ];
+  ].filter(
+    (
+      x
+    ): x is {
+      label: string;
+      href: string;
+      slug: string;
+      icon: React.ReactElement;
+    } => !!x
+  );
 
   return (
     <>
