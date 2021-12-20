@@ -80,7 +80,7 @@ export const EscrowInfo: React.FC<Props> = ({ className }: Props) => {
             <OuterButtonContainer escrowExists={!!escrow}>
               <Link to={`${path}/locker/lock`} tw="flex-grow">
                 <Button
-                  tw="w-full border-primary dark:text-primary hover:dark:text-white"
+                  tw="border-primary dark:text-primary hover:dark:text-white"
                   type="button"
                   size="md"
                   variant="outline"
@@ -90,10 +90,10 @@ export const EscrowInfo: React.FC<Props> = ({ className }: Props) => {
               </Link>
             </OuterButtonContainer>
             {escrow && (
-              <OuterButtonContainer escrowExists={!!escrow}>
+              <OuterButtonContainer escrowExists={true}>
                 <Link to={`${path}/locker/extend`} tw="flex-grow">
                   <Button
-                    tw="w-full border-primary dark:text-primary hover:dark:text-white"
+                    tw="border-primary dark:text-primary hover:dark:text-white"
                     type="button"
                     size="md"
                     variant="outline"
