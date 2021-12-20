@@ -1,6 +1,7 @@
 {
   "tribeca": {
     "name": "Tribeca",
+    "title": "Tribeca - Governance By DAOs, For DAOs",
     "fullName": "Tribeca DAO Platform",
     "description": "Tribeca is a Solana-based governance platform built by DAOs, for DAOs.",
     "url": "https://tribeca.so",
@@ -19,6 +20,7 @@
   },
   "goki": {
     "name": "Goki",
+    "title": "Goki - Solana multisig made for humans.",
     "fullName": "Goki Smart Wallet",
     "description": "A multisig wallet and auditable timelock on Solana.",
     "url": "https://goki.so",

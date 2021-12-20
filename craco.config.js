@@ -79,7 +79,7 @@ module.exports = {
       });
 
       htmlWebpackPlugin.userOptions = deepMerge(htmlWebpackPlugin.userOptions, {
-        title: appInfo.name,
+        title: appInfo.title ?? appInfo.name,
         meta: {
           viewport: "width=device-width, initial-scale=1",
           description: appInfo.description,
