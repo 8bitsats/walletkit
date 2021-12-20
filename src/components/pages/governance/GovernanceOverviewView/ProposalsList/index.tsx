@@ -52,7 +52,7 @@ export const ProposalsList: React.FC<Props> = ({
   if (allProposals.length === 0 && typeof proposalCount !== "number") {
     return (
       <>
-        {Array(PROPOSALS_PER_PAGE)
+        {Array(Math.min(PROPOSALS_PER_PAGE, maxCount))
           .fill(null)
           .map((_, i) => (
             <PlaceholderCard key={i} />
