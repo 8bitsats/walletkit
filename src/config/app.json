@@ -22,10 +22,10 @@
     "name": "Goki",
     "title": "Goki - Solana multisig made for humans.",
     "fullName": "Goki Smart Wallet",
-    "description": "A multisig wallet and auditable timelock on Solana.",
+    "description": "Goki is a multisig wallet and treasury management system for Solana users that want to keep their keys safe.",
     "url": "https://goki.so",
-    "image": "https://goki.so/images/og-image.png",
-    "imageAlt": "A multisig wallet and auditable timelock on Solana.",
+    "image": "https://goki.so/images/goki/og-image.png",
+    "imageAlt": "Goki is a multisig wallet and treasury management system for Solana users that want to keep their keys safe.",
     "themeColor": "#192908",
     "socials": {
       "twitter": "GokiProtocol",
