@@ -1,5 +1,4 @@
 import { FaArrowRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { css, theme } from "twin.macro";
 import Typewriter from "typewriter-effect";
 
@@ -43,15 +42,19 @@ export const Jumbotron: React.FC = () => {
           audit multisig wallets on Solana.
         </p>
       </div>
-      <Link to="/onboarding/new">
+      <a
+        href="https://forms.gle/SYg5z7qi6qkdh9419"
+        target="_blank"
+        rel="noreferrer"
+      >
         <Button
           variant="primary"
           tw="flex items-center gap-4 h-12 w-[200px] mt-6 text-base"
         >
-          <span>Get Started</span>
+          <span>Join the Waitlist</span>
           <FaArrowRight />
         </Button>
-      </Link>
+      </a>
       <div tw="relative w-full mt-12">
         <div
           tw="absolute -left-24 top-0 -right-24 -mt-10 bottom-0 w-full"

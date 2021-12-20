@@ -82,7 +82,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "craco start",
+    "start:goki": "REACT_APP_APP_CONFIG=goki craco start",
     "start:tribeca": "REACT_APP_APP_CONFIG=tribeca craco start",
     "build": "craco build",
     "build:production": "npm run build && npm run delete-sourcemaps",
