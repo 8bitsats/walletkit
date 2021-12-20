@@ -27,6 +27,11 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-modules-
+      - name: Build Cache
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules/.cache/
+          key: ${{ runner.os }}-site-goki
       - run: yarn install
       - run: yarn build:production
         env:
@@ -56,6 +61,11 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-modules-
+      - name: Build Cache
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules/.cache/
+          key: ${{ runner.os }}-site-tribeca
       - run: yarn install
       - run: yarn build:production
         env:
