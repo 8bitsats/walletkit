@@ -56,9 +56,7 @@ export const YourLockup: React.FC<Props> = ({ className }: Props) => {
     );
   }
 
-  const timeRemaining = formatDistance(endDate, new Date(), {
-    addSuffix: true,
-  });
+  const timeRemaining = formatDistance(endDate, new Date());
 
   return (
     <Card title="Your Lockup" className={className}>
