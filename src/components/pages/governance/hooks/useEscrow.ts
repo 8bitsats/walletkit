@@ -2,6 +2,7 @@ import { TokenAmount } from "@saberhq/token-utils";
 import { useSolana } from "@saberhq/use-solana";
 import type { PublicKey } from "@solana/web3.js";
 import { findEscrowAddress, VoteEscrow } from "@tribecahq/tribeca-sdk";
+import { useEffect } from "react";
 import { useQuery } from "react-query";
 import invariant from "tiny-invariant";
 
@@ -38,6 +39,8 @@ export const useEscrow = (owner?: PublicKey) => {
   );
   const { data: escrow } = useParsedEscrow(escrowKey.data);
 
+  const canLoadEscrow =
+    !!governorData && !!(lockerKey && owner && tribecaMut && escrow);
   const result = useQuery(
     ["escrow", escrow?.accountId.toString()],
     async () => {
@@ -56,9 +59,16 @@ export const useEscrow = (owner?: PublicKey) => {
       };
     },
     {
-      enabled: !!governorData && !!(lockerKey && owner && tribecaMut && escrow),
+      enabled: canLoadEscrow,
     }
   );
+
+  const { refetch } = result;
+  useEffect(() => {
+    if (canLoadEscrow) {
+      void refetch();
+    }
+  }, [canLoadEscrow, escrow, refetch]);
 
   const veBalance =
     veToken && result.data
@@ -73,7 +83,12 @@ export const useEscrow = (owner?: PublicKey) => {
       ? new TokenAmount(govToken, result.data ? result.data.escrow.amount : 0)
       : null;
 
-  return { ...result, veBalance, govTokensLocked };
+  return {
+    ...result,
+    veBalance,
+    govTokensLocked,
+    escrow: escrow === null ? null : result.data,
+  };
 };
 
 export const useUserEscrow = () => {

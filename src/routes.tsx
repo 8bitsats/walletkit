@@ -8,7 +8,7 @@ import { IndexView } from "./components/pages/landing";
 import { DAOStep1IntroView } from "./components/pages/onboarding/dao/DAOStep1IntroView";
 import { DAOStep2ExecutiveView } from "./components/pages/onboarding/dao/DAOStep2ExecutiveView";
 import { DAOStep3EmergencyView } from "./components/pages/onboarding/dao/DAOStep3EmergencyView";
-import { DAOCreateSimpleView } from "./components/pages/onboarding/dao/DAOStep4LockerView";
+import { DAOStep4LockerView } from "./components/pages/onboarding/dao/DAOStep4LockerView";
 import { WalletCreateView } from "./components/pages/onboarding/WalletCreateAdvancedView";
 import { WalletCreateSimpleView } from "./components/pages/onboarding/WalletCreateSimpleView";
 import { UserView } from "./components/pages/UserView";
@@ -48,7 +48,7 @@ export const Routes: React.FC = () => {
           />
           <Route
             path="/onboarding/dao/create-dao"
-            component={DAOCreateSimpleView}
+            component={DAOStep4LockerView}
           />
           <Route path="/onboarding/dao" component={DAOStep1IntroView} />
         </Switch>

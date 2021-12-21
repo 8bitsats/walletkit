@@ -24,9 +24,9 @@ const formatTweet = ({
   reason: string | null;
 }) =>
   [
-    `I voted ${
+    `I ${
       side !== VoteSide.Abstain
-        ? `${VOTE_SIDE_LABEL[side].toLowerCase()}`
+        ? `voted ${VOTE_SIDE_LABEL[side].toLowerCase()}`
         : `abstained from voting on`
     } ${daoName} Proposal #${proposal.index}${
       proposal.proposalMetaData?.title

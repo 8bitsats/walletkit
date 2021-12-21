@@ -19,7 +19,7 @@ import { AsyncButton } from "../../../../common/AsyncButton";
 import { Button } from "../../../../common/Button";
 import { InputText } from "../../../../common/inputs/InputText";
 
-export const DAOCreateSimpleView: React.FC = () => {
+export const DAOStep4LockerView: React.FC = () => {
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
   const executiveStr = urlParams.get("executive");
@@ -146,6 +146,7 @@ export const DAOCreateSimpleView: React.FC = () => {
                       timelockDelaySeconds: new BN(60),
                     },
                     lockerParams: {
+                      minStakeDuration: new BN(0),
                       proposalActivationMinVotes: new BN(10),
                     },
                   });

@@ -11,9 +11,9 @@ interface Props {
 
 export const LockupDetails: React.FC<Props> = ({ className }: Props) => {
   const { sdkMut } = useSDK();
-  const { data: userLockup, isLoading, isFetched } = useUserEscrow();
+  const { data: userLockup, isLoading, isFetched, escrow } = useUserEscrow();
 
-  if (isLoading || (sdkMut && !userLockup && !isFetched)) {
+  if (isLoading || (sdkMut && escrow === undefined && !isFetched)) {
     return (
       <Card className={className} title="Your Lockup">
         <div tw="py-6">

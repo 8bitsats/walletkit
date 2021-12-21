@@ -1,7 +1,7 @@
 import { useUserAssociatedTokenAccounts } from "@quarryprotocol/react-quarry";
 import { SliderHandle, SliderRange, SliderTrack } from "@reach/slider";
 import { useSail } from "@saberhq/sail";
-import { Fraction, sleep, u64 } from "@saberhq/token-utils";
+import { Fraction, sleep, TokenAmount, u64 } from "@saberhq/token-utils";
 import type { VoteEscrow } from "@tribecahq/tribeca-sdk";
 import { LockerWrapper } from "@tribecahq/tribeca-sdk";
 import BN from "bn.js";
@@ -30,19 +30,31 @@ type Props = Omit<ModalProps, "children"> & {
   variant: "lock" | "extend" | null;
 };
 
-const ONE_DAY = 86_400;
+const ONE_MINUTE = 60;
+const ONE_HOUR = ONE_MINUTE * 60;
+const ONE_DAY = ONE_HOUR * 24;
 const ONE_YEAR = ONE_DAY * 365;
 
 const normalizeDuration = (seconds: number): Duration => {
   if (seconds >= ONE_YEAR) {
     return {
-      years: Math.floor(seconds / ONE_YEAR),
-      days: Math.floor((seconds % ONE_YEAR) / ONE_DAY),
+      years: Math.floor(seconds / ONE_YEAR) || undefined,
+      days: Math.floor((seconds % ONE_YEAR) / ONE_DAY) || undefined,
     };
   }
   if (seconds >= ONE_DAY) {
     return {
-      days: Math.floor(seconds / ONE_DAY),
+      days: Math.floor(seconds / ONE_DAY) || undefined,
+    };
+  }
+  if (seconds >= ONE_HOUR) {
+    return {
+      hours: Math.floor(seconds / ONE_HOUR),
+    };
+  }
+  if (seconds >= ONE_MINUTE) {
+    return {
+      minutes: Math.floor(seconds / ONE_MINUTE),
     };
   }
   return {
@@ -58,18 +70,20 @@ const nicePresets = (
   maxLockupSeconds: number
 ): { duration: Duration; seconds: number }[] => {
   const result = [];
+  if (minLockupSeconds < ONE_DAY) {
+    result.push(ONE_MINUTE);
+    result.push(ONE_HOUR);
+  }
   if (maxLockupSeconds > ONE_DAY * 30) {
     result.push(ONE_DAY * 30);
   }
   if (maxLockupSeconds > ONE_YEAR) {
     result.push(ONE_YEAR);
   }
-  return [minLockupSeconds, ...result.slice(-3), maxLockupSeconds].map(
-    (seconds) => ({
-      seconds,
-      duration: normalizeDuration(seconds),
-    })
-  );
+  return [minLockupSeconds, ...result, maxLockupSeconds].map((seconds) => ({
+    seconds,
+    duration: normalizeDuration(seconds),
+  }));
 };
 
 export const LockEscrowModal: React.FC<Props> = ({
@@ -105,22 +119,27 @@ export const LockEscrowModal: React.FC<Props> = ({
   const unlockTime = new Date(Date.now() + parsedDurationSeconds * 1_000);
   const isInvalidUnlockTime = prevUnlockTime && unlockTime < prevUnlockTime;
 
-  const currentVotingPower =
-    escrow && govToken
-      ? parseFloat(escrow.calculateVotingPower(Date.now() / 1_000).toString()) /
-        10 ** govToken.decimals
-      : 0;
+  const currentVotingPower = veToken
+    ? new TokenAmount(
+        veToken,
+        escrow ? escrow.calculateVotingPower(Date.now() / 1_000) : 0
+      )
+    : null;
 
+  const newDeposits = govToken
+    ? new TokenAmount(govToken, escrow?.escrow?.amount ?? 0).add(
+        new TokenAmount(govToken, depositAmount?.raw ?? 0)
+      )
+    : null;
   const newVotingPower =
-    govToken && locker
-      ? new Fraction(
-          escrow?.escrow?.amount.toNumber() ?? 0,
-          10 ** govToken?.decimals
+    newDeposits && locker && veToken
+      ? new TokenAmount(
+          veToken,
+          new Fraction(newDeposits.raw)
+            .multiply(locker.accountInfo.data.params.maxStakeVoteMultiplier)
+            .multiply(parsedDurationSeconds)
+            .divide(locker.accountInfo.data.params.maxStakeDuration).quotient
         )
-          .add(depositAmount?.asFraction ?? 0)
-          .multiply(locker.accountInfo.data.params.maxStakeVoteMultiplier)
-          .multiply(parsedDurationSeconds)
-          .divide(locker.accountInfo.data.params.maxStakeDuration).asNumber
       : null;
 
   return (
@@ -160,11 +179,9 @@ export const LockEscrowModal: React.FC<Props> = ({
                 tw="text-4xl my-6"
                 css={[isInvalidUnlockTime && tw`text-red-500`]}
               >
-                {formatDuration(
-                  normalizeDuration(
-                    Math.floor(parsedDurationSeconds / 86_400) * 86_400
-                  )
-                )}
+                {formatDuration(normalizeDuration(parsedDurationSeconds), {
+                  zero: true,
+                })}
               </div>
               <div tw="w-11/12 mx-auto my-4">
                 <InputSlider
@@ -190,7 +207,7 @@ export const LockEscrowModal: React.FC<Props> = ({
                       setDurationSeconds(seconds.toString());
                     }}
                   >
-                    {formatDuration(duration)}
+                    {formatDuration(duration, { zero: true })}
                   </Button>
                 ))}
               </div>
@@ -213,11 +230,19 @@ export const LockEscrowModal: React.FC<Props> = ({
                         <div tw="flex flex-col">
                           <div>
                             <span tw="text-warmGray-400">Prev: </span>
-                            <span>{currentVotingPower.toLocaleString()}</span>
+                            <span>
+                              {currentVotingPower?.toExact({
+                                groupSeparator: ",",
+                              })}
+                            </span>
                           </div>
                           <div>
                             <span tw="text-warmGray-400">Next: </span>
-                            <span>{newVotingPower?.toLocaleString()}</span>
+                            <span>
+                              {newVotingPower?.toExact({
+                                groupSeparator: ",",
+                              })}
+                            </span>
                           </div>
                         </div>
                       ),
