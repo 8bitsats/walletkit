@@ -61,14 +61,6 @@ export const OverviewHeader: React.FC = () => {
           </span>
         </StatInner>
       </StatCard>
-      <StatCard tw="flex-grow md:(flex-basis[200px] flex-grow-0)">
-        <StatInner>
-          <span tw="text-white text-xl font-semibold">0</span>
-          <span tw="text-xs font-semibold text-coolGray-300 tracking-tighter">
-            Voting Addresses
-          </span>
-        </StatInner>
-      </StatCard>
     </div>
   );
 };
