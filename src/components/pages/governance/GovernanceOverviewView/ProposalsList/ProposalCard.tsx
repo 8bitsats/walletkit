@@ -35,7 +35,7 @@ export const ProposalCard: React.FC<Props> = ({ proposalInfo }: Props) => {
             </div>
           </div>
           {proposalInfo.proposalData && proposalInfo.state !== null && (
-            <div tw="flex items-center gap-2 mt-2">
+            <div tw="flex flex-col mt-4 gap-2 md:(flex-row items-center mt-2)">
               <ProposalStateLabel state={proposalInfo.state} />
               <div tw="flex gap-1 text-xs font-semibold">
                 <span>{`000${proposalInfo.index}`.slice(-4)}</span>
