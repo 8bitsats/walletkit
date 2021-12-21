@@ -1,27 +1,19 @@
 import { extractErrorMessage } from "@saberhq/sail";
 import { Transaction } from "@solana/web3.js";
-import { useMemo } from "react";
 
 import { Textarea } from "../../../../../common/inputs/InputText";
 
 interface Props {
+  setError: (err: string | null) => void;
   txRaw: string;
   setTxRaw: (txRaw: string) => void;
 }
 
-export const RawTX: React.FC<Props> = ({ txRaw, setTxRaw }: Props) => {
-  const { error } = useMemo(() => {
-    try {
-      const buffer = Buffer.from(txRaw, "base64");
-      const tx = Transaction.from(buffer);
-      return { tx };
-    } catch (e) {
-      return {
-        error: extractErrorMessage(e),
-      };
-    }
-  }, [txRaw]);
-
+export const RawTX: React.FC<Props> = ({
+  setError,
+  txRaw,
+  setTxRaw,
+}: Props) => {
   return (
     <label tw="flex flex-col gap-1" htmlFor="instructionsRaw">
       <span tw="text-sm">Transaction (base64)</span>
@@ -31,11 +23,24 @@ export const RawTX: React.FC<Props> = ({ txRaw, setTxRaw }: Props) => {
         rows={4}
         placeholder="Paste raw base64 encoded transaction message"
         value={txRaw}
-        onChange={(e) => setTxRaw(e.target.value)}
+        onChange={(e) => {
+          setTxRaw(e.target.value);
+          try {
+            const buffer = Buffer.from(e.target.value, "base64");
+            const tx = Transaction.from(buffer);
+            if (tx.instructions.length === 0) {
+              throw new Error("no instruction data");
+            }
+            setError(null);
+          } catch (err) {
+            setError(
+              `Invalid transaction data: ${
+                extractErrorMessage(err) ?? "(unknown)"
+              }`
+            );
+          }
+        }}
       />
-      {error && (
-        <span tw="text-red-500">Error parsing transaction: {error}</span>
-      )}
     </label>
   );
 };

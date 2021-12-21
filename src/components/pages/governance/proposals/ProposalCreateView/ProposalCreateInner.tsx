@@ -12,13 +12,16 @@ export const ProposalCreateInner: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [txRaw, setTxRaw] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
+  const [theError, setError] = useState<string | null>(null);
   useGovWindowTitle(`Create Proposal`);
 
-  const { tx } = useMemo(() => {
+  const { tx, error: parseError } = useMemo(() => {
     try {
       const buffer = Buffer.from(txRaw, "base64");
       const tx = Transaction.from(buffer);
+      if (tx.instructions.length === 0) {
+        return { error: "Transaction cannot be empty" };
+      }
       return { tx };
     } catch (e) {
       return {
@@ -26,6 +29,8 @@ export const ProposalCreateInner: React.FC = () => {
       };
     }
   }, [txRaw]);
+
+  const error = theError ?? parseError;
 
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
 
@@ -63,7 +68,7 @@ export const ProposalCreateInner: React.FC = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </label>
-        <div>
+        <div tw="grid gap-2">
           <ProposalTXForm
             setError={setError}
             txRaw={txRaw}

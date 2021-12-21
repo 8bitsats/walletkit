@@ -1,4 +1,7 @@
+import { ErrorBoundary } from "@sentry/react";
 import { Link } from "react-router-dom";
+
+import { HelperCard } from "../HelperCard";
 
 interface Props {
   className?: string;
@@ -31,7 +34,13 @@ export const Card: React.FC<Props> = ({
           {typeof title === "string" ? <h2>{title}</h2> : title}
         </div>
       )}
-      <div>{children}</div>
+      <ErrorBoundary
+        fallback={
+          <HelperCard variant="error">An unexpected error occurred.</HelperCard>
+        }
+      >
+        <div>{children}</div>
+      </ErrorBoundary>
       {link &&
         (link.href ? (
           <Link to={link.href} tw="text-white hover:text-primary">

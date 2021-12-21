@@ -34,6 +34,7 @@ export const ProposalTXForm: React.FC<Props> = ({
         <Select
           onChange={(e) => {
             setActionType(e.target.value as ActionType);
+            setError(null);
             setTxRaw("");
           }}
         >
@@ -57,7 +58,7 @@ export const ProposalTXForm: React.FC<Props> = ({
         <Memo setError={setError} setTxRaw={setTxRaw} />
       )}
       {actionType === "Raw Transaction (base64)" && (
-        <RawTX txRaw={txRaw} setTxRaw={setTxRaw} />
+        <RawTX setError={setError} txRaw={txRaw} setTxRaw={setTxRaw} />
       )}
     </div>
   );
