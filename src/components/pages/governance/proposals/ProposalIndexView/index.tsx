@@ -27,7 +27,7 @@ export const ProposalIndexView: React.FC = () => {
   return (
     <GovernancePage
       title={
-        <div tw="h-9 flex items-center">
+        <div tw="min-h-[36px] flex items-center break-words hyphens[auto]">
           {proposalInfo ? (
             proposalInfo?.proposalMetaData?.title ?? "Proposal"
           ) : (
