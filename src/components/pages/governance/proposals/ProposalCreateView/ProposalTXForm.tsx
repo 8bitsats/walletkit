@@ -7,8 +7,8 @@ import { RawTX } from "./actions/RawTX";
 import { UpgradeProgramForm } from "./actions/UpgradeProgramForm";
 
 const ACTION_TYPES = [
-  "Upgrade Program",
   "Memo",
+  "Upgrade Program",
   "Raw Transaction (base64)",
 ] as const;
 
@@ -25,7 +25,7 @@ export const ProposalTXForm: React.FC<Props> = ({
   txRaw,
   setTxRaw,
 }: Props) => {
-  const [actionType, setActionType] = useState<ActionType>("Upgrade Program");
+  const [actionType, setActionType] = useState<ActionType>("Memo");
 
   return (
     <div tw="grid gap-4">

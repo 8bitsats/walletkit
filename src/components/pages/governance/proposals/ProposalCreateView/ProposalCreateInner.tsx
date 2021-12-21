@@ -81,14 +81,7 @@ export const ProposalCreateInner: React.FC = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </label>
-        <div tw="grid gap-2">
-          <ProposalTXForm
-            setError={setError}
-            txRaw={txRaw}
-            setTxRaw={setTxRaw}
-          />
-          {error && <span tw="text-red-500 text-sm">{error}</span>}
-        </div>
+        <ProposalTXForm setError={setError} txRaw={txRaw} setTxRaw={setTxRaw} />
         <Button
           type="button"
           disabled={!(tx && title && description) || !!error}
@@ -97,7 +90,7 @@ export const ProposalCreateInner: React.FC = () => {
             setShowConfirm(true);
           }}
         >
-          Preview Proposal
+          {error ? error : "Preview Proposal"}
         </Button>
       </div>
     </>
