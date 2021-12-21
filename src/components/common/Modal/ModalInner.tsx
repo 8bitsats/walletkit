@@ -7,12 +7,14 @@ interface Props {
   title: string;
   children?: React.ReactNode;
   buttonProps?: React.ComponentProps<typeof Button>;
+  className?: string;
 }
 
 export const ModalInner: React.FC<Props> = ({
   title,
   children,
   buttonProps,
+  className,
 }: Props) => {
   const { close } = useModal();
   return (
@@ -26,7 +28,7 @@ export const ModalInner: React.FC<Props> = ({
           <FaTimes />
         </button>
       </div>
-      <div tw="p-8">
+      <div tw="p-8" className={className}>
         {children}
         {buttonProps && <Button tw="mt-8 w-full h-10" {...buttonProps} />}
       </div>

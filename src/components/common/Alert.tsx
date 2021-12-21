@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { FaExclamationTriangle, FaInfoCircle } from "react-icons/fa";
+import {
+  FaExclamationCircle,
+  FaExclamationTriangle,
+  FaInfoCircle,
+} from "react-icons/fa";
 import tw, { theme } from "twin.macro";
 
 interface Props {
@@ -18,6 +22,7 @@ export const Alert: React.FC<Props> = ({
     <Wrapper className={className} type={type}>
       {type === "info" && <FaInfoCircle />}
       {type === "warning" && <FaExclamationTriangle tw="mt-1" />}
+      {type === "danger" && <FaExclamationCircle tw="mt-1" />}
       <div>{children}</div>
     </Wrapper>
   );

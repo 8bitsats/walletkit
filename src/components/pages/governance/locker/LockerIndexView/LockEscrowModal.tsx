@@ -22,6 +22,7 @@ import { InputTokenAmount } from "../../../../common/inputs/InputTokenAmount";
 import { LoadingSpinner } from "../../../../common/LoadingSpinner";
 import type { ModalProps } from "../../../../common/Modal";
 import { Modal } from "../../../../common/Modal";
+import { ModalInner } from "../../../../common/Modal/ModalInner";
 import { useLocker, useUserEscrow } from "../../hooks/useEscrow";
 import { useGovernor } from "../../hooks/useGovernor";
 
@@ -144,170 +145,185 @@ export const LockEscrowModal: React.FC<Props> = ({
 
   return (
     <Modal tw="p-0 dark:text-white" {...modalProps}>
-      <div tw="h-14 flex items-center px-8 border-b dark:border-warmGray-700">
-        <h1 tw="font-medium text-base">
-          {variant === "extend" ? "Extend Lockup" : "Lock Tokens"}
-        </h1>
-      </div>
-      <div tw="px-8 py-4">
-        <div tw="flex flex-col gap-8">
-          {variant === "extend" && (
-            <HelperCard>
-              <p>
-                Extend your lockup to increase the voting power of your current
-                token stake.
-              </p>
-            </HelperCard>
-          )}
-          {variant === "lock" && (
-            <InputTokenAmount
-              tokens={[]}
-              label="Deposit Amount"
-              token={govToken ?? null}
-              inputValue={depositAmountStr}
-              inputOnChange={setDepositAmountStr}
-              currentAmount={{
-                amount: userBalance?.balance,
-                allowSelect: true,
-              }}
-            />
-          )}
-          <div>
-            <div tw="flex flex-col gap-2">
-              <span tw="font-medium text-sm">Lock Period</span>
-              <div
-                tw="text-4xl my-6"
-                css={[isInvalidUnlockTime && tw`text-red-500`]}
-              >
-                {formatDuration(normalizeDuration(parsedDurationSeconds), {
-                  zero: true,
-                })}
-              </div>
-              <div tw="w-11/12 mx-auto my-4">
-                <InputSlider
-                  value={parsedDurationSeconds}
-                  min={durations?.[0]}
-                  max={durations?.[1]}
-                  step={1}
-                  onChange={(e) => setDurationSeconds(e.toFixed(2))}
-                >
-                  <SliderTrack>
-                    <SliderRange />
-                    <SliderHandle />
-                  </SliderTrack>
-                </InputSlider>
-              </div>
-              <div tw="flex gap-4 mx-auto mt-4 flex-wrap">
-                {durationPresets.map(({ duration, seconds }, i) => (
-                  <Button
-                    key={i}
-                    variant="outline"
-                    tw="px-4 rounded border-primary hover:border-primary bg-primary bg-opacity-20"
-                    onClick={() => {
-                      setDurationSeconds(seconds.toString());
-                    }}
-                  >
-                    {formatDuration(duration, { zero: true })}
-                  </Button>
-                ))}
-              </div>
-              <div tw="py-6 flex items-center justify-center">
-                <FaArrowDown />
-              </div>
-              <div tw="mb-6 border rounded border-warmGray-800">
-                {!veToken ? (
-                  <div tw="w-full py-5 flex items-center justify-center">
-                    <LoadingSpinner tw="h-8 w-8" />
-                  </div>
-                ) : (
-                  <AttributeList
-                    rowStyles={tw`items-start gap-4`}
-                    labelStyles={tw`w-32`}
-                    valueStyles={tw`flex-grow`}
-                    transformLabel={false}
-                    attributes={{
-                      [`${veToken.symbol} balance`]: (
-                        <div tw="flex flex-col">
-                          <div>
-                            <span tw="text-warmGray-400">Prev: </span>
-                            <span>
-                              {currentVotingPower?.toExact({
-                                groupSeparator: ",",
-                              })}
-                            </span>
-                          </div>
-                          <div>
-                            <span tw="text-warmGray-400">Next: </span>
-                            <span>
-                              {newVotingPower?.toExact({
-                                groupSeparator: ",",
-                              })}
-                            </span>
-                          </div>
-                        </div>
-                      ),
-                      "Unlock Time": (
-                        <div tw="flex flex-col">
-                          <div>
-                            <span tw="text-warmGray-400">Prev: </span>
-                            <span>
-                              {prevUnlockTime?.toLocaleString(undefined, {
-                                timeZoneName: "short",
-                              }) ?? "n/a"}
-                            </span>
-                          </div>
-                          <div>
-                            <span tw="text-warmGray-400">Next: </span>
-                            <span>
-                              {unlockTime.toLocaleString(undefined, {
-                                timeZoneName: "short",
-                              })}
-                            </span>
-                          </div>
-                        </div>
-                      ),
-                    }}
-                  />
-                )}
-              </div>
-              <Button
-                size="md"
-                variant="primary"
-                disabled={!tribecaMut || !locker || !!isInvalidUnlockTime}
-                onClick={async () => {
-                  invariant(tribecaMut && locker);
-                  const lockerW = new LockerWrapper(
-                    tribecaMut,
-                    locker.accountId,
-                    governor
-                  );
-                  const tx = await lockerW.lockTokens({
-                    amount: depositAmount?.toU64() ?? new u64(0),
-                    duration: new BN(parsedDurationSeconds),
-                  });
-                  const { pending, success } = await handleTX(
-                    tx,
-                    `Lock tokens`
-                  );
-                  if (!pending || !success) {
-                    return;
-                  }
-                  await pending.wait();
-                  await sleep(1_000);
-                  await refetch();
-                  modalProps.onDismiss();
+      <ModalInner
+        tw="p-0"
+        title={variant === "extend" ? "Extend Lockup" : "Lock Tokens"}
+      >
+        <div tw="px-8 py-4">
+          <div tw="flex flex-col gap-8">
+            {variant === "extend" && (
+              <HelperCard>
+                <p>
+                  Extend your lockup to increase the voting power of your
+                  current token stake.
+                </p>
+              </HelperCard>
+            )}
+            {variant === "lock" && (
+              <InputTokenAmount
+                tokens={[]}
+                label="Deposit Amount"
+                token={govToken ?? null}
+                inputValue={depositAmountStr}
+                inputOnChange={setDepositAmountStr}
+                currentAmount={{
+                  amount: userBalance?.balance,
+                  allowSelect: true,
                 }}
-              >
-                {isInvalidUnlockTime
-                  ? "Cannot decrease lock time"
-                  : variant === "extend"
-                  ? "Extend Lockup"
-                  : "Lock Tokens"}
-              </Button>
+              />
+            )}
+            <div>
+              <div tw="flex flex-col gap-2">
+                <span tw="font-medium text-sm">Lock Period</span>
+                <div
+                  tw="text-4xl my-6"
+                  css={[isInvalidUnlockTime && tw`text-red-500`]}
+                >
+                  {formatDuration(normalizeDuration(parsedDurationSeconds), {
+                    zero: true,
+                  })}
+                </div>
+                <div tw="w-11/12 mx-auto my-4">
+                  <InputSlider
+                    value={parsedDurationSeconds}
+                    min={durations?.[0]}
+                    max={durations?.[1]}
+                    step={1}
+                    onChange={(e) => setDurationSeconds(e.toFixed(2))}
+                  >
+                    <SliderTrack>
+                      <SliderRange />
+                      <SliderHandle />
+                    </SliderTrack>
+                  </InputSlider>
+                </div>
+                <div tw="flex gap-4 mx-auto mt-4 flex-wrap">
+                  {durationPresets.map(({ duration, seconds }, i) => (
+                    <Button
+                      key={i}
+                      variant="outline"
+                      tw="px-4 rounded border-primary hover:border-primary bg-primary bg-opacity-20"
+                      onClick={() => {
+                        setDurationSeconds(seconds.toString());
+                      }}
+                    >
+                      {formatDuration(duration, { zero: true })}
+                    </Button>
+                  ))}
+                </div>
+                <div tw="py-6 flex items-center justify-center">
+                  <FaArrowDown />
+                </div>
+                <div tw="mb-6 border rounded border-warmGray-800">
+                  {!veToken ? (
+                    <div tw="w-full py-5 flex items-center justify-center">
+                      <LoadingSpinner tw="h-8 w-8" />
+                    </div>
+                  ) : (
+                    <AttributeList
+                      rowStyles={tw`items-start gap-4`}
+                      labelStyles={tw`w-32`}
+                      valueStyles={tw`flex-grow`}
+                      transformLabel={false}
+                      attributes={{
+                        [`${veToken.symbol} balance`]: (
+                          <div tw="flex flex-col">
+                            <div>
+                              <span tw="text-warmGray-400">Prev: </span>
+                              <span>
+                                {currentVotingPower?.toExact({
+                                  groupSeparator: ",",
+                                })}
+                              </span>
+                            </div>
+                            <div>
+                              <span tw="text-warmGray-400">Next: </span>
+                              <span>
+                                {newVotingPower?.toExact({
+                                  groupSeparator: ",",
+                                })}
+                              </span>
+                            </div>
+                          </div>
+                        ),
+                        "Unlock Time": (
+                          <div tw="flex flex-col">
+                            <div>
+                              <span tw="text-warmGray-400">Prev: </span>
+                              <span>
+                                {prevUnlockTime?.toLocaleString(undefined, {
+                                  timeZoneName: "short",
+                                }) ?? "n/a"}
+                              </span>
+                            </div>
+                            <div>
+                              <span tw="text-warmGray-400">Next: </span>
+                              <span>
+                                {unlockTime.toLocaleString(undefined, {
+                                  timeZoneName: "short",
+                                })}
+                              </span>
+                            </div>
+                          </div>
+                        ),
+                      }}
+                    />
+                  )}
+                </div>
+                {isInvalidUnlockTime && (
+                  <HelperCard variant="error" tw="my-4">
+                    <div tw="py-2">
+                      <h2 tw="text-base text-white mb-2 font-semibold">
+                        You cannot decrease your lock period
+                      </h2>
+                      <p>
+                        Your existing lock period ends at{" "}
+                        {prevUnlockTime.toLocaleString()}. Any updates to your
+                        vote escrow must result in a lockup that ends at or
+                        after this date.
+                      </p>
+                    </div>
+                  </HelperCard>
+                )}
+                <Button
+                  size="md"
+                  variant="primary"
+                  disabled={!tribecaMut || !locker || !!isInvalidUnlockTime}
+                  onClick={async () => {
+                    invariant(tribecaMut && locker);
+                    const lockerW = new LockerWrapper(
+                      tribecaMut,
+                      locker.accountId,
+                      governor
+                    );
+                    const tx = await lockerW.lockTokens({
+                      amount: depositAmount?.toU64() ?? new u64(0),
+                      duration: new BN(parsedDurationSeconds),
+                    });
+                    const { pending, success } = await handleTX(
+                      tx,
+                      `Lock tokens`
+                    );
+                    if (!pending || !success) {
+                      return;
+                    }
+                    await pending.wait();
+                    await sleep(1_000);
+                    await refetch();
+                    modalProps.onDismiss();
+                  }}
+                >
+                  {isInvalidUnlockTime
+                    ? "Cannot decrease lock time"
+                    : variant === "extend"
+                    ? "Extend Lockup"
+                    : "Lock Tokens"}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </ModalInner>
     </Modal>
   );
 };
