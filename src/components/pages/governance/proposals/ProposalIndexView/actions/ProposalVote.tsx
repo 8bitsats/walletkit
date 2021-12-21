@@ -61,7 +61,7 @@ export const ProposalVote: React.FC<Props> = ({ proposalInfo }: Props) => {
               </span>
             </div>
           )}
-          <div>
+          <div tw="flex w-full items-center justify-center">
             <CastVoteButton
               proposalInfo={proposalInfo}
               side={vote ? vote.accountInfo.data.side : null}

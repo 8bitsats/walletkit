@@ -29,25 +29,27 @@ export const ProposalQueue: React.FC<Props> = ({
         <p tw="mb-4">
           The proposal passed successfully on {votingEndedAt.toLocaleString()}.
         </p>
-        <AsyncButton
-          disabled={!governorW}
-          size="md"
-          variant="primary"
-          onClick={async () => {
-            invariant(governorW);
-            const tx = await governorW.queueProposal({
-              index: new BN(proposal.index),
-            });
-            const { pending, success } = await handleTX(tx, "Queue Proposal");
-            if (!pending || !success) {
-              return;
-            }
-            await pending.wait();
-            onActivate();
-          }}
-        >
-          Queue Proposal
-        </AsyncButton>
+        <div tw="flex justify-center items-center">
+          <AsyncButton
+            disabled={!governorW}
+            tw="w-3/4"
+            variant="primary"
+            onClick={async () => {
+              invariant(governorW);
+              const tx = await governorW.queueProposal({
+                index: new BN(proposal.index),
+              });
+              const { pending, success } = await handleTX(tx, "Queue Proposal");
+              if (!pending || !success) {
+                return;
+              }
+              await pending.wait();
+              onActivate();
+            }}
+          >
+            Queue Proposal
+          </AsyncButton>
+        </div>
       </div>
     </Card>
   );

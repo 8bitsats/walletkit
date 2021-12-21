@@ -19,7 +19,7 @@ export const CastVoteButton: React.FC<Props> = ({
       tw="max-w-md"
       buttonProps={{
         variant: "outline",
-        css: tw`border-white hover:(border-primary bg-primary bg-opacity-20)`,
+        css: tw`border-white w-2/5 hover:(border-primary bg-primary bg-opacity-20)`,
       }}
       buttonLabel={
         side === null // Vote account not yet created
