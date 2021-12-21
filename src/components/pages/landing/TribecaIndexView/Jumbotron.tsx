@@ -22,7 +22,7 @@ export const Jumbotron: React.FC = () => {
           <h1 tw="text-3xl font-black leading-snug text-white relative md:(text-7xl leading-snug)">
             <div
               css={css`
-                animation: 1.5s ${FADE_IN_DOWN} 0s normal forwards ease-out;
+                animation: 1.5s ${FADE_IN_DOWN} 0.01s normal forwards ease-out;
               `}
             >
               Governance.
