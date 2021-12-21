@@ -49,8 +49,10 @@ export const ProposalDetails: React.FC<Props> = ({
           </Alert>
         )}
 
-        <div tw="prose prose-light mt-4">
-          <ReactMarkdown>{description}</ReactMarkdown>
+        <div tw="break-words hyphens[auto]">
+          <div tw="prose prose-light mt-4">
+            <ReactMarkdown>{description}</ReactMarkdown>
+          </div>
         </div>
       </div>
     </Card>
