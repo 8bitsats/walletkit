@@ -42,7 +42,7 @@ export const ProposalDetails: React.FC<Props> = ({
           <Alert type="info" tw="my-6">
             <h2>This proposal is a draft.</h2>
             <p>
-              It may be voted on until a DAO member with at least{" "}
+              The DAO cannot vote on this proposal until a member with at least{" "}
               <strong>{minActivationThreshold?.formatUnits()}</strong> activates
               it.
             </p>
