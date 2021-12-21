@@ -18,6 +18,9 @@ export const Textarea = styled.textarea`
 
 export const Select = styled.select`
   ${COMMON}
+  & > option {
+    ${tw`text-black`}
+  }
 `;
 
 export const Radio = styled.input``;
