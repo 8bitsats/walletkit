@@ -79,7 +79,7 @@ export const VoteResult: React.FC<Props> = ({
               rel="noreferrer"
             >
               <Button variant="primary" size="md">
-                Tweet your support
+                Tweet your {side === VoteSide.For ? "support" : "stance"}
               </Button>
             </a>
           )}

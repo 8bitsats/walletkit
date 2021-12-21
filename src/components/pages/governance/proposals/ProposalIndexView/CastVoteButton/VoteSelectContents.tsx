@@ -72,10 +72,13 @@ export const VoteSelectContents: React.FC<Props> = ({
       </div>
       <div tw="mt-8">
         <label htmlFor="reason" tw="flex flex-col gap-2">
-          <span tw="font-medium text-white text-sm">Add Reason</span>
+          <span tw="font-medium text-white text-sm">
+            Add Reason (max 200 characters)
+          </span>
           <Textarea
             id="reason"
             tw="resize-none h-auto"
+            maxLength={200}
             placeholder="Tell others why you are voting this way"
             rows={4}
             value={reason}
