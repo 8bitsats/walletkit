@@ -17,15 +17,17 @@ export const RawTX: React.FC<Props> = ({
 }: Props) => {
   return (
     <>
+      <HelperCard variant="warn">
+        <div tw="font-semibold">
+          Warning: this page is for advanced users only. Invalid transaction
+          data may cause this page to freeze. Documentation will be coming soon.
+        </div>
+      </HelperCard>
       <HelperCard variant="muted">
         <div tw="prose prose-sm prose-light">
           <p>
             This page allows proposing any arbitrary transaction for execution
             by the DAO. The fee payer and recent blockhash will not be used.
-          </p>
-          <p>
-            This page is intended to be only be used by developers. Docs are
-            coming soon.
           </p>
         </div>
       </HelperCard>
