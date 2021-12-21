@@ -34,7 +34,19 @@ export const ProposalsList: React.FC<Props> = ({
 
   const startCursor = currentPage * PROPOSALS_PER_PAGE;
 
-  if (proposalCount === 0) {
+  if (typeof proposalCount !== "number") {
+    return (
+      <>
+        {Array(Math.min(PROPOSALS_PER_PAGE, maxCount))
+          .fill(null)
+          .map((_, i) => (
+            <PlaceholderCard key={i} />
+          ))}
+      </>
+    );
+  }
+
+  if (proposalCount === 0 || allProposals.length === 0) {
     return (
       <div>
         <EmptyState title="There aren't any proposals yet.">
@@ -47,33 +59,6 @@ export const ProposalsList: React.FC<Props> = ({
         </EmptyState>
       </div>
     );
-  }
-
-  if (allProposals.length === 0) {
-    if (typeof proposalCount !== "number") {
-      return (
-        <>
-          {Array(Math.min(PROPOSALS_PER_PAGE, maxCount))
-            .fill(null)
-            .map((_, i) => (
-              <PlaceholderCard key={i} />
-            ))}
-        </>
-      );
-    } else {
-      return (
-        <div>
-          <EmptyState title="There aren't any proposals yet.">
-            <Link
-              tw="text-primary hover:text-white transition-colors"
-              to={`${path}/proposals/create`}
-            >
-              Create a proposal
-            </Link>
-          </EmptyState>
-        </div>
-      );
-    }
   }
 
   const pageCount = calcPageTotal(allProposals.length ?? 0);
