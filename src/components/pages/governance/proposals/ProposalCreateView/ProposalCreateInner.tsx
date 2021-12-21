@@ -61,11 +61,12 @@ export const ProposalCreateInner: React.FC = () => {
           </div>
         </HelperCard>
         <label tw="flex flex-col gap-1" htmlFor="title">
-          <span tw="text-sm">Title</span>
+          <span tw="text-sm">Title (max 140 characters)</span>
           <InputText
             id="title"
             placeholder="A short summary of your proposal."
             value={title}
+            maxLength={140}
             onChange={(e) => setTitle(e.target.value)}
           />
         </label>

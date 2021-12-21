@@ -20,3 +20,5 @@ export const SABER_REWARDER_KEY = new PublicKey(
 export const MEMO_PROGRAM_ID = new PublicKey(
   "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
 );
+
+export const PROPOSAL_TITLE_MAX_LEN = 140;

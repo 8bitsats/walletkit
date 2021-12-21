@@ -1,6 +1,7 @@
 import { ProposalState } from "@tribecahq/tribeca-sdk";
 import { Link } from "react-router-dom";
 
+import { PROPOSAL_TITLE_MAX_LEN } from "../../../../../utils/constants";
 import { useGovernor } from "../../hooks/useGovernor";
 import type { ProposalInfo } from "../../hooks/useProposals";
 import { ActiveProposalVotingBars } from "./ActiveProposalVotingBars";
@@ -20,15 +21,18 @@ export const ProposalCard: React.FC<Props> = ({ proposalInfo }: Props) => {
       to={`${path}/proposals/${proposalInfo.index}`}
       tw="flex items-center justify-between py-5 px-6 border-l-2 border-l-transparent border-b border-b-warmGray-800 cursor-pointer hover:border-l-primary"
     >
-      <div tw="flex items-center gap-5">
+      <div tw="flex items-center gap-5 w-3/4 md:w-[500px]">
         {proposalInfo.state === ProposalState.Active && (
           <PulsingDot tw="w-11 h-11 text-accent" />
         )}
         <div>
-          <div tw="h-5 flex items-center">
-            <span tw="text-white leading-snug">
-              {proposalInfo.proposalMetaData?.title}
-            </span>
+          <div tw="flex items-center">
+            <div tw="text-white leading-snug break-words hyphens[auto]">
+              {proposalInfo.proposalMetaData?.title.slice(
+                0,
+                PROPOSAL_TITLE_MAX_LEN
+              )}
+            </div>
           </div>
           {proposalInfo.proposalData && proposalInfo.state !== null && (
             <div tw="flex items-center gap-2 mt-2">
@@ -53,7 +57,7 @@ export const ProposalCard: React.FC<Props> = ({ proposalInfo }: Props) => {
       {proposalInfo.state !== null &&
         proposalInfo.state !== ProposalState.Draft &&
         proposalInfo.state !== ProposalState.Active && (
-          <div tw="md:w-20 lg:w-[140px]">
+          <div tw="w-16 md:w-20 lg:w-[140px]">
             <ProposalStateBadge state={proposalInfo.state} />
           </div>
         )}
