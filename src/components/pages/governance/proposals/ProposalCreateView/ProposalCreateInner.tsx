@@ -3,8 +3,9 @@ import { Transaction } from "@solana/web3.js";
 import { useMemo, useState } from "react";
 
 import { Button } from "../../../../common/Button";
+import { HelperCard } from "../../../../common/HelperCard";
 import { InputText, Textarea } from "../../../../common/inputs/InputText";
-import { useGovWindowTitle } from "../../hooks/useGovernor";
+import { useGovernor, useGovWindowTitle } from "../../hooks/useGovernor";
 import { ProposalConfirmModal } from "./ProposalConfirmationModal";
 import { ProposalTXForm } from "./ProposalTXForm";
 
@@ -13,6 +14,7 @@ export const ProposalCreateInner: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [txRaw, setTxRaw] = useState<string>("");
   const [theError, setError] = useState<string | null>(null);
+  const { minActivationThreshold } = useGovernor();
   useGovWindowTitle(`Create Proposal`);
 
   const { tx, error: parseError } = useMemo(() => {
@@ -48,6 +50,16 @@ export const ProposalCreateInner: React.FC = () => {
         }}
       />
       <div tw="grid gap-4 px-7 py-6">
+        <HelperCard variant="muted">
+          <div tw="leading-loose">
+            <p tw="text-white mb-2">You are creating a proposal draft.</p>
+            <p>
+              If activated by a a DAO member with at least{" "}
+              <strong>{minActivationThreshold?.formatUnits()}</strong>, the
+              members of the DAO may vote to execute or reject the proposal.
+            </p>
+          </div>
+        </HelperCard>
         <label tw="flex flex-col gap-1" htmlFor="title">
           <span tw="text-sm">Title</span>
           <InputText
