@@ -4,9 +4,11 @@ import type { VoteSide } from "@tribecahq/tribeca-sdk";
 import { useState } from "react";
 import invariant from "tiny-invariant";
 
+import { useSDK } from "../../../../../../contexts/sdk";
 import { ModalInner } from "../../../../../common/Modal/ModalInner";
 import { useUserEscrow } from "../../../hooks/useEscrow";
 import type { ProposalInfo } from "../../../hooks/useProposals";
+import { useVote } from "../../../hooks/useVote";
 import { VOTE_SIDE_LABEL } from "../VotesCard";
 import { VoteResult } from "./VoteResult";
 import { VoteSelectContents } from "./VoteSelectContents";
@@ -18,8 +20,15 @@ interface Props {
 export const CastVoteModal: React.FC<Props> = ({ proposalInfo }: Props) => {
   const { data: escrow } = useUserEscrow();
   const { handleTX } = useSail();
+  const { sdkMut } = useSDK();
+  const { data: myVote } = useVote(
+    proposalInfo.proposalKey,
+    sdkMut?.provider.wallet.publicKey
+  );
 
-  const [side, setSide] = useState<VoteSide | null>(null);
+  const [side, setSide] = useState<VoteSide | null>(
+    myVote?.accountInfo.data.side ?? null
+  );
   const [reason, setReason] = useState<string>("");
   const [hasVoted, setHasVoted] = useState<boolean>(false);
 
