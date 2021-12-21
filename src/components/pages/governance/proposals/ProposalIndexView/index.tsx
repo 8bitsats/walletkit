@@ -37,7 +37,7 @@ export const ProposalIndexView: React.FC = () => {
       }
       header={
         <div tw="flex items-center gap-2 mt-2">
-          <div tw="h-5">
+          <div tw="min-h-[20px]">
             {proposalInfo ? (
               <ProposalSubtitle proposalInfo={proposalInfo} />
             ) : (

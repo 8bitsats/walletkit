@@ -37,14 +37,14 @@ export const GovernancePage: React.FC<Props> = ({
           )}
         </div>
         <PageContainer style={containerStyles}>
-          <div tw="flex gap-8 flex-row flex-wrap items-center justify-between w-full md:mt-16">
-            <div tw="flex flex-col">
+          <div tw="flex flex-col gap-4 md:(gap-8 flex-row min-h-[120px]) flex-wrap items-center justify-between w-full">
+            <div tw="flex flex-col self-start">
               <h1 tw="text-2xl md:text-3xl font-bold text-white tracking-tighter">
                 {title}
               </h1>
               {header}
             </div>
-            <div>{right}</div>
+            {right && <div>{right}</div>}
           </div>
           {preContent && <div tw="mt-8">{preContent}</div>}
         </PageContainer>
