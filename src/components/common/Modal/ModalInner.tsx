@@ -20,7 +20,9 @@ export const ModalInner: React.FC<Props> = ({
   return (
     <>
       <div tw="relative border-b border-b-warmGray-800 text-white font-bold text-base text-center py-4">
-        {title}
+        <div tw="px-8 overflow-ellipsis overflow-hidden whitespace-nowrap">
+          {title}
+        </div>
         <button
           onClick={() => close()}
           tw="absolute right-4 h-full flex items-center top-0 text-warmGray-600 hover:text-warmGray-200 transition-colors"
