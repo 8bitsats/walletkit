@@ -28,7 +28,7 @@ export const GovernancePage: React.FC<Props> = ({
   return (
     <div tw="w-full">
       <div tw="bg-warmGray-900 pb-24">
-        <div tw="h-6 mx-auto w-11/12 max-w-7xl">
+        <div tw="h-6 mx-auto w-11/12 max-w-7xl mb-4">
           {!hideDAOName && (
             <div tw="flex items-center gap-2 text-sm font-semibold text-white">
               <TokenIcon token={govToken} size={24} />
@@ -37,7 +37,7 @@ export const GovernancePage: React.FC<Props> = ({
           )}
         </div>
         <PageContainer style={containerStyles}>
-          <div tw="flex gap-8 flex-row flex-wrap items-center justify-between w-full mt-16">
+          <div tw="flex gap-8 flex-row flex-wrap items-center justify-between w-full md:mt-16">
             <div tw="flex flex-col">
               <h1 tw="text-2xl md:text-3xl font-bold text-white tracking-tighter">
                 {title}
