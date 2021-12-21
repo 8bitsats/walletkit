@@ -15,20 +15,26 @@ const ACTION_TYPES = [
 type ActionType = typeof ACTION_TYPES[number];
 
 interface Props {
+  setError: (error: string | null) => void;
   txRaw: string;
   setTxRaw: (txRaw: string) => void;
 }
 
-export const ProposalTXForm: React.FC<Props> = ({ txRaw, setTxRaw }: Props) => {
+export const ProposalTXForm: React.FC<Props> = ({
+  setError,
+  txRaw,
+  setTxRaw,
+}: Props) => {
   const [actionType, setActionType] = useState<ActionType>("Upgrade Program");
 
   return (
-    <>
+    <div tw="grid gap-4">
       <label tw="flex flex-col gap-1" htmlFor="proposedAction">
         <span tw="text-sm">Proposed Action</span>
         <Select
           onChange={(e) => {
             setActionType(e.target.value as ActionType);
+            setTxRaw("");
           }}
         >
           {ACTION_TYPES.map((actionType) => {
@@ -47,10 +53,12 @@ export const ProposalTXForm: React.FC<Props> = ({ txRaw, setTxRaw }: Props) => {
           }}
         />
       )}
-      {actionType === "Memo" && <Memo setTxRaw={setTxRaw} />}
+      {actionType === "Memo" && (
+        <Memo setError={setError} setTxRaw={setTxRaw} />
+      )}
       {actionType === "Raw Transaction (base64)" && (
         <RawTX txRaw={txRaw} setTxRaw={setTxRaw} />
       )}
-    </>
+    </div>
   );
 };

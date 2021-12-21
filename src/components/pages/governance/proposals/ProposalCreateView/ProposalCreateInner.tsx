@@ -12,6 +12,7 @@ export const ProposalCreateInner: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [txRaw, setTxRaw] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   useGovWindowTitle(`Create Proposal`);
 
   const { tx } = useMemo(() => {
@@ -62,10 +63,17 @@ export const ProposalCreateInner: React.FC = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </label>
-        <ProposalTXForm txRaw={txRaw} setTxRaw={setTxRaw} />
+        <div>
+          <ProposalTXForm
+            setError={setError}
+            txRaw={txRaw}
+            setTxRaw={setTxRaw}
+          />
+          {error && <span tw="text-red-500 text-sm">{error}</span>}
+        </div>
         <Button
           type="button"
-          disabled={!(tx && title && description)}
+          disabled={!(tx && title && description) || !!error}
           variant="primary"
           onClick={() => {
             setShowConfirm(true);

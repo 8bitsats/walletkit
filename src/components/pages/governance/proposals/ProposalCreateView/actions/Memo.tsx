@@ -1,9 +1,7 @@
-import { utils } from "@project-serum/anchor";
 import {
   buildStubbedTransaction,
-  MEMO_PROGRAM_ID,
+  createMemoInstruction,
 } from "@saberhq/solana-contrib";
-import { TransactionInstruction } from "@solana/web3.js";
 import { useState } from "react";
 import invariant from "tiny-invariant";
 
@@ -13,10 +11,11 @@ import { Textarea } from "../../../../../common/inputs/InputText";
 import { useGovernor } from "../../../hooks/useGovernor";
 
 interface Props {
+  setError: (err: string | null) => void;
   setTxRaw: (txRaw: string) => void;
 }
 
-export const Memo: React.FC<Props> = ({ setTxRaw }: Props) => {
+export const Memo: React.FC<Props> = ({ setError, setTxRaw }: Props) => {
   const [memo, setMemo] = useState<string>("");
   const { smartWallet } = useGovernor();
 
@@ -38,23 +37,17 @@ export const Memo: React.FC<Props> = ({ setTxRaw }: Props) => {
           onChange={(e) => {
             invariant(smartWallet);
             setMemo(e.target.value);
-            setTxRaw(
-              serializeToBase64(
-                buildStubbedTransaction("devnet", [
-                  new TransactionInstruction({
-                    programId: MEMO_PROGRAM_ID,
-                    keys: [
-                      {
-                        pubkey: smartWallet,
-                        isWritable: false,
-                        isSigner: true,
-                      },
-                    ],
-                    data: Buffer.from(utils.bytes.utf8.encode(memo)),
-                  }),
-                ])
-              )
-            );
+            try {
+              const txStub = buildStubbedTransaction("devnet", [
+                createMemoInstruction(e.target.value, [smartWallet]),
+              ]);
+              setTxRaw(serializeToBase64(txStub));
+              setError(null);
+            } catch (ex) {
+              setTxRaw("");
+              console.debug("Error creating memo", ex);
+              setError("Memo is too long");
+            }
           }}
         />
       </label>
