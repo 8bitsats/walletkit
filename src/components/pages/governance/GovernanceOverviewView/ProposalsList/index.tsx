@@ -31,7 +31,6 @@ export const ProposalsList: React.FC<Props> = ({
   ]
     .filter((p) => {
       const proposalState = p?.data?.state;
-      console.log("proposalState:", proposalState?.toString());
       return showDrafts
         ? true
         : proposalState !== ProposalState.Draft &&
