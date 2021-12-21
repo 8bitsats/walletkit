@@ -1,5 +1,7 @@
+import styled from "@emotion/styled";
 import { ProposalState } from "@tribecahq/tribeca-sdk";
 import { Link } from "react-router-dom";
+import tw from "twin.macro";
 
 import { PROPOSAL_TITLE_MAX_LEN } from "../../../../../utils/constants";
 import { useGovernor } from "../../hooks/useGovernor";
@@ -57,10 +59,14 @@ export const ProposalCard: React.FC<Props> = ({ proposalInfo }: Props) => {
       {proposalInfo.state !== null &&
         proposalInfo.state !== ProposalState.Draft &&
         proposalInfo.state !== ProposalState.Active && (
-          <div tw="w-16 md:w-20 lg:w-[140px]">
+          <ProposalBadgeWrapper>
             <ProposalStateBadge state={proposalInfo.state} />
-          </div>
+          </ProposalBadgeWrapper>
         )}
     </Link>
   );
 };
+
+export const ProposalBadgeWrapper = styled.div`
+  ${tw`w-16 md:w-20 lg:w-[140px]`}
+`;

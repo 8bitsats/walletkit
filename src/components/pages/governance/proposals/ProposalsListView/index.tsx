@@ -1,12 +1,13 @@
 import { Switch } from "@headlessui/react";
 import { useState } from "react";
+import { FaPlusCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import tw from "twin.macro";
 
-import { Button } from "../../../../common/Button";
 import { Card } from "../../../../common/governance/Card";
 import { GovernancePage } from "../../../../common/governance/GovernancePage";
 import { ProposalsList } from "../../GovernanceOverviewView/ProposalsList";
+import { ProposalBadgeWrapper } from "../../GovernanceOverviewView/ProposalsList/ProposalCard";
 import { useGovernor, useGovWindowTitle } from "../../hooks/useGovernor";
 import { LegendsNeverDie } from "./LegendsNeverDie";
 
@@ -20,8 +21,18 @@ export const ProposalsListView: React.FC = () => {
       <Card
         title={
           <div tw="flex w-full items-center justify-between">
-            <h2>All Proposals</h2>
-            <div tw="flex gap-4">
+            <div tw="flex items-center gap-4">
+              <h2>All Proposals</h2>
+              <Link
+                to={`${path}/proposals/create`}
+                tw="pt-0.5 flex items-center text-primary hover:text-white transition-all"
+              >
+                <button>
+                  <FaPlusCircle />
+                </button>
+              </Link>
+            </div>
+            <ProposalBadgeWrapper tw="flex gap-4">
               <Switch.Group>
                 <div tw="flex items-center text-sm">
                   <Switch
@@ -46,12 +57,7 @@ export const ProposalsListView: React.FC = () => {
                   </Switch.Label>
                 </div>
               </Switch.Group>
-              <Link to={`${path}/proposals/create`}>
-                <Button tw="px-3" variant="primary">
-                  Create Proposal
-                </Button>
-              </Link>
-            </div>
+            </ProposalBadgeWrapper>
           </div>
         }
       >
