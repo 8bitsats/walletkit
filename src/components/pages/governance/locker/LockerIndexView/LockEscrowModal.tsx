@@ -276,11 +276,15 @@ export const LockEscrowModal: React.FC<Props> = ({
                       <h2 tw="text-base text-white mb-2 font-semibold">
                         You cannot decrease your lock period
                       </h2>
-                      <p>
+                      <p tw="mb-1">
                         Your existing lock period ends at{" "}
                         {prevUnlockTime.toLocaleString()}. Any updates to your
                         vote escrow must result in a lockup that ends at or
                         after this date.
+                      </p>
+                      <p>
+                        You may use a separate wallet in order to maintain
+                        multiple lockups of varying expiries.
                       </p>
                     </div>
                   </HelperCard>
