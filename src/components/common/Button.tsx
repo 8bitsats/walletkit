@@ -88,7 +88,7 @@ export const StyledButton = styled.button<AdditionalButtonProps>(
     tw`rounded-sm`,
     tw`text-sm font-semibold`,
     tw`transform active:scale-98 text-DEFAULT hover:bg-opacity-90`,
-    tw`transition-transform`,
+    tw`transition-all`,
 
     variant === "default" &&
       tw`border border-gray-200 bg-white shadow-sm hover:(bg-gray-100 border-gray-300) transition-colors`,
