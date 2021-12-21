@@ -32,7 +32,7 @@ export const ProposalsListView: React.FC = () => {
                 </button>
               </Link>
             </div>
-            <ProposalBadgeWrapper tw="flex gap-4">
+            <ProposalBadgeWrapper tw="flex gap-4 w-auto">
               <Switch.Group>
                 <div tw="flex items-center text-sm">
                   <Switch
