@@ -1,11 +1,8 @@
-import { ProposalState } from "@tribecahq/tribeca-sdk";
 import ReactMarkdown from "react-markdown";
 
-import { Alert } from "../../../../common/Alert";
 import { Card } from "../../../../common/governance/Card";
 import { IXSummary } from "../../../../common/governance/IXSummary";
 import { TransactionPreviewLink } from "../../../../common/governance/TransactionPreviewLink";
-import { useGovernor } from "../../hooks/useGovernor";
 import type { ProposalInfo } from "../../hooks/useProposals";
 
 interface Props {
@@ -17,8 +14,6 @@ export const ProposalDetails: React.FC<Props> = ({
   className,
   proposalInfo,
 }: Props) => {
-  const { minActivationThreshold } = useGovernor();
-
   const description = proposalInfo?.proposalMetaData?.descriptionLink ?? "";
   return (
     <Card className={className} title="Details">
@@ -38,17 +33,6 @@ export const ProposalDetails: React.FC<Props> = ({
             instructions={proposalInfo.proposalData.instructions}
           />
         )}
-        {proposalInfo?.state === ProposalState.Draft && (
-          <Alert type="info" tw="my-6">
-            <h2>This proposal is a draft.</h2>
-            <p>
-              The DAO cannot vote on this proposal until a member with at least{" "}
-              <strong>{minActivationThreshold?.formatUnits()}</strong> activates
-              it.
-            </p>
-          </Alert>
-        )}
-
         <div tw="break-words hyphens[auto]">
           <div tw="prose prose-light mt-4">
             <ReactMarkdown>{description}</ReactMarkdown>
