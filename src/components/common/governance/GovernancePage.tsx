@@ -38,7 +38,7 @@ export const GovernancePage: React.FC<Props> = ({
         </div>
         <PageContainer style={containerStyles}>
           <div tw="flex flex-col gap-4 md:(gap-8 flex-row min-h-[120px]) flex-wrap items-center justify-between w-full">
-            <div tw="flex flex-col self-start">
+            <div tw="flex flex-col self-start md:self-center">
               <h1 tw="text-2xl md:text-3xl font-bold text-white tracking-tighter">
                 {title}
               </h1>
