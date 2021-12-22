@@ -33,7 +33,7 @@ export const ProposalDetails: React.FC<Props> = ({
             instructions={proposalInfo.proposalData.instructions}
           />
         )}
-        <div tw="break-words hyphens[auto]">
+        <div tw="mt-7 break-words hyphens[auto]">
           <div tw="prose prose-light mt-4">
             <ReactMarkdown>{description}</ReactMarkdown>
           </div>
