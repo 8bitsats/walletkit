@@ -68,7 +68,7 @@ export const WalletConnectorProvider: React.FC<Props> = ({
 }: Props) => {
   return (
     <WalletKitProvider
-      defaultNetwork="devnet"
+      defaultNetwork="mainnet-beta"
       app={{
         name: APP_CONFIG.name,
         icon: (
