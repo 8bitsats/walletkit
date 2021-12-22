@@ -1,9 +1,9 @@
 import { useUserAssociatedTokenAccounts } from "@quarryprotocol/react-quarry";
 import type { Token } from "@saberhq/token-utils";
+import { RAW_SOL_MINT } from "@saberhq/token-utils";
 import { useConnectedWallet } from "@saberhq/use-solana";
 
 import { useSDK } from "../../../../contexts/sdk";
-import { RAW_SOL_MINT } from "../../../../hooks/api/useTokenList";
 import { LoadingSpinner } from "../../LoadingSpinner";
 import type { ModalProps } from "../../Modal";
 import { Modal } from "../../Modal";

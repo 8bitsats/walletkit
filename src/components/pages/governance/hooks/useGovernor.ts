@@ -1,35 +1,58 @@
 import { useToken } from "@quarryprotocol/react-quarry";
-import { useParsedAccountData, usePubkey } from "@saberhq/sail";
+import { usePubkey } from "@saberhq/sail";
 import { Token, TokenAmount } from "@saberhq/token-utils";
-import type { KeyedAccountInfo } from "@solana/web3.js";
-import { GovernorWrapper, TRIBECA_CODERS } from "@tribecahq/tribeca-sdk";
+import { useSolana } from "@saberhq/use-solana";
+import type { PublicKey } from "@solana/web3.js";
+import { GovernorWrapper } from "@tribecahq/tribeca-sdk";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { createContainer } from "unstated-next";
 
+import type { GovernorMeta } from "../../../../config/governors";
+import { GOVERNORS } from "../../../../config/governors";
 import { useSDK } from "../../../../contexts/sdk";
 import { useWindowTitle } from "../../../../hooks/useWindowTitle";
+import { useParsedGovernor, useParsedLocker } from "../../../../utils/parsers";
 import { formatDurationSeconds } from "../locker/LockerIndexView/LockEscrowModal";
 
-const parseGovernor = (data: KeyedAccountInfo) =>
-  TRIBECA_CODERS.Govern.accountParsers.governor(data.accountInfo.data);
-
-const parseLocker = (data: KeyedAccountInfo) =>
-  TRIBECA_CODERS.LockedVoter.accountParsers.locker(data.accountInfo.data);
+export const useGovernorInfo = (): {
+  key: PublicKey;
+  meta: GovernorMeta | null;
+  slug: string;
+} | null => {
+  const { network } = useSolana();
+  const { governor: governorStr } = useParams<{ governor: string }>();
+  const governorStrAsKey = usePubkey(governorStr);
+  const governorMeta = governorStrAsKey
+    ? GOVERNORS.find(
+        (gov) => gov.address.equals(governorStrAsKey) && gov.network === network
+      )
+    : GOVERNORS.find(
+        (gov) => gov.slug === governorStr && gov.network === network
+      );
+  const key = governorMeta?.address ?? governorStrAsKey;
+  if (!key) {
+    return null;
+  }
+  const slug = governorMeta?.slug ?? key.toString();
+  return {
+    key,
+    meta: governorMeta ?? null,
+    slug,
+  };
+};
 
 const useGovernorInner = () => {
-  const { governor: governorStr } = useParams<{ governor: string }>();
-  const governor = usePubkey(governorStr);
-  if (!governor) {
-    throw new Error(`unknown governor`);
+  const info = useGovernorInfo();
+  if (!info) {
+    throw new Error(`governor not found`);
   }
+  const { meta, key: governor, slug } = info;
+  const path = `/gov/${slug}`;
 
-  const path = `/gov/${governorStr}`;
-
-  const { data: governorData } = useParsedAccountData(governor, parseGovernor);
-  const { data: lockerData } = useParsedAccountData(
-    governorData ? governorData.accountInfo.data.electorate : governorData,
-    parseLocker
+  const { data: governorData } = useParsedGovernor(governor);
+  const { data: lockerData } = useParsedLocker(
+    governorData ? governorData.accountInfo.data.electorate : governorData
   );
   const govToken = useToken(
     lockerData ? lockerData.accountInfo.data.tokenMint : lockerData
@@ -41,6 +64,8 @@ const useGovernorInner = () => {
         symbol: `ve${govToken.symbol}`,
       })
     : govToken;
+
+  const iconURL = meta?.iconURL ?? govToken?.icon;
 
   const minActivationThreshold =
     veToken && lockerData
@@ -72,7 +97,8 @@ const useGovernorInner = () => {
     : governorData;
 
   return {
-    daoName: govToken?.name.split(" ")[0],
+    meta,
+    daoName: meta?.name ?? govToken?.name.split(" ")[0],
     path,
     governor,
     governorW,
@@ -84,6 +110,7 @@ const useGovernorInner = () => {
     lockedSupply,
     proposalCount,
     smartWallet,
+    iconURL,
   };
 };
 

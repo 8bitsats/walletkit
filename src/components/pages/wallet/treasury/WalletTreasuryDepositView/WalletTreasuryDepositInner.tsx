@@ -7,6 +7,7 @@ import {
   getATAAddress,
   getOrCreateATA,
   NATIVE_MINT,
+  RAW_SOL_MINT,
   SPLToken,
   TOKEN_PROGRAM_ID,
 } from "@saberhq/token-utils";
@@ -14,7 +15,6 @@ import { TransactionInstruction } from "@solana/web3.js";
 import { useState } from "react";
 import invariant from "tiny-invariant";
 
-import { RAW_SOL_MINT } from "../../../../../hooks/api/useTokenList";
 import { useParseTokenAmount } from "../../../../../hooks/useParseTokenAmount";
 import { useSmartWallet } from "../../../../../hooks/useSmartWallet";
 import { useUserTokenAccounts } from "../../../../../hooks/useTokenAccounts";

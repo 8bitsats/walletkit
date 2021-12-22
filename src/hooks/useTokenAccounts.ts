@@ -3,6 +3,7 @@ import { useAccountData } from "@saberhq/sail";
 import {
   deserializeAccount,
   getATAAddress,
+  RAW_SOL,
   TOKEN_PROGRAM_ID,
   TokenAmount,
 } from "@saberhq/token-utils";
@@ -12,8 +13,6 @@ import { SystemProgram } from "@solana/web3.js";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
 import invariant from "tiny-invariant";
-
-import { SOL } from "./api/useTokenList";
 
 export interface TokenAccountWithInfo {
   account: PublicKey;
@@ -73,7 +72,7 @@ export const useTokenAccounts = (address: PublicKey | null | undefined) => {
           ? {
               account: nativeBalance.data.accountId,
               balance: new TokenAmount(
-                SOL[network],
+                RAW_SOL[network],
                 nativeBalance.data.accountInfo.lamports
               ),
               isATA: false,
