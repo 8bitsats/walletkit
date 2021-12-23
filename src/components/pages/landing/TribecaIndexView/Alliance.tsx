@@ -1,4 +1,4 @@
-import { css } from "twin.macro";
+import tw, { css, styled } from "twin.macro";
 
 const ALLIANCE = [
   ["arrow", "arrowprotocol.com"],
@@ -23,23 +23,21 @@ export const Alliance: React.FC = () => {
   return (
     <div tw="mx-auto w-11/12 max-w-5xl">
       <div tw="text-center">
-        <h2 tw="text-white text-5xl font-semibold mb-6">
-          The Tribeca Alliance
-        </h2>
+        <h2 tw="text-white text-5xl font-semibold mb-6">The Tribeca DAO</h2>
         <div tw="max-w-md mx-auto">
           <p tw="text-warmGray-400 text-2xl">
-            Tribeca is an open source governance primitive built by an alliance
-            of Solana's leading protocols.
+            Tribeca is an open source governance primitive built and maintained
+            by members of Solana's leading protocols.
           </p>
         </div>
       </div>
       <div tw="flex flex-wrap items-center justify-center gap-2.5 my-16">
         {ALLIANCE.map(([name, href]) => (
-          <a
+          <Box
             key={name}
             href={`https://${href}`}
             target="_blank"
-            tw="flex items-center justify-center h-44 w-44 px-6 border border-coolGray-800 rounded"
+            rel="noreferrer"
             css={css`
               background: linear-gradient(
                 rgb(11, 11, 14) 0%,
@@ -52,16 +50,26 @@ export const Alliance: React.FC = () => {
                 );
               }
             `}
-            rel="noreferrer"
           >
             <img
               tw="h-14"
               src={`/images/tribeca/alliance/${name}.svg`}
               alt={`Logo for ${name}`}
             />
-          </a>
+          </Box>
         ))}
+        <Box
+          href="https://forms.gle/i1b8WNZvFEP637v96"
+          target="_blank"
+          tw="border-dashed bg-gray-800 bg-opacity-5 hover:(border-primary bg-primary bg-opacity-10) transition-all"
+        >
+          <span tw="text-primary">You?</span>
+        </Box>
       </div>
     </div>
   );
 };
+
+const Box = styled.a`
+  ${tw`flex items-center justify-center h-44 w-44 px-6 border border-coolGray-800 rounded`}
+`;
