@@ -10,13 +10,14 @@
     "themeColor": "#282A2C",
     "socials": {
       "twitter": "TribecaDAO",
-      "medium": "",
+      "medium": "TribecaDAO",
       "github": "TribecaHQ",
       "discord": "",
       "keybase": ""
     },
     "favicon": "/images/tribeca/favicon.png",
-    "code": "https://github.com/TribecaHQ/tribeca"
+    "code": "https://github.com/TribecaHQ/tribeca",
+    "docs": "https://docs.tribeca.so"
   },
   "goki": {
     "name": "Goki",
@@ -35,6 +36,7 @@
       "keybase": "gokihelp"
     },
     "favicon": "/images/goki/favicon.png",
-    "code": "https://github.com/GokiProtocol/goki"
+    "code": "https://github.com/GokiProtocol/goki",
+    "docs": ""
   }
 }

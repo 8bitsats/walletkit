@@ -1,5 +1,11 @@
 import { useRef, useState } from "react";
-import { FaCode, FaEllipsisH, FaMedium, FaTwitter } from "react-icons/fa";
+import {
+  FaBook,
+  FaCode,
+  FaEllipsisH,
+  FaMedium,
+  FaTwitter,
+} from "react-icons/fa";
 
 import { APP_CONFIG } from "../../../../config";
 import { Drop } from "../../../common/Drop";
@@ -31,6 +37,12 @@ export const MoreInfo: React.FC = () => {
       href: APP_CONFIG.code,
       slug: "code",
       icon: <FaCode />,
+    },
+    APP_CONFIG.docs && {
+      label: "Docs",
+      href: APP_CONFIG.docs,
+      slug: "docs",
+      icon: <FaBook />,
     },
   ].filter(
     (
