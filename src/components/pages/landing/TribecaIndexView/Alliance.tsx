@@ -3,6 +3,7 @@ import tw, { css, styled } from "twin.macro";
 const ALLIANCE = [
   ["arrow", "arrowprotocol.com"],
   ["asol", "asol.so"],
+  ["atrix", "atrix.finance"],
   ["cashio", "cashio.app"],
   ["clb", "clb.exchange"],
   ["crate", "crate.so"],
@@ -14,6 +15,7 @@ const ALLIANCE = [
   ["quarry", "quarry.so"],
   ["saber", "saber.so"],
   ["sencha", "sencha.so"],
+  ["serum", "projectserum.com"],
   ["shipcapital", "ship.capital"],
   ["sunny", "sunny.ag"],
   ["traction", "traction.market"],
