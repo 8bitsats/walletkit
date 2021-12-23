@@ -36,7 +36,10 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./node_modules/.cache/
-          key: ${{ runner.os }}-site-goki
+          key: ${{ runner.os }}-site-goki-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-site-goki-
+
       - run: yarn install
       - run: yarn build:production
         env:
@@ -72,7 +75,10 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./node_modules/.cache/
-          key: ${{ runner.os }}-site-tribeca
+          key: ${{ runner.os }}-site-tribeca-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-site-tribeca-
+
       - run: yarn install
       - run: yarn build:production
         env:
