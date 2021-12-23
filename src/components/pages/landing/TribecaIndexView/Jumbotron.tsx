@@ -63,10 +63,6 @@ export const Jumbotron: React.FC = () => {
           <Button
             variant="primary"
             tw="flex font-semibold items-center gap-4 h-12 w-[200px] text-base hover:(border-none bg-white text-black)"
-            css={css`
-              opacity: 0;
-              animation: 1.5s ${FADE_IN_DOWN} 0.6s normal forwards ease-out;
-            `}
           >
             <span>Join the Waitlist</span>
             <FaArrowRight />

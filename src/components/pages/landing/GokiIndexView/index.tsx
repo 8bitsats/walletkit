@@ -1,4 +1,4 @@
-import { Jumbotron } from "./Jumbotron";
+import { Jumbotron } from "./GokiJumbotron";
 
 export const GokiIndexView: React.FC = () => {
   return (

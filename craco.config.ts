@@ -1,11 +1,15 @@
-const webpack = require("webpack");
-const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
-const deepMerge = require("deepmerge");
-const fs = require("fs");
-const path = require("path");
-const SentryWebpackPlugin = require("@sentry/webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const appConfigs = require("./src/config/app.json");
+import SentryWebpackPlugin from "@sentry/webpack-plugin";
+import deepMerge from "deepmerge";
+import FaviconsWebpackPlugin from "favicons-webpack-plugin";
+import fs from "fs";
+import type HtmlWebpackPlugin from "html-webpack-plugin";
+import path from "path";
+import invariant from "tiny-invariant";
+import type { Configuration } from "webpack";
+import webpack from "webpack";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+
+import appConfigs from "./src/config/app.json";
 
 const now = Math.floor(new Date().getTime() / 1000);
 
@@ -45,15 +49,23 @@ module.exports = {
   },
   webpack: {
     alias: aliases,
-    configure: (config) => {
-      const htmlWebpackPlugin = config.plugins.find(
+    configure: (config: Configuration) => {
+      invariant(config.plugins, "plugins");
+      invariant(config.module?.rules, "rules");
+
+      const maybeHtmlWebpackPlugin = config.plugins.find(
         (plugin) => plugin.constructor.name === "HtmlWebpackPlugin"
       );
-      if (!htmlWebpackPlugin) {
+      if (!maybeHtmlWebpackPlugin) {
         throw new Error("Can't find HtmlWebpackPlugin");
       }
+      const htmlWebpackPlugin = maybeHtmlWebpackPlugin as HtmlWebpackPlugin;
 
-      const appInfo = appConfigs[process.env.REACT_APP_APP_CONFIG ?? "goki"];
+      const appInfo =
+        appConfigs[
+          (process.env.REACT_APP_APP_CONFIG as keyof typeof appConfigs | "") ||
+            "goki"
+        ];
 
       config.plugins.unshift(
         new webpack.ProvidePlugin({
@@ -130,7 +142,6 @@ module.exports = {
             authToken: process.env.SENTRY_AUTH_TOKEN,
             org: process.env.SENTRY_ORG,
             project: process.env.SENTRY_PROJECT,
-            environment: process.env.REACT_APP_SENTRY_ENVIRONMENT ?? "unknown",
             release: process.env.REACT_APP_SENTRY_RELEASE ?? "unknown",
 
             // webpack specific configuration
@@ -144,7 +155,7 @@ module.exports = {
                 process.env.CF_PAGES_COMMIT_SHA,
             },
             deploy: {
-              env: process.env.REACT_APP_SENTRY_ENVIRONMENT,
+              env: process.env.REACT_APP_SENTRY_ENVIRONMENT ?? "unknown",
               started: now,
             },
           })

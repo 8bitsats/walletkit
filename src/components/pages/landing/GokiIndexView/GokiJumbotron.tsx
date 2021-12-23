@@ -7,7 +7,7 @@ import { Button } from "../../../common/Button";
 export const Jumbotron: React.FC = () => {
   return (
     <header tw="text-center w-full mx-auto flex flex-col items-center gap-6">
-      <div tw="max-w-2xl flex flex-col items-center gap-6">
+      <div tw="max-w-4xl flex flex-col items-center gap-6">
         <h2 tw="text-primary uppercase font-semibold tracking-widest">
           For DAOs, teams, and secure individuals
         </h2>
@@ -16,9 +16,9 @@ export const Jumbotron: React.FC = () => {
           <br />
           made for humans.
         </h1>
-        <span tw="text-2xl font-black inline-flex">
-          <span>The safest way to&nbsp;</span>
-          <span tw="text-secondary">
+        <div tw="text-2xl font-black flex flex-col md:(inline-flex flex-row)">
+          <div>The safest way to&nbsp;</div>
+          <div tw="text-secondary">
             <Typewriter
               options={{
                 strings: [
@@ -34,8 +34,8 @@ export const Jumbotron: React.FC = () => {
                 loop: true,
               }}
             />
-          </span>
-        </span>
+          </div>
+        </div>
         <p tw="text-secondary font-semibold text-xl">
           Goki provides an interface to create, manage, and
           <br />

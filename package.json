@@ -134,6 +134,7 @@
     "@types/react-dom": "^17.0.11",
     "@types/react-router": "^5.1.17",
     "@types/react-router-dom": "^5.3.2",
+    "@types/webpack": "^5.28.0",
     "@types/webpack-bundle-analyzer": "^4.4.1",
     "@types/webpack-sources": "^3.2.0",
     "@types/yup": "^0.29.13",
@@ -164,7 +165,8 @@
     "*.{css,md,json,webmanifest,yml,yaml,js,jsx,html}": "prettier --write"
   },
   "resolutions": {
-    "jsbi": "^4"
+    "jsbi": "^4",
+    "webpack": "^5.65.0"
   },
   "engines": {
     "node": ">=14.x"
