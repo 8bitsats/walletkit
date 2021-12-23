@@ -11,7 +11,7 @@ export const MoreInfo: React.FC = () => {
     APP_CONFIG.socials.medium && {
       label: "Medium",
       slug: "medium",
-      href: `https://medium.com/${APP_CONFIG.socials.medium}`,
+      href: `https://medium.com/@${APP_CONFIG.socials.medium}`,
       icon: <FaMedium />,
     },
     APP_CONFIG.socials.twitter && {

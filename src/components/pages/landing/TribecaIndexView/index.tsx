@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { Alliance } from "./Alliance";
 import { Jumbotron } from "./Jumbotron";
 
 export const TribecaIndexView: React.FC = () => {
@@ -12,7 +13,10 @@ export const TribecaIndexView: React.FC = () => {
 
   return (
     <div tw="w-11/12 overflow-x-hidden">
-      <Jumbotron />
+      <div tw="min-h-screen">
+        <Jumbotron />
+      </div>
+      <Alliance />
     </div>
   );
 };
