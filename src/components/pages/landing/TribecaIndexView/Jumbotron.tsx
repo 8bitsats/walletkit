@@ -48,23 +48,40 @@ export const Jumbotron: React.FC = () => {
           decentralized autonomous organizations on Solana.
         </p>
       </div>
-      <a
-        target="_blank"
-        href="https://forms.gle/mLPHEjqMxL4eoCo56"
-        rel="noreferrer"
+      <div
+        tw="flex gap-4"
+        css={css`
+          opacity: 0;
+          animation: 1.5s ${FADE_IN_DOWN} 0.6s normal forwards ease-out;
+        `}
       >
-        <Button
-          variant="primary"
-          tw="flex font-semibold items-center gap-4 h-12 w-[200px] mt-6 text-base"
-          css={css`
-            opacity: 0;
-            animation: 1.5s ${FADE_IN_DOWN} 0.6s normal forwards ease-out;
-          `}
+        <a
+          target="_blank"
+          href="https://forms.gle/mLPHEjqMxL4eoCo56"
+          rel="noreferrer"
         >
-          <span>Join the Waitlist</span>
-          <FaArrowRight />
-        </Button>
-      </a>
+          <Button
+            variant="primary"
+            tw="flex font-semibold items-center gap-4 h-12 w-[200px] mt-6 text-base hover:(border-none bg-white text-black)"
+            css={css`
+              opacity: 0;
+              animation: 1.5s ${FADE_IN_DOWN} 0.6s normal forwards ease-out;
+            `}
+          >
+            <span>Join the Waitlist</span>
+            <FaArrowRight />
+          </Button>
+        </a>
+        <a target="_blank" href="https://docs.tribeca.so" rel="noreferrer">
+          <Button
+            variant="outline"
+            tw="flex font-semibold items-center gap-4 h-12 w-[200px] mt-6 text-base hover:(border-none bg-white text-black)"
+          >
+            <span>Read the Docs</span>
+            <FaArrowRight />
+          </Button>
+        </a>
+      </div>
     </header>
   );
 };
