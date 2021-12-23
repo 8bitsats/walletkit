@@ -51,7 +51,7 @@ const extractEvents = (
       title: "Queued",
       date: makeDate(proposalData.queuedAt),
       link: tx
-        ? `https://beta.goki.so/#/wallets/${tx.accountInfo.data.smartWallet.toString()}/tx/${tx.accountInfo.data.index.toString()}`
+        ? `https://goki.so/#/wallets/${tx.accountInfo.data.smartWallet.toString()}/tx/${tx.accountInfo.data.index.toString()}`
         : null,
     });
   }
@@ -75,7 +75,7 @@ const extractEvents = (
       title: "Executed",
       date: makeDate(tx.accountInfo.data.executedAt),
       link: tx
-        ? `https://beta.goki.so/#/wallets/${tx.accountInfo.data.smartWallet.toString()}/tx/${tx.accountInfo.data.index.toString()}`
+        ? `https://goki.so/#/wallets/${tx.accountInfo.data.smartWallet.toString()}/tx/${tx.accountInfo.data.index.toString()}`
         : null,
     });
   }
