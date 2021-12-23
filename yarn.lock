@@ -3288,9 +3288,9 @@ __metadata:
     "@types/gtag.js": ^0.0.8
     "@types/jest": ^27.0.3
     "@types/lodash": ^4.14.178
-    "@types/node": ^17.0.3
+    "@types/node": ^17.0.4
     "@types/pluralize": ^0.0.29
-    "@types/react": ^17.0.37
+    "@types/react": ^17.0.38
     "@types/react-dom": ^17.0.11
     "@types/react-router": ^5.1.17
     "@types/react-router-dom": ^5.3.2
@@ -3319,7 +3319,7 @@ __metadata:
     favicons-webpack-plugin: ^5.0.2
     filesize: ^8.0.6
     formik: ^2.2.9
-    fuse.js: ^6.5.2
+    fuse.js: ^6.5.3
     highlight.run: ^2.9.0
     html-webpack-plugin: ^5.5.0
     husky: ^7.0.4
@@ -3340,7 +3340,7 @@ __metadata:
     react-icons: ^4.3.1
     react-markdown: ^7.1.1
     react-popper: ^2.2.5
-    react-query: ^3.34.5
+    react-query: ^3.34.6
     react-router: ^5.2.1
     react-router-dom: ^5.3.0
     react-scripts: ^5.0.0
@@ -5694,10 +5694,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^17.0.3":
-  version: 17.0.3
-  resolution: "@types/node@npm:17.0.3"
-  checksum: aa08e2ecc70a0c45d8a34f986300b491e0eaef9c028ae49ff799ff876cd3e1bbb8eb734378ac0b0265453d2cdfc5b4c7724dc64c043421c162590d22214870ad
+"@types/node@npm:^17.0.4":
+  version: 17.0.4
+  resolution: "@types/node@npm:17.0.4"
+  checksum: 92e6a25fea2314cd34e81962bd07c8b79b92cae04d84a0336a8c49a2b8aa4c34ff8cb428baeac2022daf597809bd3b7987c624b07a91c4d01b6230f82c293190
   languageName: node
   linkType: hard
 
@@ -5830,7 +5830,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^17.0.35, @types/react@npm:^17.0.37":
+"@types/react@npm:^17.0.35":
   version: 17.0.37
   resolution: "@types/react@npm:17.0.37"
   dependencies:
@@ -5838,6 +5838,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: e68b0d59aa69577fc6a6d654b25d5d8408625498f4c483f160b557fac21e840f6e8807cbde93e9f039949b6d624a019b1990d18499c1d65aecf3605c25e30242
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^17.0.38":
+  version: 17.0.38
+  resolution: "@types/react@npm:17.0.38"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 4079f4f959cd4a4bfaeda8b89fe8a1b1f8bdc9d87acfdc5f74a0b39cec9ec6a470724357c62778c0f063180b360c250e920c5a142f1dbcda67d9cc25a6d43a85
   languageName: node
   linkType: hard
 
@@ -10988,10 +10999,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fuse.js@npm:^6.5.2":
-  version: 6.5.2
-  resolution: "fuse.js@npm:6.5.2"
-  checksum: e39255182d341f7ccbe1fc1d206d5ce1c8f1c83e7b2a113310410d9394630ee4bd699ccb1668dadf126c7d069140e2ed0eddd0bb7ba715e65cbc39f3456ea916
+"fuse.js@npm:^6.5.3":
+  version: 6.5.3
+  resolution: "fuse.js@npm:6.5.3"
+  checksum: f7c14f4422000e7f7e3515c66f7cefdfc38adec4cf380097f4146a201ea438af60b67dc5849b3c0de0115ce3f9bc5afad6fc6570c08dcfcef5bf6e95eb8e6d6f
   languageName: node
   linkType: hard
 
@@ -16860,9 +16871,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.34.5":
-  version: 3.34.5
-  resolution: "react-query@npm:3.34.5"
+"react-query@npm:^3.34.6":
+  version: 3.34.6
+  resolution: "react-query@npm:3.34.6"
   dependencies:
     "@babel/runtime": ^7.5.5
     broadcast-channel: ^3.4.1
@@ -16874,7 +16885,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: c33b7b438863fa405a229c35a5dd972f9a9c6e1702eb27a1d54b96428b0046af6aebe29cfaa5c0f807e4fd1b3562a1d46f67151b9eeea032adf61fd96374bcee
+  checksum: aeb67c10d762012f2d40ca4514992d7167803fa9cd6c75b1583beb8421df0762b13aa540ebe4670b7e690b5b0e68c260954c08e8b7db94c431e0188be3ef2a49
   languageName: node
   linkType: hard
 
