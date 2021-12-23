@@ -3288,7 +3288,7 @@ __metadata:
     "@types/gtag.js": ^0.0.8
     "@types/jest": ^27.0.3
     "@types/lodash": ^4.14.178
-    "@types/node": ^17.0.2
+    "@types/node": ^17.0.3
     "@types/pluralize": ^0.0.29
     "@types/react": ^17.0.37
     "@types/react-dom": ^17.0.11
@@ -3319,7 +3319,7 @@ __metadata:
     favicons-webpack-plugin: ^5.0.2
     filesize: ^8.0.6
     formik: ^2.2.9
-    fuse.js: ^6.5.0
+    fuse.js: ^6.5.2
     highlight.run: ^2.9.0
     html-webpack-plugin: ^5.5.0
     husky: ^7.0.4
@@ -5694,10 +5694,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^17.0.2":
-  version: 17.0.2
-  resolution: "@types/node@npm:17.0.2"
-  checksum: a827d2542ef7adba5c79ba7f85b7c2ba8256d317bd99d77ed7af237cfebae0034dff5c4182e1845e6fbef29ae4c78186c4b4a7dbf236037a04120783aa30ba74
+"@types/node@npm:^17.0.3":
+  version: 17.0.3
+  resolution: "@types/node@npm:17.0.3"
+  checksum: aa08e2ecc70a0c45d8a34f986300b491e0eaef9c028ae49ff799ff876cd3e1bbb8eb734378ac0b0265453d2cdfc5b4c7724dc64c043421c162590d22214870ad
   languageName: node
   linkType: hard
 
@@ -11002,10 +11002,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fuse.js@npm:^6.5.0":
-  version: 6.5.0
-  resolution: "fuse.js@npm:6.5.0"
-  checksum: 4d3d5c96b5756f7b929c95a3b04c8f0fae681b2e31ad605f38b1a84dd5add3198ff7178a2e7234fa06bd8a15dd05dfee11dfd9c3a603e6a80e5bbf3f2d445fbe
+"fuse.js@npm:^6.5.2":
+  version: 6.5.2
+  resolution: "fuse.js@npm:6.5.2"
+  checksum: e39255182d341f7ccbe1fc1d206d5ce1c8f1c83e7b2a113310410d9394630ee4bd699ccb1668dadf126c7d069140e2ed0eddd0bb7ba715e65cbc39f3456ea916
   languageName: node
   linkType: hard
 
