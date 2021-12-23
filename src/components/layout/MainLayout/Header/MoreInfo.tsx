@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import {
   FaBook,
   FaCode,
+  FaDiscord,
   FaEllipsisH,
   FaMedium,
   FaTwitter,
@@ -32,6 +33,12 @@ export const MoreInfo: React.FC = () => {
     //   slug: "chat",
     //   icon: <IoMdChatboxes />,
     // },
+    APP_CONFIG.socials.discord && {
+      label: "Discord",
+      href: `https://discord.gg/${APP_CONFIG.socials.discord}`,
+      slug: "discord",
+      icon: <FaDiscord />,
+    },
     APP_CONFIG.code && {
       label: "Code",
       href: APP_CONFIG.code,
