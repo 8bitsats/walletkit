@@ -7,6 +7,7 @@ const ALLIANCE = [
   ["clb", "clb.exchange"],
   ["crate", "crate.so"],
   ["deltaone", "deltaone.xyz"],
+  ["friktion", "friktion.fi"],
   ["goki", "goki.so"],
   ["pole", "pole.finance"],
   ["port", "port.finance"],
@@ -15,7 +16,7 @@ const ALLIANCE = [
   ["sencha", "sencha.so"],
   ["shipcapital", "ship.capital"],
   ["sunny", "sunny.ag"],
-  ["traction", "traction.so"],
+  ["traction", "traction.market"],
 ] as const;
 
 export const Alliance: React.FC = () => {
@@ -38,7 +39,7 @@ export const Alliance: React.FC = () => {
             key={name}
             href={`https://${href}`}
             target="_blank"
-            tw="flex items-center justify-center h-44 w-44 px-4 border border-coolGray-800 rounded"
+            tw="flex items-center justify-center h-44 w-44 px-6 border border-coolGray-800 rounded"
             css={css`
               background: linear-gradient(
                 rgb(11, 11, 14) 0%,
