@@ -4,19 +4,19 @@ import Typewriter from "typewriter-effect";
 
 import { Button } from "../../../common/Button";
 
-export const Jumbotron: React.FC = () => {
+export const GokiJumbotron: React.FC = () => {
   return (
     <header tw="text-center w-full mx-auto flex flex-col items-center gap-6">
-      <div tw="max-w-4xl flex flex-col items-center gap-6">
+      <div tw="w-11/12 md:w-full max-w-4xl flex flex-col items-center gap-6">
         <h2 tw="text-primary uppercase font-semibold tracking-widest">
           For DAOs, teams, and secure individuals
         </h2>
-        <h1 tw="text-5xl font-black leading-tight">
+        <h1 tw="text-3xl md:text-5xl font-black leading-tight">
           Solana multisig
           <br />
           made for humans.
         </h1>
-        <div tw="text-2xl font-black flex flex-col md:(inline-flex flex-row)">
+        <div tw="text-xl md:text-2xl font-black flex flex-col md:(inline-flex flex-row)">
           <div>The safest way to&nbsp;</div>
           <div tw="text-secondary">
             <Typewriter
@@ -36,10 +36,9 @@ export const Jumbotron: React.FC = () => {
             />
           </div>
         </div>
-        <p tw="text-secondary font-semibold text-xl">
-          Goki provides an interface to create, manage, and
-          <br />
-          audit multisig wallets on Solana.
+        <p tw="text-secondary font-semibold text-base md:text-xl max-w-lg">
+          Goki provides an interface to create, manage, and audit multisig
+          wallets on Solana.
         </p>
       </div>
       <a
