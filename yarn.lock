@@ -3251,7 +3251,7 @@ __metadata:
     "@popperjs/core": ^2.11.0
     "@project-serum/anchor": ^0.19.1-beta.1
     "@project-serum/serum": ^0.13.61
-    "@quarryprotocol/quarry-sdk": ^1.11.2
+    "@quarryprotocol/quarry-sdk": ^1.11.3
     "@quarryprotocol/react-quarry": ^0.12.12
     "@reach/dialog": ^0.16.2
     "@reach/portal": ^0.16.2
@@ -3326,7 +3326,7 @@ __metadata:
     husky: ^7.0.4
     inter-ui: ^3.19.3
     jsbi: ^4.1.0
-    lint-staged: ^12.1.3
+    lint-staged: ^12.1.4
     lodash: ^4.17.21
     pluralize: ^8.0.0
     polished: ^4.1.3
@@ -4311,22 +4311,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@quarryprotocol/quarry-sdk@npm:^1.11.2":
-  version: 1.11.2
-  resolution: "@quarryprotocol/quarry-sdk@npm:1.11.2"
+"@quarryprotocol/quarry-sdk@npm:^1.11.3":
+  version: 1.11.3
+  resolution: "@quarryprotocol/quarry-sdk@npm:1.11.3"
   dependencies:
-    lodash.mapvalues: ^4.6.0
     tiny-invariant: ^1.2.0
     tslib: ^2.3.1
   peerDependencies:
     "@project-serum/anchor": ">=0.19"
-    "@saberhq/anchor-contrib": ^1.10
-    "@saberhq/solana-contrib": ^1.10
-    "@saberhq/token-utils": ^1.10
+    "@saberhq/anchor-contrib": ^1.11
+    "@saberhq/solana-contrib": ^1.11
+    "@saberhq/token-utils": ^1.11
     "@solana/web3.js": ^1
     bn.js: ^5.2.0
     jsbi: ^3 || ^4
-  checksum: 7ec50aa76f51a6752a4ede63a174c8162e930ca1c3271ef75fc7b14e082ae7e13ca77c73a0e5f65c6c340077a7dc1caf8f822020a4484bcd89adb604ba15949a
+  checksum: da1f42258cb67f1d3ed63562c58d999faccd246e95eda3edbd8965166c820231086fe71017c79fdf93548384f046fcdc2f81957849223c37518eed5604d7ed80
   languageName: node
   linkType: hard
 
@@ -13327,9 +13326,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^12.1.3":
-  version: 12.1.3
-  resolution: "lint-staged@npm:12.1.3"
+"lint-staged@npm:^12.1.4":
+  version: 12.1.4
+  resolution: "lint-staged@npm:12.1.4"
   dependencies:
     cli-truncate: ^3.1.0
     colorette: ^2.0.16
@@ -13346,7 +13345,7 @@ __metadata:
     yaml: ^1.10.2
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: f42fea248f690478ddd3d15ed9dd2302c0744da6af3032d1afe6e9f3c5ff99a7f4af85bf73425d027ff3c53b8c2a4a8f2227ab3e2e1367af786d301debea4bce
+  checksum: f1f829328fbd0878e8c2100fe0968101e94903ce5acf95bae98ec6daa84c4e95f87957f9040782427be2087659f3809626ea42ba53bbe5f0036c4d3806cb313d
   languageName: node
   linkType: hard
 
