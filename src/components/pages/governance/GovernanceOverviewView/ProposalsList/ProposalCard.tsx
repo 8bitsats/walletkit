@@ -18,13 +18,14 @@ interface Props {
 
 export const ProposalCard: React.FC<Props> = ({ proposalInfo }: Props) => {
   const { path } = useGovernor();
+  const { state, executed } = proposalInfo.status;
   return (
     <Link
       to={`${path}/proposals/${proposalInfo.index}`}
       tw="flex items-center justify-between py-5 px-6 border-l-2 border-l-transparent border-b border-b-warmGray-800 cursor-pointer hover:border-l-primary"
     >
       <div tw="flex items-center gap-5 w-3/4 md:w-[500px]">
-        {proposalInfo.state === ProposalState.Active && (
+        {state === ProposalState.Active && (
           <PulsingDot tw="w-11 h-11 text-accent" />
         )}
         <div>
@@ -36,31 +37,28 @@ export const ProposalCard: React.FC<Props> = ({ proposalInfo }: Props) => {
               )}
             </div>
           </div>
-          {proposalInfo.proposalData && proposalInfo.state !== null && (
+          {proposalInfo.proposalData && state !== null && (
             <div tw="flex flex-col mt-4 gap-2 md:(flex-row items-center mt-2)">
-              <ProposalStateLabel state={proposalInfo.state} />
+              <ProposalStateLabel state={state} executed={executed} />
               <div tw="flex gap-1 text-xs font-semibold">
                 <span>{`000${proposalInfo.index}`.slice(-4)}</span>
                 <span>&middot;</span>
-                <ProposalStateDate
-                  proposal={proposalInfo.proposalData}
-                  state={proposalInfo.state}
-                />
+                <ProposalStateDate proposalInfo={proposalInfo} />
               </div>
             </div>
           )}
         </div>
       </div>
-      {proposalInfo.state === ProposalState.Active && (
+      {state === ProposalState.Active && (
         <div tw="w-[290px]">
           <ActiveProposalVotingBars proposal={proposalInfo} />
         </div>
       )}
-      {proposalInfo.state !== null &&
-        proposalInfo.state !== ProposalState.Draft &&
-        proposalInfo.state !== ProposalState.Active && (
+      {state !== null &&
+        state !== ProposalState.Draft &&
+        state !== ProposalState.Active && (
           <ProposalBadgeWrapper>
-            <ProposalStateBadge state={proposalInfo.state} />
+            <ProposalStateBadge status={proposalInfo.status} />
           </ProposalBadgeWrapper>
         )}
     </Link>

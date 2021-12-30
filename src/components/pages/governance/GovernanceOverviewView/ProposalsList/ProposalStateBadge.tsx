@@ -7,8 +7,10 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
+import type { ProposalStatus } from "../../hooks/useProposals";
+
 interface Props {
-  state: ProposalState;
+  status: ProposalStatus;
 }
 
 const STATE_LABELS: { [K in ProposalState]: string } = {
@@ -50,12 +52,13 @@ const getStateIcon = (state: ProposalState): React.ReactNode => {
   }
 };
 
-export const ProposalStateBadge: React.FC<Props> = ({ state }: Props) => {
+export const ProposalStateBadge: React.FC<Props> = ({ status }: Props) => {
+  const { executed, state } = status;
   return (
     <div tw="flex flex-col items-center gap-1 lg:(flex-row gap-5)">
       {getStateIcon(state)}
       <span tw="text-xs md:text-sm text-white">
-        {startCase(STATE_LABELS[state])}
+        {startCase(executed ? "executed" : STATE_LABELS[state])}
       </span>
     </div>
   );

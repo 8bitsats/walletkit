@@ -3,9 +3,10 @@ import { ProposalState } from "@tribecahq/tribeca-sdk";
 import type BN from "bn.js";
 import formatDistance from "date-fns/formatDistance";
 
+import type { ProposalInfo, ProposalStatus } from "../../hooks/useProposals";
+
 interface Props {
-  proposal: ProposalData;
-  state: ProposalState;
+  proposalInfo: ProposalInfo;
 }
 
 const STATE_LABELS: { [K in ProposalState]: string } = {
@@ -17,11 +18,15 @@ const STATE_LABELS: { [K in ProposalState]: string } = {
   [ProposalState.Queued]: "Queued",
 };
 
-const getDateOfState = (
+export const stateToDateSeconds = (
   proposal: ProposalData,
-  state: ProposalState
+  status: ProposalStatus
 ): BN | null => {
-  switch (state) {
+  if (status.executed) {
+    return status.executionTime;
+  }
+
+  switch (status.state) {
     case ProposalState.Active:
       return proposal.votingEndsAt;
     case ProposalState.Canceled:
@@ -36,15 +41,14 @@ const getDateOfState = (
   }
 };
 
-export const ProposalStateDate: React.FC<Props> = ({
-  proposal,
-  state,
-}: Props) => {
-  const dateSeconds = getDateOfState(proposal, state);
+export const ProposalStateDate: React.FC<Props> = ({ proposalInfo }: Props) => {
+  const { status, proposalData } = proposalInfo;
+  const { executed, state } = status;
+  const dateSeconds = stateToDateSeconds(proposalData, status);
   const date = dateSeconds ? new Date(dateSeconds.toNumber() * 1_000) : null;
   return (
     <span>
-      {STATE_LABELS[state]}{" "}
+      {executed ? "Executed" : STATE_LABELS[state]}{" "}
       {state === ProposalState.Active
         ? date
           ? formatDistance(date, new Date(), { addSuffix: true })

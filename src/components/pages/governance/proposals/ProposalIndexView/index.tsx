@@ -66,16 +66,16 @@ export const ProposalIndexView: React.FC = () => {
         <div tw="flex flex-col md:(flex-row items-start) gap-4">
           <ProposalDetails tw="flex-grow[2]" proposalInfo={proposalInfo} />
           <div tw="flex-basis[350px] flex flex-col gap-4">
-            {proposalInfo?.state === ProposalState.Draft && (
+            {proposalInfo?.status.state === ProposalState.Draft && (
               <ProposalActivate proposal={proposalInfo} onActivate={noop} />
             )}
-            {proposalInfo?.state === ProposalState.Active && (
+            {proposalInfo?.status.state === ProposalState.Active && (
               <ProposalVote proposalInfo={proposalInfo} onVote={noop} />
             )}
-            {proposalInfo?.state === ProposalState.Succeeded && (
+            {proposalInfo?.status.state === ProposalState.Succeeded && (
               <ProposalQueue proposal={proposalInfo} onActivate={noop} />
             )}
-            {proposalInfo?.state === ProposalState.Queued && (
+            {proposalInfo?.status.state === ProposalState.Queued && (
               <ProposalExecute proposal={proposalInfo} onActivate={noop} />
             )}
             <ProposalHistory proposalInfo={proposalInfo} />

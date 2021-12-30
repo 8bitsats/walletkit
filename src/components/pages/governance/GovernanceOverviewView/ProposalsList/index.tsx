@@ -30,7 +30,7 @@ export const ProposalsList: React.FC<Props> = ({
     ...new Array<null>(NUM_PLACEHOLDERS).fill(null),
   ]
     .filter((p) => {
-      const proposalState = p?.data?.state;
+      const proposalState = p?.data?.status.state;
       return showDrafts
         ? true
         : proposalState !== ProposalState.Draft &&

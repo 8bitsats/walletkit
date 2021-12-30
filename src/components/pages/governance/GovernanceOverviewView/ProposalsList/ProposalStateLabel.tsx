@@ -4,6 +4,7 @@ import tw from "twin.macro";
 
 interface Props {
   state: ProposalState;
+  executed?: boolean;
 }
 
 const STATE_LABELS: { [K in ProposalState]: string } = {
@@ -15,7 +16,10 @@ const STATE_LABELS: { [K in ProposalState]: string } = {
   [ProposalState.Queued]: "queued",
 };
 
-export const ProposalStateLabel: React.FC<Props> = ({ state }: Props) => {
+export const ProposalStateLabel: React.FC<Props> = ({
+  state,
+  executed,
+}: Props) => {
   return (
     <div
       css={[
@@ -24,12 +28,14 @@ export const ProposalStateLabel: React.FC<Props> = ({ state }: Props) => {
           state === ProposalState.Defeated ||
           state === ProposalState.Draft) &&
           tw`border-gray-500 text-gray-500`,
-        (state === ProposalState.Succeeded || state === ProposalState.Queued) &&
+        (executed ||
+          state === ProposalState.Succeeded ||
+          state === ProposalState.Queued) &&
           tw`border-primary text-primary`,
         state === ProposalState.Active && tw`border-accent text-accent`,
       ]}
     >
-      {startCase(STATE_LABELS[state])}
+      {startCase(executed ? "executed" : STATE_LABELS[state])}
     </div>
   );
 };

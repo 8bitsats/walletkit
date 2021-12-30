@@ -1,3 +1,4 @@
+import { ZERO } from "@quarryprotocol/quarry-sdk";
 import type { ParsedAccountInfo } from "@saberhq/sail";
 import { getCacheKeyOfPublicKey } from "@saberhq/sail";
 import { u64 } from "@saberhq/token-utils";
@@ -10,6 +11,7 @@ import {
   getProposalState,
   ProposalState,
 } from "@tribecahq/tribeca-sdk";
+import BN from "bn.js";
 import { useEffect, useMemo } from "react";
 import { useQueries, useQuery } from "react-query";
 import invariant from "tiny-invariant";
@@ -19,35 +21,54 @@ import {
   useParsedProposalMeta,
   useParsedProposalMetas,
   useParsedProposals,
+  useParsedTXByKey,
+  useParsedTXByKeys,
 } from "../../../../utils/parsers";
 import { useGovernor } from "./useGovernor";
+
+export class ProposalStatus {
+  readonly state: ProposalState;
+  readonly executionTime: BN;
+
+  constructor(proposalState: ProposalState, executedAt: BN | undefined) {
+    this.state = proposalState;
+    this.executionTime = new BN(executedAt ?? "0");
+  }
+
+  get executed() {
+    return this.state === ProposalState.Queued && !this.executionTime.isZero();
+  }
+}
 
 export interface ProposalInfo {
   proposalKey: PublicKey;
   index: number;
   proposalData: ProposalData;
   proposalMetaData: ProposalMetaData | null;
-  state: ProposalState;
+  status: ProposalStatus;
 }
 
 const buildProposalInfo = ({
   index,
   proposalData,
   proposalMetaData,
+  executedAt,
 }: {
   index: number;
   proposalData: ParsedAccountInfo<ProposalData>;
   proposalMetaData: ProposalMetaData | null;
+  executedAt: BN | undefined;
 }): ProposalInfo => {
   const state = getProposalState({
     proposalData: proposalData.accountInfo.data,
   });
+
   return {
     proposalKey: proposalData.accountId,
     index,
     proposalData: proposalData.accountInfo.data,
     proposalMetaData: proposalMetaData,
-    state,
+    status: new ProposalStatus(state, executedAt),
   };
 };
 
@@ -75,7 +96,13 @@ export const useProposal = (index: number) => {
     proposalKeys.data?.proposalMetaKey
   );
 
-  const isLoading = !proposalData || proposalMetaData === undefined;
+  const activated = proposalData?.accountInfo.data.activatedAt.gt(ZERO);
+  const { data: txData } = useParsedTXByKey(
+    activated ? proposalData?.accountInfo.data.queuedTransaction : null
+  );
+
+  const isLoading =
+    (activated && !txData) || !proposalData || proposalMetaData === undefined;
   const proposalInfoQuery = useQuery({
     queryKey: ["proposalInfo", network, governor.toString(), index],
     queryFn: (): ProposalInfo => {
@@ -86,12 +113,14 @@ export const useProposal = (index: number) => {
         proposalMetaData: proposalMetaData
           ? proposalMetaData.accountInfo.data
           : null,
+        executedAt: txData?.accountInfo.data.executedAt,
       });
     },
     enabled: !isLoading,
   });
 
   const { refetch } = proposalInfoQuery;
+  const executedAt = txData?.accountInfo.data.executedAt;
   const info = isLoading ? null : proposalInfoQuery.data ?? null;
   const state = proposalData
     ? getProposalState({
@@ -100,10 +129,10 @@ export const useProposal = (index: number) => {
     : null;
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading || executedAt?.isZero()) {
       void refetch();
     }
-  }, [proposalData, refetch, proposalMetaData, state, isLoading]);
+  }, [proposalData, refetch, proposalMetaData, state, isLoading, executedAt]);
 
   useEffect(() => {
     if (!proposalData) {
@@ -180,10 +209,20 @@ export const useProposals = () => {
       [proposalsKeysCache]
     )
   );
+  const transactionsData = useParsedTXByKeys(
+    useMemo(
+      () =>
+        proposalsData
+          .filter((p) => p?.accountInfo.data.activatedAt.gt(ZERO))
+          .map((p) => p?.accountInfo.data.queuedTransaction),
+      [proposalsData]
+    )
+  );
 
   const isLoading =
     !proposalsData.every((p) => p !== undefined) ||
-    !proposalsMetaData.every((p) => p !== undefined);
+    !proposalsMetaData.every((p) => p !== undefined) ||
+    !transactionsData.every((t) => t !== undefined);
 
   return useQueries(
     proposalCount
@@ -202,12 +241,20 @@ export const useProposals = () => {
               const proposalMetaData = proposalsMetaData.find((p) =>
                 p?.accountInfo.data.proposal.equals(proposalData.accountId)
               );
+              const transactionData = transactionsData.find((t) =>
+                t
+                  ? proposalData.accountInfo.data.queuedTransaction.equals(
+                      t.accountId
+                    )
+                  : false
+              );
               return buildProposalInfo({
                 index: proposalData.accountInfo.data.index.toNumber(),
                 proposalData,
                 proposalMetaData: proposalMetaData
                   ? proposalMetaData.accountInfo.data
                   : null,
+                executedAt: transactionData?.accountInfo.data.executedAt,
               });
             },
             enabled: !isLoading,
