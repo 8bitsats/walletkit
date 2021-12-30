@@ -96,13 +96,13 @@ export const useProposal = (index: number) => {
     proposalKeys.data?.proposalMetaKey
   );
 
-  const activated = proposalData?.accountInfo.data.activatedAt.gt(ZERO);
+  const queued = proposalData?.accountInfo.data.queuedAt.gt(ZERO);
   const { data: txData } = useParsedTXByKey(
-    activated ? proposalData?.accountInfo.data.queuedTransaction : null
+    queued ? proposalData?.accountInfo.data.queuedTransaction : null
   );
 
   const isLoading =
-    (activated && !txData) || !proposalData || proposalMetaData === undefined;
+    (queued && !txData) || !proposalData || proposalMetaData === undefined;
   const proposalInfoQuery = useQuery({
     queryKey: ["proposalInfo", network, governor.toString(), index],
     queryFn: (): ProposalInfo => {
@@ -213,7 +213,7 @@ export const useProposals = () => {
     useMemo(
       () =>
         proposalsData
-          .filter((p) => p?.accountInfo.data.activatedAt.gt(ZERO))
+          .filter((p) => p?.accountInfo.data.queuedAt.gt(ZERO))
           .map((p) => p?.accountInfo.data.queuedTransaction),
       [proposalsData]
     )
