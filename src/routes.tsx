@@ -5,6 +5,7 @@ import { TransactionBuilder } from "./components/common/TransactionBuilder";
 import { MainLayout } from "./components/layout/MainLayout";
 import { GovernanceView } from "./components/pages/governance/GovernanceView";
 import { IndexView } from "./components/pages/landing";
+import { DAOCustomView } from "./components/pages/onboarding/dao/DAOCustomView";
 import { DAOStep1IntroView } from "./components/pages/onboarding/dao/DAOStep1IntroView";
 import { DAOStep2ExecutiveView } from "./components/pages/onboarding/dao/DAOStep2ExecutiveView";
 import { DAOStep3EmergencyView } from "./components/pages/onboarding/dao/DAOStep3EmergencyView";
@@ -38,6 +39,7 @@ export const Routes: React.FC = () => {
       <Route path="/gov/:governor" component={GovernanceView} />
       <MainLayout>
         <Switch>
+          <Route path="/onboarding/dao/custom" component={DAOCustomView} />
           <Route
             path="/onboarding/dao/create-executive"
             component={DAOStep2ExecutiveView}

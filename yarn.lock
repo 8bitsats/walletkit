@@ -3424,7 +3424,7 @@ __metadata:
     "@tailwindcss/aspect-ratio": ^0.4.0
     "@tailwindcss/forms": ^0.4.0
     "@tailwindcss/typography": ^0.5.0
-    "@tribecahq/tribeca-sdk": ^0.3.0
+    "@tribecahq/tribeca-sdk": ^0.3.1
     "@types/babel__core": ^7.1.17
     "@types/bn.js": ^5.1.0
     "@types/bs58": ^4.0.1
@@ -5427,9 +5427,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tribecahq/tribeca-sdk@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@tribecahq/tribeca-sdk@npm:0.3.0"
+"@tribecahq/tribeca-sdk@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "@tribecahq/tribeca-sdk@npm:0.3.1"
   dependencies:
     tiny-invariant: ^1.2.0
     tslib: ^2.3.1
@@ -5441,7 +5441,7 @@ __metadata:
     "@saberhq/token-utils": ^1.10.6
     "@solana/web3.js": ^1.29.2
     bn.js: ^5.2.0
-  checksum: 93660fbca5ec5bd6d40d0f4f24abf07bf17931051e803ba702c23059f7c055e4894561e54677d02721aeda90b0b8983dad0052ff9c5de4f9ee2799efbf666fa6
+  checksum: 54dd92c509b0f253602f14b3efa4ea3b4a15abe6cffc736d1182af1147ac4a256fe2ed77fffdb625ad431257014fba99343e003853ebdc5165c890443a181d25
   languageName: node
   linkType: hard
 
