@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import tw from "twin.macro";
 
 import { Card } from "../../../../common/governance/Card";
 import { IXSummary } from "../../../../common/governance/IXSummary";
@@ -28,12 +29,19 @@ export const ProposalDetails: React.FC<Props> = ({
         ))}
       </div>
       <div tw="p-7">
-        {proposalInfo && proposalInfo.proposalData.instructions.length > 0 && (
-          <TransactionPreviewLink
-            instructions={proposalInfo.proposalData.instructions}
-          />
-        )}
-        <div tw="mt-7 break-words hyphens[auto]">
+        {proposalInfo &&
+          !proposalInfo.status.executed &&
+          proposalInfo.proposalData.instructions.length > 0 && (
+            <TransactionPreviewLink
+              instructions={proposalInfo.proposalData.instructions}
+            />
+          )}
+        <div
+          css={[
+            tw`break-words hyphens[auto]`,
+            !proposalInfo?.status.executed && tw`mt-7`,
+          ]}
+        >
           <div tw="prose prose-light mt-4">
             <ReactMarkdown>{description}</ReactMarkdown>
           </div>
