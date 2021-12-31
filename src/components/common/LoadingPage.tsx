@@ -8,7 +8,7 @@ interface Props {
 
 export const LoadingPage: React.FC<Props> = ({ className }: Props) => {
   return (
-    <div tw="flex items-center justify-center" className={className}>
+    <div tw="flex items-center justify-center h-3/4" className={className}>
       <LoadingSpinner tw="h-[84px] w-[84px]" />
     </div>
   );

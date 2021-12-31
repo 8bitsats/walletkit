@@ -3,7 +3,6 @@ import type { TokenList } from "@saberhq/token-utils";
 import { RAW_SOL, WRAPPED_SOL } from "@saberhq/token-utils";
 import { useMemo } from "react";
 
-import { getGovTokensForNetwork } from "../../config/governors";
 import tokenListDevnet from "./data/token-list.devnet.json";
 import tokenListMainnet from "./data/token-list.mainnet.json";
 
@@ -27,12 +26,7 @@ export const useTokenList = (
     const wsol = WRAPPED_SOL[network];
     return {
       ...list,
-      tokens: [
-        ...list.tokens,
-        ...getGovTokensForNetwork(network),
-        sol.info,
-        wsol.info,
-      ],
+      tokens: [...list.tokens, sol.info, wsol.info],
     };
   }, [network]);
 

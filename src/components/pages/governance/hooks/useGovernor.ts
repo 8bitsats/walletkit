@@ -1,16 +1,15 @@
 import { useToken } from "@quarryprotocol/react-quarry";
 import { usePubkey } from "@saberhq/sail";
 import { Token, TokenAmount } from "@saberhq/token-utils";
-import { useSolana } from "@saberhq/use-solana";
-import type { PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { GovernorWrapper } from "@tribecahq/tribeca-sdk";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { createContainer } from "unstated-next";
 
-import type { GovernorMeta } from "../../../../config/governors";
-import { GOVERNORS } from "../../../../config/governors";
 import { useSDK } from "../../../../contexts/sdk";
+import type { GovernorMeta } from "../../../../hooks/api/useTribecaRegistry";
+import { useTribecaRegistry } from "../../../../hooks/api/useTribecaRegistry";
 import { useWindowTitle } from "../../../../hooks/useWindowTitle";
 import { useParsedGovernor, useParsedLocker } from "../../../../utils/parsers";
 import { formatDurationSeconds } from "../locker/LockerIndexView/LockEscrowModal";
@@ -19,26 +18,30 @@ export const useGovernorInfo = (): {
   key: PublicKey;
   meta: GovernorMeta | null;
   slug: string;
+  loading: boolean;
 } | null => {
-  const { network } = useSolana();
   const { governor: governorStr } = useParams<{ governor: string }>();
-  const governorStrAsKey = usePubkey(governorStr);
-  const governorMeta = governorStrAsKey
-    ? GOVERNORS.find(
-        (gov) => gov.address.equals(governorStrAsKey) && gov.network === network
-      )
-    : GOVERNORS.find(
-        (gov) => gov.slug === governorStr && gov.network === network
-      );
-  const key = governorMeta?.address ?? governorStrAsKey;
-  if (!key) {
+  const { data: governerMetas, isLoading } = useTribecaRegistry();
+
+  const governorMeta = useMemo(
+    () =>
+      governerMetas?.find(
+        (gov) => gov.address === governorStr || gov.slug === governorStr
+      ),
+    [governerMetas, governorStr]
+  );
+
+  const key = usePubkey(governorMeta?.address);
+  if (!key && !isLoading) {
     return null;
   }
-  const slug = governorMeta?.slug ?? key.toString();
+
+  const slug = governorMeta?.slug ?? governorStr;
   return {
-    key,
+    key: key ?? PublicKey.default,
     meta: governorMeta ?? null,
     slug,
+    loading: isLoading,
   };
 };
 

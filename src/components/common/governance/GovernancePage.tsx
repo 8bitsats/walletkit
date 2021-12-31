@@ -1,5 +1,6 @@
 import { useGovernorInfo } from "../../pages/governance/hooks/useGovernor";
 import { LoadingPage } from "../LoadingPage";
+import { NotFoundPage } from "../NotFoundPage";
 import { GovernancePageInner } from "./GovernancePageInner";
 
 interface Props {
@@ -15,8 +16,11 @@ interface Props {
 
 export const GovernancePage: React.FC<Props> = ({ ...props }: Props) => {
   const info = useGovernorInfo();
-  if (!info) {
+  if (info?.loading) {
     return <LoadingPage />;
+  }
+  if (!info) {
+    return <NotFoundPage />;
   }
   return <GovernancePageInner {...props} />;
 };
