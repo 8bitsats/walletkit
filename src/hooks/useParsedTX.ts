@@ -45,7 +45,10 @@ export const useParsedTXByKey = (key: PublicKey | undefined) => {
             )?.data?.idl;
             const label = programLabel(ix.programId.toString());
             if (idl) {
-              const superCoder = new SuperCoder(ix.programId, idl);
+              const superCoder = new SuperCoder(ix.programId, {
+                ...idl,
+                instructions: idl.instructions.concat(idl.state?.methods ?? []),
+              });
               return {
                 programName: label ?? startCase(idl.name),
                 ix,

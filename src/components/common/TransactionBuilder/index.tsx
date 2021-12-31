@@ -16,8 +16,13 @@ export const TransactionBuilder: React.FC = () => {
   const [programID, setProgramID] = useState<PublicKey | null>(null);
   const [ix, setIx] = useState<InstructionInfo | null>(null);
 
-  const { data: index } = useSWR<Record<string, string>>(
-    "https://raw.githubusercontent.com/GokiProtocol/anchor-idl-registry/main/data/mainnet-beta/index.json",
+  const { data: index } = useSWR<
+    {
+      label: string;
+      address: string;
+    }[]
+  >(
+    "https://raw.githubusercontent.com/DeployDAO/solana-program-index/master/programs.json",
     fetcher
   );
   const { data: idlData } = useIDL(programID);
@@ -70,10 +75,10 @@ export const TransactionBuilder: React.FC = () => {
               {index ? "Select a program" : "Loading..."}
             </option>
             {index
-              ? Object.entries(index).map(([programID, programName]) => {
+              ? index.map(({ label, address }) => {
                   return (
-                    <option key={programID} value={programID}>
-                      {programName} ({programID})
+                    <option key={address} value={address}>
+                      {label} ({address})
                     </option>
                   );
                 })

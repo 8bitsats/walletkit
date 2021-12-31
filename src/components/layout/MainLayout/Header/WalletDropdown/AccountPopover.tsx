@@ -6,6 +6,7 @@ import React, { useMemo } from "react";
 import { FaCopy, FaExternalLinkAlt, FaGlobe, FaPowerOff } from "react-icons/fa";
 import tw from "twin.macro";
 
+import { SOLE_NETWORK } from "../../../../../contexts/wallet";
 import { notify } from "../../../../../utils/notifications";
 import { Button } from "../../../../common/Button";
 import { MouseoverTooltip } from "../../../../common/MouseoverTooltip";
@@ -91,9 +92,10 @@ export const AccountPopover: React.FC<Props> = ({ close }: Props) => {
           {network === "mainnet-beta" && (
             <MenuItem
               onClick={() => {
-                setNetwork("devnet");
-                if (window.location.hostname === "sencha.so") {
-                  window.location.href = "https://devnet.sencha.so";
+                if (SOLE_NETWORK) {
+                  window.location.href = `https://devnet.${window.location.hostname}`;
+                } else {
+                  setNetwork("devnet");
                 }
                 close?.();
               }}
@@ -105,9 +107,14 @@ export const AccountPopover: React.FC<Props> = ({ close }: Props) => {
           {network === "devnet" && (
             <MenuItem
               onClick={() => {
-                setNetwork("mainnet-beta");
-                if (window.location.hostname === "devnet.sencha.so") {
-                  window.location.href = "https://sencha.so";
+                if (SOLE_NETWORK) {
+                  if (window.location.hostname === "devnet.goki.so") {
+                    window.location.href = "https://goki.so";
+                  } else if (window.location.hostname === "devnet.tribeca.so") {
+                    window.location.href = "https://tribeca.so";
+                  }
+                } else {
+                  setNetwork("mainnet-beta");
                 }
                 close?.();
               }}

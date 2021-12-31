@@ -13,7 +13,10 @@ export const useParsedTXInstruction = (rawIx: ProposalInstruction) => {
   const ix = useMemo(() => {
     const ix = { ...rawIx, data: Buffer.from(rawIx.data) };
     if (idl?.idl) {
-      const superCoder = new SuperCoder(rawIx.programId, idl.idl);
+      const superCoder = new SuperCoder(rawIx.programId, {
+        ...idl.idl,
+        instructions: idl.idl.instructions.concat(idl.idl.state?.methods ?? []),
+      });
       return {
         programName: label ?? startCase(idl.idl.name),
         ix,

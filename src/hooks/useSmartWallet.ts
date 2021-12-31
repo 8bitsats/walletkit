@@ -20,11 +20,11 @@ import { useEffect, useMemo, useState } from "react";
 import { createContainer } from "unstated-next";
 
 import { useSDK } from "../contexts/sdk";
-import type {
+import type { ParsedNonAnchorInstruction } from "../utils/instructions/parseNonAnchorInstruction";
+import {
   InstructionParseError,
-  ParsedNonAnchorInstruction,
+  parseNonAnchorInstruction,
 } from "../utils/instructions/parseNonAnchorInstruction";
-import { parseNonAnchorInstruction } from "../utils/instructions/parseNonAnchorInstruction";
 import { displayAddress, programLabel } from "../utils/programs";
 import { useIDLs } from "./useIDLs";
 
@@ -154,12 +154,33 @@ const useSmartWalletInner = (
               const idl = idls[idlIndex]?.data?.idl;
               const label = programLabel(ix.programId.toString());
               if (idl) {
-                const superCoder = new SuperCoder(ix.programId, idl);
-                return {
+                const superCoder = new SuperCoder(ix.programId, {
+                  ...idl,
+                  instructions: idl.instructions.concat(
+                    idl.state?.methods ?? []
+                  ),
+                });
+
+                const common = {
                   programName: label ?? startCase(idl.name),
                   ix,
-                  parsed: { ...superCoder.parseInstruction(ix), anchor: true },
                 };
+
+                try {
+                  const ixParsed = superCoder.parseInstruction(ix);
+                  return {
+                    ...common,
+                    parsed: {
+                      ...ixParsed,
+                      anchor: true,
+                    },
+                  };
+                } catch (e) {
+                  return {
+                    ...common,
+                    parsed: { error: new InstructionParseError(ix, e) },
+                  };
+                }
               }
               const parsedNonAnchor = parseNonAnchorInstruction(ix);
               return { ix, programName: label, parsed: parsedNonAnchor };

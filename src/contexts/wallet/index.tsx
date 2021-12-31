@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import { WalletKitProvider } from "@gokiprotocol/walletkit";
+import type { Network } from "@saberhq/solana-contrib";
 import type { ConnectedWallet, WalletProviderInfo } from "@saberhq/use-solana";
 import * as Sentry from "@sentry/react";
 import React from "react";
@@ -63,12 +64,37 @@ const onError = (err: Error) => {
   Sentry.captureException(err);
 };
 
+/**
+ * The only network for the app to display, if applicable.
+ */
+export const SOLE_NETWORK = ((): Network | null => {
+  if (
+    window.location.hostname === "devnet.goki.so" ||
+    window.location.hostname === "devnet.tribeca.so"
+  ) {
+    return "devnet";
+  }
+  if (
+    window.location.hostname === "goki.so" ||
+    window.location.hostname === "tribeca.so"
+  ) {
+    return "mainnet-beta";
+  }
+  return null;
+})();
+
+const networkConfigs = SOLE_NETWORK
+  ? {
+      [SOLE_NETWORK]: environments[SOLE_NETWORK],
+    }
+  : environments;
+
 export const WalletConnectorProvider: React.FC<Props> = ({
   children,
 }: Props) => {
   return (
     <WalletKitProvider
-      defaultNetwork="mainnet-beta"
+      defaultNetwork={SOLE_NETWORK ?? "mainnet-beta"}
       app={{
         name: APP_CONFIG.name,
         icon: (
@@ -82,7 +108,7 @@ export const WalletConnectorProvider: React.FC<Props> = ({
           />
         ),
       }}
-      networkConfigs={environments}
+      networkConfigs={networkConfigs}
       onConnect={onConnect}
       onDisconnect={onDisconnect}
       onError={onError}
