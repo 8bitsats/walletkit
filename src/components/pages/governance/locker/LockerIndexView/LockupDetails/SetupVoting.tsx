@@ -4,6 +4,7 @@ import { useSDK } from "../../../../../../contexts/sdk";
 import { Button } from "../../../../../common/Button";
 import { EmptyStateConnectWallet } from "../../../../../common/EmptyState";
 import { Card } from "../../../../../common/governance/Card";
+import { ExternalLink } from "../../../../../common/typography/ExternalLink";
 import { useGovernor } from "../../../hooks/useGovernor";
 import { formatDurationSeconds } from "../LockEscrowModal";
 
@@ -40,6 +41,9 @@ export const SetupVoting: React.FC<Props> = ({ className }: Props) => {
             {lockerData?.accountInfo.data.params.maxStakeVoteMultiplier.toString()}{" "}
             {veToken?.symbol}.
           </p>
+          <ExternalLink href="https://docs.tribeca.so/voting-escrow#voting-escrow-tokens">
+            Learn more
+          </ExternalLink>
           <div>
             <Link to={`/gov/${governor.toString()}/locker/lock`}>
               <Button size="md" variant="primary">
