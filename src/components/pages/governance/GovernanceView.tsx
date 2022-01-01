@@ -1,6 +1,6 @@
 import { LoadingPage } from "../../common/LoadingPage";
-import { NotFoundPage } from "../../common/NotFoundPage";
 import { GovernorLayout } from "../../layout/GovernorLayout";
+import { GovernanceNotFoundPage } from "./GovernanceNotFoundPage";
 import { GovernorProvider, useGovernorInfo } from "./hooks/useGovernor";
 import { GovernanceRoutes } from "./routes";
 
@@ -10,7 +10,11 @@ export const GovernanceView: React.FC = () => {
     return <LoadingPage />;
   }
   if (!info) {
-    return <NotFoundPage />;
+    return (
+      <GovernorLayout>
+        <GovernanceNotFoundPage />
+      </GovernorLayout>
+    );
   }
 
   return (

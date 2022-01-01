@@ -1,7 +1,7 @@
 import { useToken } from "@quarryprotocol/react-quarry";
-import { usePubkey } from "@saberhq/sail";
+import { useAccountData, usePubkey } from "@saberhq/sail";
 import { Token, TokenAmount } from "@saberhq/token-utils";
-import { PublicKey } from "@solana/web3.js";
+import type { PublicKey } from "@solana/web3.js";
 import { GovernorWrapper } from "@tribecahq/tribeca-sdk";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
@@ -14,34 +14,55 @@ import { useWindowTitle } from "../../../../hooks/useWindowTitle";
 import { useParsedGovernor, useParsedLocker } from "../../../../utils/parsers";
 import { formatDurationSeconds } from "../locker/LockerIndexView/LockEscrowModal";
 
-export const useGovernorInfo = (): {
-  key: PublicKey;
-  meta: GovernorMeta | null;
-  slug: string;
-  loading: boolean;
-} | null => {
+type GovernorInfo =
+  | {
+      key: PublicKey;
+      meta: GovernorMeta | null;
+      slug: string;
+      loading: boolean;
+    }
+  | {
+      key: PublicKey | null;
+      meta: GovernorMeta | null;
+      slug: string;
+      loading: true;
+    };
+
+export const useGovernorInfo = (): GovernorInfo | null => {
   const { governor: governorStr } = useParams<{ governor: string }>();
-  const { data: governerMetas, isLoading } = useTribecaRegistry();
+  const { data: governorMetas, isLoading, isFetched } = useTribecaRegistry();
 
   const governorMeta = useMemo(
     () =>
-      governerMetas?.find(
+      governorMetas?.find(
         (gov) => gov.address === governorStr || gov.slug === governorStr
-      ),
-    [governerMetas, governorStr]
+      ) ?? null,
+    [governorMetas, governorStr]
   );
+  const slug = governorMeta?.slug ?? governorStr;
 
-  const key = usePubkey(governorMeta?.address);
-  if (!key && !isLoading) {
+  const key = usePubkey(governorMeta?.address ?? governorStr);
+
+  const loading = isLoading || !isFetched;
+  if (loading && !key) {
+    return {
+      key: null,
+      meta: governorMeta,
+      slug,
+      loading: true,
+    };
+  }
+
+  // If there is no key and we aren't loading, the governor doesn't exist.
+  if (!key) {
     return null;
   }
 
-  const slug = governorMeta?.slug ?? governorStr;
   return {
-    key: key ?? PublicKey.default,
-    meta: governorMeta ?? null,
+    key,
+    meta: governorMeta,
     slug,
-    loading: isLoading,
+    loading,
   };
 };
 
@@ -51,9 +72,16 @@ const useGovernorInner = () => {
     throw new Error(`governor not found`);
   }
   const { meta, key: governor, slug } = info;
+  if (!governor) {
+    throw new Error("Governor not loaded.");
+  }
   const path = `/gov/${slug}`;
 
-  const { data: governorData } = useParsedGovernor(governor);
+  const { data: govDataRaw } = useAccountData(governor);
+  const { data: parsedGovernorData } = useParsedGovernor(governor);
+  console.log("DAA", govDataRaw, governor);
+  const governorData =
+    govDataRaw === undefined ? undefined : parsedGovernorData;
   const { data: lockerData } = useParsedLocker(
     governorData ? governorData.accountInfo.data.electorate : governorData
   );

@@ -25,15 +25,17 @@ export const Alliance: React.FC = () => {
   return (
     <div tw="mx-auto w-11/12 max-w-5xl">
       <div tw="text-center">
-        <h2 tw="text-white text-5xl font-semibold mb-6">The Tribeca DAO</h2>
+        <h2 tw="text-white text-3xl md:text-5xl font-semibold mb-6">
+          The Tribeca DAO
+        </h2>
         <div tw="max-w-md mx-auto">
-          <p tw="text-warmGray-400 text-2xl">
+          <p tw="text-warmGray-400 text-lg md:text-2xl">
             Tribeca is an open source governance primitive built and maintained
             by members of Solana's leading protocols.
           </p>
         </div>
       </div>
-      <div tw="flex flex-wrap items-center justify-center gap-2.5 my-16">
+      <div tw="grid grid-cols-2 md:(flex flex-wrap items-center justify-center) gap-2.5 my-16">
         {ALLIANCE.map(([name, href]) => (
           <Box
             key={name}
@@ -73,5 +75,5 @@ export const Alliance: React.FC = () => {
 };
 
 const Box = styled.a`
-  ${tw`flex items-center justify-center h-44 w-44 px-6 border border-coolGray-800 rounded`}
+  ${tw`flex items-center justify-center py-6 md:(h-44 w-44 py-0) px-6 border border-coolGray-800 rounded`}
 `;
