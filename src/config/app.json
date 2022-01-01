@@ -38,5 +38,25 @@
     "favicon": "/images/goki/favicon.png",
     "code": "https://github.com/GokiProtocol/goki",
     "docs": "https://docs.tribeca.so/goki"
+  },
+  "anchor": {
+    "name": "Anchor.so",
+    "title": "Anchor.so - Tools By Devs, For Devs",
+    "fullName": "Anchor.so",
+    "description": "Anchor.so is a collection of Solana developer tools made by devs, for devs.",
+    "url": "https://anchor.so",
+    "image": "https://anchor.so/images/tribeca/og-image.png",
+    "imageAlt": "Anchor tools made by devs, for devs.",
+    "themeColor": "#282A2C",
+    "socials": {
+      "twitter": "TribecaDAO",
+      "medium": "TribecaDAO",
+      "github": "TribecaHQ",
+      "discord": "cDvtZt886p",
+      "keybase": ""
+    },
+    "favicon": "/images/tribeca/favicon.png",
+    "code": "https://github.com/TribecaHQ/tribeca",
+    "docs": "https://docs.tribeca.so"
   }
 }

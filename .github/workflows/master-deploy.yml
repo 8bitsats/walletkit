@@ -90,3 +90,41 @@ jobs:
           publish_dir: ./build/
           user_name: "swaglioni"
           user_email: "swag@tribeca.so"
+
+  anchor-so-dist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - name: Yarn Cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
+      - name: Build Cache
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules/.cache/
+          key: ${{ runner.os }}-site-anchor-so-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-site-anchor-so-
+      - run: yarn install
+      - run: yarn build:production
+        env:
+          REACT_APP_APP_CONFIG: anchor
+          REACT_APP_GA_ID: G-CEXM7802CJ
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ANCHOR_SO_DEPLOY_KEY }}
+          external_repository: saber-hq/anchor.so
+          publish_branch: master
+          publish_dir: ./build/
+          user_name: sungoki
+          user_email: goki@goki.so
