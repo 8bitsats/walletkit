@@ -94,9 +94,9 @@ export const AccountPopover: React.FC<Props> = ({ close }: Props) => {
               onClick={() => {
                 if (SOLE_NETWORK) {
                   window.location.href = `https://devnet.${window.location.hostname}`;
-                } else {
-                  setNetwork("devnet");
+                  return;
                 }
+                setNetwork("devnet");
                 close?.();
               }}
             >
@@ -113,9 +113,9 @@ export const AccountPopover: React.FC<Props> = ({ close }: Props) => {
                   } else if (window.location.hostname === "devnet.tribeca.so") {
                     window.location.href = "https://tribeca.so";
                   }
-                } else {
-                  setNetwork("mainnet-beta");
+                  return;
                 }
+                setNetwork("mainnet-beta");
                 close?.();
               }}
             >
