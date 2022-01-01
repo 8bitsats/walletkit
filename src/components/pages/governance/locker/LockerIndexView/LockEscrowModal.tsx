@@ -16,6 +16,7 @@ import { useParseTokenAmount } from "../../../../../hooks/useParseTokenAmount";
 import { tsToDate } from "../../../../../utils/utils";
 import { AttributeList } from "../../../../common/AttributeList";
 import { Button } from "../../../../common/Button";
+import { ContentLoader } from "../../../../common/ContentLoader";
 import { HelperCard } from "../../../../common/HelperCard";
 import { InputSlider } from "../../../../common/inputs/InputSlider";
 import { InputTokenAmount } from "../../../../common/inputs/InputTokenAmount";
@@ -92,14 +93,16 @@ export const LockEscrowModal: React.FC<Props> = ({
   ...modalProps
 }: Props) => {
   const { tribecaMut } = useSDK();
-  const { governor, veToken, govToken } = useGovernor();
+  const { governor, veToken, govToken, lockerData } = useGovernor();
   const { data: locker } = useLocker();
   const { data: escrow, refetch } = useUserEscrow();
   const [userBalance] = useUserAssociatedTokenAccounts([govToken]);
   const [lockDurationSeconds, setDurationSeconds] = useState<string>(
-    ONE_DAY.toString()
+    lockerData?.accountInfo.data.params.minStakeDuration.toString() ?? ""
   );
-  const parsedDurationSeconds = parseFloat(lockDurationSeconds);
+  const parsedDurationSeconds = lockDurationSeconds
+    ? parseFloat(lockDurationSeconds)
+    : null;
   const { handleTX } = useSail();
 
   const durations = locker
@@ -117,8 +120,11 @@ export const LockEscrowModal: React.FC<Props> = ({
   const depositAmount = useParseTokenAmount(govToken, depositAmountStr);
 
   const prevUnlockTime = escrow ? tsToDate(escrow.escrow.escrowEndsAt) : null;
-  const unlockTime = new Date(Date.now() + parsedDurationSeconds * 1_000);
-  const isInvalidUnlockTime = prevUnlockTime && unlockTime < prevUnlockTime;
+  const unlockTime = parsedDurationSeconds
+    ? new Date(Date.now() + parsedDurationSeconds * 1_000)
+    : null;
+  const isInvalidUnlockTime =
+    prevUnlockTime && unlockTime && unlockTime < prevUnlockTime;
 
   const currentVotingPower = veToken
     ? new TokenAmount(
@@ -133,7 +139,7 @@ export const LockEscrowModal: React.FC<Props> = ({
       )
     : null;
   const newVotingPower =
-    newDeposits && locker && veToken
+    newDeposits && locker && veToken && parsedDurationSeconds
       ? new TokenAmount(
           veToken,
           new Fraction(newDeposits.raw)
@@ -179,13 +185,17 @@ export const LockEscrowModal: React.FC<Props> = ({
                   tw="text-4xl my-6"
                   css={[isInvalidUnlockTime && tw`text-red-500`]}
                 >
-                  {formatDuration(normalizeDuration(parsedDurationSeconds), {
-                    zero: true,
-                  })}
+                  {parsedDurationSeconds ? (
+                    formatDuration(normalizeDuration(parsedDurationSeconds), {
+                      zero: true,
+                    })
+                  ) : (
+                    <ContentLoader tw="h-4 w-8" />
+                  )}
                 </div>
                 <div tw="w-11/12 mx-auto my-4">
                   <InputSlider
-                    value={parsedDurationSeconds}
+                    value={parsedDurationSeconds ?? undefined}
                     min={durations?.[0]}
                     max={durations?.[1]}
                     step={1}
@@ -259,9 +269,9 @@ export const LockEscrowModal: React.FC<Props> = ({
                             <div>
                               <span tw="text-warmGray-400">Next: </span>
                               <span>
-                                {unlockTime.toLocaleString(undefined, {
+                                {unlockTime?.toLocaleString(undefined, {
                                   timeZoneName: "short",
-                                })}
+                                }) ?? "--"}
                               </span>
                             </div>
                           </div>
@@ -292,9 +302,14 @@ export const LockEscrowModal: React.FC<Props> = ({
                 <Button
                   size="md"
                   variant="primary"
-                  disabled={!tribecaMut || !locker || !!isInvalidUnlockTime}
+                  disabled={
+                    !tribecaMut ||
+                    !locker ||
+                    !!isInvalidUnlockTime ||
+                    !parsedDurationSeconds
+                  }
                   onClick={async () => {
-                    invariant(tribecaMut && locker);
+                    invariant(tribecaMut && locker && parsedDurationSeconds);
                     const lockerW = new LockerWrapper(
                       tribecaMut,
                       locker.accountId,
