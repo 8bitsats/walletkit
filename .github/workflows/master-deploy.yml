@@ -42,6 +42,8 @@ jobs:
         env:
           REACT_APP_APP_CONFIG: goki
           REACT_APP_GA_ID: G-FGC58QJV1V
+          REACT_APP_SENTRY_DSN: https://ae724926463940b8aa62562ac6ffb051@o676708.ingest.sentry.io/6053032
+          SENTRY_PROJECT: goki-interface
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -81,6 +83,8 @@ jobs:
         env:
           REACT_APP_APP_CONFIG: tribeca
           REACT_APP_GA_ID: G-3KJZR5HSRZ
+          REACT_APP_SENTRY_DSN: https://ff672b53bedc4967a09c127da4a94064@o676708.ingest.sentry.io/6130116
+          SENTRY_PROJECT: tribeca-interface
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -119,6 +123,8 @@ jobs:
         env:
           REACT_APP_APP_CONFIG: anchor
           REACT_APP_GA_ID: G-CEXM7802CJ
+          REACT_APP_SENTRY_DSN: https://1e4b12b23b3c4d4b9207f7884ed3e7f4@o676708.ingest.sentry.io/6130118
+          SENTRY_PROJECT: anchor-so
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
