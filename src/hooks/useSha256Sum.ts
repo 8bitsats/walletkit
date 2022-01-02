@@ -9,4 +9,4 @@ export const useSha256Sum = (buffer: Buffer) => {
 };
 
 export const truncateShasum = (sum: string) =>
-  `${sum.slice(0, 8)}...${sum.slice(-8)}`;
+  `${sum.slice(0, 4)}...${sum.slice(-4)}`;

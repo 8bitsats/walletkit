@@ -56,6 +56,3 @@ export const tsToDate = (num: BN): Date => new Date(num.toNumber() * 1_000);
 
 export const gokiTXLink = (tx: SmartWalletTransactionData) =>
   `https://goki.so/#/wallets/${tx.smartWallet.toString()}/tx/${tx.index.toString()}`;
-
-export const truncatePublicKeyStr = (pubkey: string): string =>
-  `${pubkey.slice(0, 3)}...${pubkey.slice(pubkey.length - 3, pubkey.length)}`;

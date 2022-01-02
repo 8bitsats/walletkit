@@ -12,7 +12,7 @@ import {
 import { createUpgradeInstruction } from "../../../../../../../utils/instructions/upgradeable_loader/instructions";
 import { makeTransaction } from "../../../../../../../utils/makeTransaction";
 import { programLabel } from "../../../../../../../utils/programs";
-import { truncatePublicKeyStr } from "../../../../../../../utils/utils";
+import { shortenAddress } from "../../../../../../../utils/utils";
 import { AddressLink } from "../../../../../../common/AddressLink";
 import { EmptyState } from "../../../../../../common/EmptyState";
 import { NoPrograms } from "../../../../../../common/governance/NoPrograms";
@@ -75,8 +75,8 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
                   return (
                     <option key={programIDStr} value={programIDStr}>
                       {label
-                        ? `${label} (${truncatePublicKeyStr(programIDStr)})`
-                        : programIDStr}
+                        ? `${label} (${shortenAddress(programIDStr, 3)})`
+                        : shortenAddress(programIDStr, 10)}
                     </option>
                   );
                 })}
