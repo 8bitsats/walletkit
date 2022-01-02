@@ -6,13 +6,14 @@ import { useQueries } from "react-query";
 import { Link } from "react-router-dom";
 import invariant from "tiny-invariant";
 
+import { getGPAConnection } from "../../../utils/gpaConnection";
 import { displayAddress } from "../../../utils/programs";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 
 const AMOUNT_OFFSET_BYTES = 8 + 32 + 1 + 8 + 8 + 8 + 4 + 8 + 4;
 
 export const UserView: React.FC = () => {
-  const { connection, network, providerMut } = useSolana();
+  const { network, providerMut } = useSolana();
   const userKey = providerMut?.wallet.publicKey;
   const wallets = useQueries(
     Array(3)
@@ -21,7 +22,8 @@ export const UserView: React.FC = () => {
         queryKey: ["walletsForUser", network, userKey?.toString(), i],
         queryFn: async () => {
           invariant(userKey, "userKey");
-          const result = await connection.getProgramAccounts(
+          // https://github.com/solana-labs/solana/blob/master/cli/src/program.rs#L1142
+          const result = await getGPAConnection({ network }).getProgramAccounts(
             GOKI_ADDRESSES.SmartWallet,
             {
               filters: [

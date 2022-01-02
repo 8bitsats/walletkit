@@ -20,17 +20,17 @@ export const ProgramCard: React.FC<Props> = ({ program, actions }: Props) => {
       ? startCase(idl.data.idl.name)
       : shortenAddress(program.programID.toString()));
   return (
-    <div tw="flex items-center rounded bg-gray-50 border px-3 py-2 text-sm">
+    <div tw="flex items-center justify-between py-5 px-6 border-l-2 border-l-transparent border-b border-b-warmGray-800">
       <div tw="flex flex-grow">
         <div tw="flex-basis[236px] flex flex-col gap-1">
-          <span tw="font-medium text-gray-800">{label}</span>
+          <span tw="font-medium text-white">{label}</span>
           <div tw="text-xs flex gap-1 text-secondary">
             <span>ID:</span>
             <AddressLink address={program.programID} />
           </div>
         </div>
-        <div tw="invisible flex items-center gap-1 text-secondary">
-          <span>Deployed at:</span>
+        <div tw="flex lg:ml-12 invisible lg:visible items-center gap-1 text-secondary">
+          <span>Deployed At:</span>
           <span>
             <SlotLink slot={program.lastDeploySlot} />
           </span>

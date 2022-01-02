@@ -79,7 +79,7 @@ const useGovernorInner = () => {
 
   const { data: govDataRaw } = useAccountData(governor);
   const { data: parsedGovernorData } = useParsedGovernor(governor);
-  console.log("DAA", govDataRaw, governor);
+
   const governorData =
     govDataRaw === undefined ? undefined : parsedGovernorData;
   const { data: lockerData } = useParsedLocker(

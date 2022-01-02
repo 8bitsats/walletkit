@@ -1,5 +1,6 @@
 import { useConnectionContext } from "@saberhq/use-solana";
 import React from "react";
+import tw from "twin.macro";
 
 interface Props {
   slot: number;
@@ -13,10 +14,15 @@ export const SlotLink: React.FC<Props> = ({
   children,
 }: Props) => {
   const { network } = useConnectionContext();
+  const isTribeca = process.env.REACT_APP_APP_CONFIG === "tribeca";
   return (
     <a
       className={className}
-      tw="text-gray-800 hover:text-primary"
+      css={[
+        isTribeca && tw`text-white`,
+        !isTribeca && tw`text-gray-800`,
+        tw`hover:text-primary`,
+      ]}
       href={`https://explorer.solana.com/block/${slot}?cluster=${
         network?.toString() ?? ""
       }`}

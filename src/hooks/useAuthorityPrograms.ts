@@ -1,15 +1,15 @@
 import { utils } from "@project-serum/anchor";
 import { u64 } from "@saberhq/token-utils";
 import { useSolana } from "@saberhq/use-solana";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { useQueries, useQuery } from "react-query";
 import invariant from "tiny-invariant";
+
+import { getGPAConnection } from "../utils/gpaConnection";
 
 export const BPF_UPGRADEABLE_LOADER_ID = new PublicKey(
   "BPFLoaderUpgradeab1e11111111111111111111111"
 );
-
-const PROJECT_SERUM_RPC_ENDPOINT = "https://solana-api.projectserum.com";
 
 const ACCOUNT_TYPE_SIZE = 4;
 const SLOT_SIZE = 8; // size_of::<u64>();
@@ -25,19 +25,14 @@ export interface ProgramInfo {
 }
 
 export const useAuthorityPrograms = (address: PublicKey | null | undefined) => {
-  const { connection, network } = useSolana();
-
-  const gpaConnection =
-    network === "mainnet-beta"
-      ? new Connection(PROJECT_SERUM_RPC_ENDPOINT)
-      : connection;
+  const { network } = useSolana();
 
   const programData = useQuery(
     ["programDataForAuthority", network, address?.toString()],
     async () => {
       invariant(address, "address");
       // https://github.com/solana-labs/solana/blob/master/cli/src/program.rs#L1191
-      const raw = await gpaConnection.getProgramAccounts(
+      const raw = await getGPAConnection({ network }).getProgramAccounts(
         BPF_UPGRADEABLE_LOADER_ID,
         {
           dataSlice: {
@@ -85,9 +80,13 @@ export const useAuthorityPrograms = (address: PublicKey | null | undefined) => {
     },
     {
       enabled: !!address,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchIntervalInBackground: false,
     }
   );
-
   const programs = useQueries(
     programData.data?.map(
       ({
@@ -99,7 +98,7 @@ export const useAuthorityPrograms = (address: PublicKey | null | undefined) => {
         queryKey: ["programForProgramData", network, pubkey.toString()],
         queryFn: async (): Promise<ProgramInfo | null> => {
           // https://github.com/solana-labs/solana/blob/master/cli/src/program.rs#L1191
-          const raw = await gpaConnection.getProgramAccounts(
+          const raw = await getGPAConnection({ network }).getProgramAccounts(
             BPF_UPGRADEABLE_LOADER_ID,
             {
               filters: [
@@ -143,19 +142,14 @@ export const useAuthorityPrograms = (address: PublicKey | null | undefined) => {
 };
 
 export const useAuthorityBuffers = (address: PublicKey | null | undefined) => {
-  const { connection, network } = useSolana();
-
-  const gpaConnection =
-    network === "mainnet-beta"
-      ? new Connection(PROJECT_SERUM_RPC_ENDPOINT)
-      : connection;
+  const { network } = useSolana();
 
   return useQuery(
     ["programBuffersForAuthority", network, address?.toString()],
     async () => {
       invariant(address, "address");
       // https://github.com/solana-labs/solana/blob/master/cli/src/program.rs#L1142
-      const raw = await gpaConnection.getProgramAccounts(
+      const raw = await getGPAConnection({ network }).getProgramAccounts(
         BPF_UPGRADEABLE_LOADER_ID,
         {
           filters: [

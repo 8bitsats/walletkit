@@ -12,8 +12,10 @@ import {
 import { createUpgradeInstruction } from "../../../../../../../utils/instructions/upgradeable_loader/instructions";
 import { makeTransaction } from "../../../../../../../utils/makeTransaction";
 import { programLabel } from "../../../../../../../utils/programs";
+import { truncatePublicKeyStr } from "../../../../../../../utils/utils";
 import { AddressLink } from "../../../../../../common/AddressLink";
 import { EmptyState } from "../../../../../../common/EmptyState";
+import { NoPrograms } from "../../../../../../common/governance/NoPrograms";
 import { Select } from "../../../../../../common/inputs/InputText";
 import { LoadingPage } from "../../../../../../common/LoadingPage";
 import { useGovernor } from "../../../../hooks/useGovernor";
@@ -30,8 +32,8 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
   const { programs, programData } = useAuthorityPrograms(smartWallet);
   const { network } = useSolana();
 
-  const [programID, setProgramID] = useState<PublicKey | null>(null);
-  const [bufferKey, setBufferKey] = useState<PublicKey | null>(null);
+  const [programID, setProgramID] = useState<string | null>(null);
+  const [bufferKey, setBufferKey] = useState<string | null>(null);
 
   useEffect(() => {
     if (!programID || !bufferKey || !sdkMut || !smartWallet) {
@@ -39,8 +41,8 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
     }
     void (async () => {
       const ix = await createUpgradeInstruction({
-        program: programID,
-        buffer: bufferKey,
+        program: new PublicKey(programID),
+        buffer: new PublicKey(bufferKey),
         spill: sdkMut.provider.wallet.publicKey,
         signer: smartWallet,
       });
@@ -55,33 +57,11 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
         {smartWallet ? (
           <>
             {programs?.length === 0 && !programData.isLoading ? (
-              <EmptyState
-                icon={<GiTumbleweed />}
-                title="The DAO doesn't own any programs."
-              >
-                <div tw="text-center">
-                  <p>
-                    The DAO address at{" "}
-                    <AddressLink address={smartWallet} showCopy /> does not own
-                    any programs.
-                  </p>
-                  <p>
-                    <a
-                      tw="text-primary"
-                      href="https://docs.solana.com/cli/deploy-a-program#set-a-programs-upgrade-authority"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Read the Solana Wiki to learn more about upgrade
-                      authorities.
-                    </a>
-                  </p>
-                </div>
-              </EmptyState>
+              <NoPrograms smartWallet={smartWallet} />
             ) : (
               <Select
                 onChange={(e) => {
-                  setProgramID(new PublicKey(e.target.value));
+                  setProgramID(e.target.value);
                 }}
               >
                 <option>Select a program ID</option>
@@ -90,15 +70,13 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
                   if (!data) {
                     return null;
                   }
-                  const label = programLabel(data.programID.toString());
+                  const programIDStr = data.programID.toString();
+                  const label = programLabel(programIDStr);
                   return (
-                    <option
-                      key={data.programID.toString()}
-                      value={data.programID.toString()}
-                    >
+                    <option key={programIDStr} value={programIDStr}>
                       {label
-                        ? `${label} (${data.programID.toString()})`
-                        : data.programID.toString()}
+                        ? `${label} (${truncatePublicKeyStr(programIDStr)})`
+                        : programIDStr}
                     </option>
                   );
                 })}
@@ -134,7 +112,7 @@ export const UpgradeProgramForm: React.FC<Props> = ({ onSelect }: Props) => {
             ) : (
               <Select
                 onChange={(e) => {
-                  setBufferKey(new PublicKey(e.target.value));
+                  setBufferKey(e.target.value);
                 }}
               >
                 <option>Select a buffer</option>
