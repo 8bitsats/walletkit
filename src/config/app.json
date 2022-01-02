@@ -41,9 +41,9 @@
   },
   "anchor": {
     "name": "Anchor.so",
-    "title": "Anchor.so - Tools By Devs, For Devs",
+    "title": "Anchor.so - Anchor Tools By Devs, For Devs",
     "fullName": "Anchor.so",
-    "description": "Anchor.so is a collection of Solana developer tools made by devs, for devs.",
+    "description": "Anchor.so hosts a suite of developer tools to help Solana developers ship better, safer apps.",
     "url": "https://anchor.so",
     "image": "https://anchor.so/images/anchor/og-image.png",
     "imageAlt": "Anchor tools made by devs, for devs.",

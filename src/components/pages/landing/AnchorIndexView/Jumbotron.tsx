@@ -1,7 +1,6 @@
 import { css, keyframes } from "@emotion/react";
-import { FaArrowRight } from "react-icons/fa";
 
-import { Button } from "../../../common/Button";
+import { ReactComponent as AnchorLogo } from "./AnchorLogo.svg";
 
 const FADE_IN_DOWN = keyframes`
   from {
@@ -19,15 +18,22 @@ export const Jumbotron: React.FC = () => {
     <header tw="text-center w-full mx-auto flex flex-col items-center gap-6 pt-16">
       <div tw="max-w-4xl flex flex-col items-center gap-6">
         <div tw="flex flex-col items-center gap-2">
+          <AnchorLogo
+            tw="w-36 h-36 mb-8"
+            css={css`
+              animation: 1.5s ${FADE_IN_DOWN} 0.01s normal forwards ease-out;
+            `}
+          />
           <h1 tw="text-3xl font-black leading-snug text-white relative md:(text-7xl leading-snug)">
             <div
               css={css`
                 animation: 1.5s ${FADE_IN_DOWN} 0.01s normal forwards ease-out;
               `}
             >
-              Solana tooling.
+              Tools for Anchor.
             </div>
             <div
+              tw="md:text-6xl"
               css={css`
                 opacity: 0;
                 animation: 1.5s ${FADE_IN_DOWN} 0.2s normal forwards ease-out;
@@ -44,39 +50,26 @@ export const Jumbotron: React.FC = () => {
             animation: 1.5s ${FADE_IN_DOWN} 0.4s normal forwards ease-out;
           `}
         >
-          Tribeca is a protocol for creating, managing, and interacting with
-          decentralized autonomous organizations on Solana.
+          Anchor.so hosts a suite of developer tools to help Solana developers
+          ship better, safer apps.
         </p>
-      </div>
-      <div
-        tw="mt-6 flex flex-col gap-4 md:flex-row"
-        css={css`
-          opacity: 0;
-          animation: 1.5s ${FADE_IN_DOWN} 0.6s normal forwards ease-out;
-        `}
-      >
-        <a
-          target="_blank"
-          href="https://forms.gle/mLPHEjqMxL4eoCo56"
-          rel="noreferrer"
+        <p
+          tw="mt-24"
+          css={css`
+            opacity: 0;
+            animation: 1.5s ${FADE_IN_DOWN} 0.6s normal forwards ease-out;
+          `}
         >
-          <Button
-            variant="primary"
-            tw="flex font-semibold items-center gap-4 h-12 w-[200px] text-base hover:(border-none bg-white text-black)"
+          a collaboration by{" "}
+          <a
+            tw="text-teal-400 hover:text-accent-300 transition-colors"
+            href="https://ship.capital"
+            target="_blank"
+            rel="noreferrer"
           >
-            <span>Join the Waitlist</span>
-            <FaArrowRight />
-          </Button>
-        </a>
-        <a target="_blank" href="https://docs.tribeca.so" rel="noreferrer">
-          <Button
-            variant="outline"
-            tw="flex font-semibold items-center gap-4 h-12 w-[200px] text-base hover:(border-none bg-white text-black)"
-          >
-            <span>Read the Docs</span>
-            <FaArrowRight />
-          </Button>
-        </a>
+            Ship Capital 🚢
+          </a>
+        </p>
       </div>
     </header>
   );

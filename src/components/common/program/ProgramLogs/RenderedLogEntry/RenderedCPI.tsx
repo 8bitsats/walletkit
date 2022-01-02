@@ -15,7 +15,9 @@ export const RenderedCPI: React.FC<Props> = ({ entry }: Props) => {
   const { data: meta } = useProgramMeta(programId);
 
   const label =
-    meta?.meta?.label ??
+    (meta?.meta?.label
+      ? `${meta?.meta?.label} (${meta.programID.toString()})`
+      : null) ??
     (programId
       ? programLabel(programId.toString()) ??
         `Unknown (${programId.toString()}) Program`

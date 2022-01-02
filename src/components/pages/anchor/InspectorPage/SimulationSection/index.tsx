@@ -2,21 +2,23 @@ import type { Message } from "@solana/web3.js";
 import { FaSpinner } from "react-icons/fa";
 import tw from "twin.macro";
 
-import { Button } from "../../../common/Button";
-import { Card } from "../../../common/governance/Card";
-import { ProgramLogs } from "../../../common/program/ProgramLogs";
-import { useSimulator } from "./useSimulator";
+import { Button } from "../../../../common/Button";
+import { Card } from "../../../../common/governance/Card";
+import { useSimulator } from "../useSimulator";
+import { AccountsDiff } from "./AccountsDiff";
+import { TransactionSimulation } from "./TransactionSimulation";
 
 interface Props {
   message: Message;
 }
 
-export const TransactionSimulation: React.FC<Props> = ({ message }: Props) => {
+export const SimulationSection: React.FC<Props> = ({ message }: Props) => {
   const {
     simulate,
     simulating,
     simulationLogs: logs,
     simulationError,
+    response,
   } = useSimulator(message);
   if (simulating) {
     return (
@@ -68,18 +70,13 @@ export const TransactionSimulation: React.FC<Props> = ({ message }: Props) => {
   }
 
   return (
-    <Card
-      titleStyles={tw`w-full flex items-center justify-between`}
-      title={
-        <>
-          <h3>Transaction Simulation</h3>
-          <Button variant="outline" onClick={simulate}>
-            Retry
-          </Button>
-        </>
-      }
-    >
-      <ProgramLogs message={message} logs={logs} />
-    </Card>
+    <>
+      <TransactionSimulation
+        message={message}
+        logs={logs}
+        simulate={simulate}
+      />
+      {response && <AccountsDiff message={message} response={response} />}
+    </>
   );
 };

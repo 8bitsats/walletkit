@@ -138,7 +138,7 @@ export const InstructionCard: React.FC<Props> = ({ ix, index }: Props) => {
             )}
             <tr>
               <td>
-                Instruction Data <span className="text-muted">(Hex)</span>
+                Instruction Data <span tw="text-gray-500">(Hex)</span>
               </td>
               <td>
                 <HexData raw={Buffer.from(ix.data)} />

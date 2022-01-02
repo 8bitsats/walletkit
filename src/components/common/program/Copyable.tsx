@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import React, { useState } from "react";
+import { FiCheckCircle, FiCopy, FiXCircle } from "react-icons/fi";
 
 type CopyState = "copy" | "copied" | "errored";
 
@@ -27,37 +28,39 @@ export const Copyable = ({
   function CopyIcon() {
     if (state === "copy") {
       return (
-        <button className="fe fe-copy c-pointer" onClick={handleClick}></button>
+        <button tw="cursor-pointer" onClick={handleClick}>
+          <FiCopy />
+        </button>
       );
     } else if (state === "copied") {
-      return <span className="fe fe-check-circle"></span>;
+      return (
+        <span>
+          <FiCheckCircle />
+        </span>
+      );
     } else if (state === "errored") {
       return (
-        <span
-          className="fe fe-x-circle"
-          title="Please check your browser's copy permissions."
-        ></span>
+        <span title="Please check your browser's copy permissions.">
+          <FiXCircle />
+        </span>
       );
     }
     return null;
   }
 
   let message: string | undefined;
-  let textColor = "";
   if (state === "copied") {
     message = "Copied";
-    textColor = "text-info";
   } else if (state === "errored") {
     message = "Copy Failed";
-    textColor = "text-danger";
   }
 
   function PrependCopyIcon() {
     return (
       <>
-        <span className="font-size-tiny me-2">
-          <span className={textColor}>
-            {message !== undefined && <span className="me-2">{message}</span>}
+        <span tw="text-xs m-2">
+          <span tw="flex items-center gap-1">
+            {message !== undefined && <span>{message}</span>}
             <CopyIcon />
           </span>
         </span>
@@ -68,14 +71,14 @@ export const Copyable = ({
 
   function ReplaceWithMessage() {
     return (
-      <span className="d-flex flex-column flex-nowrap">
-        <span className="font-size-tiny">
-          <span className={textColor}>
+      <span tw="flex flex-col flex-nowrap">
+        <span tw="text-xs">
+          <span tw="flex items-center text-primary">
             <CopyIcon />
-            <span className="ms-2">{message}</span>
+            <span tw="mx-2">{message}</span>
           </span>
         </span>
-        <span className="v-hidden">{children}</span>
+        <span tw="hidden">{children}</span>
       </span>
     );
   }
@@ -88,10 +91,10 @@ export const Copyable = ({
 
   return (
     <>
-      <span className="d-none d-lg-inline">
+      <span tw="hidden lg:inline">
         <PrependCopyIcon />
       </span>
-      <span className="d-inline d-lg-none">
+      <span tw="inline lg:hidden">
         <ReplaceWithMessage />
       </span>
     </>

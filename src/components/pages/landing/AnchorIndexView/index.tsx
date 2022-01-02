@@ -11,7 +11,7 @@ export const AnchorIndexView: React.FC = () => {
   }, []);
 
   return (
-    <div tw="w-11/12 overflow-x-hidden">
+    <div tw="w-11/12 mx-auto overflow-x-hidden">
       <div tw="min-h-screen">
         <Jumbotron />
       </div>

@@ -4,8 +4,8 @@ import { useLocation } from "react-router";
 
 import { AnchorLayout } from "../../../layout/AnchorLayout";
 import { InstructionsSection } from "./InstructionsSection";
+import { SimulationSection } from "./SimulationSection";
 import { TransactionOverview } from "./TransactionOverview";
-import { TransactionSimulation } from "./TransactionSimulation";
 
 export const MIN_MESSAGE_LENGTH =
   3 + // header
@@ -34,7 +34,7 @@ export const InspectorPage: React.FC = () => {
       {raw && message && (
         <div tw="flex flex-col gap-8">
           <TransactionOverview raw={raw} message={message} />
-          <TransactionSimulation message={message} />
+          <SimulationSection message={message} />
           <InstructionsSection message={message} />
         </div>
       )}

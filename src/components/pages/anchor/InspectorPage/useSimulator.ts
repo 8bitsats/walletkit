@@ -1,9 +1,9 @@
 import type { Network } from "@saberhq/solana-contrib";
 import { useSolana } from "@saberhq/use-solana";
-import type { Message } from "@solana/web3.js";
+import type { Message, SimulatedTransactionResponse } from "@solana/web3.js";
 import { Connection, Transaction } from "@solana/web3.js";
 import bs58 from "bs58";
-import React from "react";
+import React, { useState } from "react";
 
 import type { InstructionLogs } from "./programLogsV2";
 import { parseProgramLogs } from "./programLogsV2";
@@ -24,6 +24,9 @@ export const useSimulator = (message: Message) => {
 
   const [simulating, setSimulating] = React.useState(false);
   const [logs, setLogs] = React.useState<Array<InstructionLogs> | null>(null);
+  const [response, setResponse] = useState<SimulatedTransactionResponse | null>(
+    null
+  );
   const [error, setError] = React.useState<string>();
 
   const url = networkURLs[network];
@@ -54,6 +57,7 @@ export const useSimulator = (message: Message) => {
 
         // Prettify logs
         setLogs(parseProgramLogs(resp.value.logs, resp.value.err));
+        setResponse(resp.value);
       } catch (err) {
         console.error(err);
         setLogs(null);
@@ -70,5 +74,6 @@ export const useSimulator = (message: Message) => {
     simulating,
     simulationLogs: logs,
     simulationError: error,
+    response,
   };
 };
