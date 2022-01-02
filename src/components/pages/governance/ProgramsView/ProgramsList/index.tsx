@@ -55,7 +55,7 @@ export const ProgramsList: React.FC<Props> = ({ maxCount = 100 }: Props) => {
                   actions={
                     <Link to={`${path}/proposals/create`}>
                       <Button
-                        tw="py-5 px-6 hover:dark:text-primary hover:dark:border-primary"
+                        tw="py-5 hover:dark:text-primary hover:dark:border-primary"
                         variant="outline"
                       >
                         Upgrade

@@ -21,7 +21,7 @@ export const ProgramCard: React.FC<Props> = ({ program, actions }: Props) => {
       : shortenAddress(program.programID.toString()));
   return (
     <div tw="flex items-center justify-between py-5 px-6 border-l-2 border-l-transparent border-b border-b-warmGray-800">
-      <div tw="flex flex-grow">
+      <div tw="flex flex-grow w-2/3">
         <div tw="flex-basis[236px] flex flex-col gap-1">
           <span tw="font-medium text-white">{label}</span>
           <div tw="text-xs flex gap-1 text-secondary">
@@ -29,7 +29,7 @@ export const ProgramCard: React.FC<Props> = ({ program, actions }: Props) => {
             <AddressLink address={program.programID} />
           </div>
         </div>
-        <div tw="flex lg:ml-12 invisible lg:visible items-center gap-1 text-secondary">
+        <div tw="invisible lg:flex lg:ml-12 lg:visible items-center gap-1 text-secondary">
           <span>Deployed At:</span>
           <span>
             <SlotLink slot={program.lastDeploySlot} />
