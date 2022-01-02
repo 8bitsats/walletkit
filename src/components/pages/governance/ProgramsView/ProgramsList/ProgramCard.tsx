@@ -20,7 +20,7 @@ export const ProgramCard: React.FC<Props> = ({ program, actions }: Props) => {
       ? startCase(idl.data.idl.name)
       : shortenAddress(program.programID.toString()));
   return (
-    <div tw="flex items-center justify-between py-5 px-6 border-l-2 border-l-transparent border-b border-b-warmGray-800">
+    <div tw="text-sm flex items-center justify-between py-5 px-6 border-l-2 border-l-transparent border-b border-b-warmGray-800">
       <div tw="flex flex-grow w-2/3">
         <div tw="flex-basis[236px] flex flex-col gap-1">
           <span tw="font-medium text-white">{label}</span>
