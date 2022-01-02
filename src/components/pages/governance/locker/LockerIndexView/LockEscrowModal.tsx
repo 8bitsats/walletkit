@@ -306,17 +306,24 @@ export const LockEscrowModal: React.FC<Props> = ({
                     !tribecaMut ||
                     !locker ||
                     !!isInvalidUnlockTime ||
-                    !parsedDurationSeconds
+                    !parsedDurationSeconds ||
+                    !depositAmount ||
+                    depositAmount.toU64().isZero()
                   }
                   onClick={async () => {
-                    invariant(tribecaMut && locker && parsedDurationSeconds);
+                    invariant(
+                      tribecaMut &&
+                        locker &&
+                        parsedDurationSeconds &&
+                        depositAmount
+                    );
                     const lockerW = new LockerWrapper(
                       tribecaMut,
                       locker.accountId,
                       governor
                     );
                     const tx = await lockerW.lockTokens({
-                      amount: depositAmount?.toU64() ?? new u64(0),
+                      amount: depositAmount.toU64(),
                       duration: new BN(parsedDurationSeconds),
                     });
                     const { pending, success } = await handleTX(
