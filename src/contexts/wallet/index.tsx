@@ -64,24 +64,21 @@ const onError = (err: Error) => {
   Sentry.captureException(err);
 };
 
+const SOLE_NETWORKS: Record<string, Network> = {
+  "goki.so": "mainnet-beta",
+  "tribeca.so": "mainnet-beta",
+  "anchor.so": "mainnet-beta",
+  "testnet.anchor.so": "testnet",
+  "devnet.anchor.so": "devnet",
+  "devnet.goki.so": "devnet",
+  "devnet.tribeca.so": "devnet",
+};
+
 /**
  * The only network for the app to display, if applicable.
  */
-export const SOLE_NETWORK = ((): Network | null => {
-  if (
-    window.location.hostname === "devnet.goki.so" ||
-    window.location.hostname === "devnet.tribeca.so"
-  ) {
-    return "devnet";
-  }
-  if (
-    window.location.hostname === "goki.so" ||
-    window.location.hostname === "tribeca.so"
-  ) {
-    return "mainnet-beta";
-  }
-  return null;
-})();
+export const SOLE_NETWORK: Network | null =
+  SOLE_NETWORKS[window.location.hostname] ?? null;
 
 const networkConfigs = SOLE_NETWORK
   ? {

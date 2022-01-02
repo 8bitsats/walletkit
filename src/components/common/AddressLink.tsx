@@ -16,11 +16,13 @@ interface Props {
   showCopy?: boolean;
   children?: React.ReactNode;
   showRaw?: boolean;
+  shorten?: boolean;
 }
 
 export const AddressLink: React.FC<Props> = ({
   address,
   className,
+  shorten = true,
   showCopy = false,
   showRaw = true,
   children,
@@ -39,8 +41,10 @@ export const AddressLink: React.FC<Props> = ({
       >
         {children ??
           (showRaw
-            ? shortenAddress(address.toString())
-            : displayAddress(address.toString()))}
+            ? shorten
+              ? shortenAddress(address.toString())
+              : address.toString()
+            : displayAddress(address.toString(), shorten))}
       </a>
       {showCopy && (
         <CopyIcon

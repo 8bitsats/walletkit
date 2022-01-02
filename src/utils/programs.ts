@@ -203,6 +203,6 @@ export function addressLabel(
   );
 }
 
-export function displayAddress(address: string): string {
-  return addressLabel(address) ?? shortenAddress(address);
+export function displayAddress(address: string, shorten = true): string {
+  return addressLabel(address) ?? (shorten ? shortenAddress(address) : address);
 }

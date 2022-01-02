@@ -5,6 +5,8 @@ import toast, { resolveValue, Toaster } from "react-hot-toast";
 import { VscClose } from "react-icons/vsc";
 import { HashRouter } from "react-router-dom";
 
+import { AnchorRouter } from "./components/pages/anchor/AnchorRouter";
+import { CURRENT_APP } from "./config";
 import { globalStyles } from "./globalStyles";
 import { Routes } from "./routes";
 
@@ -12,9 +14,13 @@ export const App: React.FC = () => {
   return (
     <div tw="h-full w-full" className="App">
       {globalStyles}
-      <HashRouter basename="/">
-        <Routes />
-      </HashRouter>
+      {CURRENT_APP === "anchor" ? (
+        <AnchorRouter />
+      ) : (
+        <HashRouter basename="/">
+          <Routes />
+        </HashRouter>
+      )}
       <Toaster position="bottom-right">
         {(t) => (
           <div

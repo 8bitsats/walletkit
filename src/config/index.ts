@@ -1,6 +1,13 @@
 import appConfigs from "./app.json";
 
-export const APP_CONFIG =
+/**
+ * Currently loaded application.
+ */
+export const CURRENT_APP =
   process.env.REACT_APP_APP_CONFIG === "tribeca"
-    ? appConfigs.tribeca
-    : appConfigs.goki;
+    ? "tribeca"
+    : process.env.REACT_APP_APP_CONFIG === "anchor"
+    ? "anchor"
+    : "goki";
+
+export const APP_CONFIG = appConfigs[CURRENT_APP];

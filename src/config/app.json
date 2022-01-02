@@ -45,7 +45,7 @@
     "fullName": "Anchor.so",
     "description": "Anchor.so is a collection of Solana developer tools made by devs, for devs.",
     "url": "https://anchor.so",
-    "image": "https://anchor.so/images/tribeca/og-image.png",
+    "image": "https://anchor.so/images/anchor/og-image.png",
     "imageAlt": "Anchor tools made by devs, for devs.",
     "themeColor": "#282A2C",
     "socials": {
@@ -55,7 +55,7 @@
       "discord": "cDvtZt886p",
       "keybase": ""
     },
-    "favicon": "/images/tribeca/favicon.png",
+    "favicon": "/images/anchor/favicon.png",
     "code": "https://github.com/TribecaHQ/tribeca",
     "docs": "https://docs.tribeca.so"
   }
