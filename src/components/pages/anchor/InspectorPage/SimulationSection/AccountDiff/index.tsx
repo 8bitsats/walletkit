@@ -1,19 +1,17 @@
 import { AccountsCoder, Coder } from "@project-serum/anchor";
 import { ACCOUNT_DISCRIMINATOR_SIZE } from "@project-serum/anchor/dist/cjs/coder";
 import { useAccountData, usePubkey } from "@saberhq/sail";
-import type {
-  PublicKey,
-  SimulatedTransactionAccountInfo,
-} from "@solana/web3.js";
+import type { SimulatedTransactionAccountInfo } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { useMemo } from "react";
 
 import { useIDL } from "../../../../../../hooks/useIDLs";
-import { displayAddress } from "../../../../../../utils/programs";
+import { useProgramLabel } from "../../../../../../hooks/useProgramMeta";
 import { AddressWithContext } from "../../../../../common/program/AddressWithContext";
 import { SolAmount } from "../../../../../common/program/SolAmount";
 import { ColoredDiff } from "./ColoredDiff";
 import { makeObjectDiff } from "./makeDiff";
-import { NonAnchorDiff } from "./NonAnchorDiff";
+import { getAccountType, NonAnchorDiff } from "./NonAnchorDiff";
 
 interface Props {
   accountId: PublicKey;
@@ -28,6 +26,7 @@ export const AccountDiff: React.FC<Props> = ({
 }: Props) => {
   const owner = usePubkey(nextInfo.owner);
   const { data: currentInfo } = useAccountData(accountId);
+  const programLabel = useProgramLabel(owner);
   const { data: idl } = useIDL(owner);
 
   const anchorParsed = useMemo(() => {
@@ -87,19 +86,26 @@ export const AccountDiff: React.FC<Props> = ({
     dataChanged ||
     currentLamports !== nextLamports;
 
+  const accountType = getAccountType(new PublicKey(nextInfo.owner), nextData);
+
   return (
     <div tw="border-b border-b-warmGray-800 w-full text-sm">
-      <div tw="flex items-center justify-between px-8 py-4 w-full border-b border-warmGray-800">
-        <h2 tw="text-sm text-white font-semibold">
+      <div tw="flex items-center gap-8 justify-between py-4 w-full border-b border-warmGray-800">
+        <h2 tw="pl-8 text-sm text-white font-semibold">
           {name ??
-            anchorParsed?.accountName ??
-            displayAddress(accountId.toString())}
+            (anchorParsed
+              ? `${programLabel}: ${anchorParsed.accountName}`
+              : null) ??
+            (accountType ? `${programLabel}: ${accountType}` : null) ??
+            "Unknown Account Type"}
         </h2>
-        <AddressWithContext pubkey={accountId} />
+        <div tw="pr-8">
+          <AddressWithContext pubkey={accountId} />
+        </div>
       </div>
       {!accountChanged ? (
-        <div tw="py-6 w-full text-center text-warmGray-400">
-          <p>This account did not change in this transaction.</p>
+        <div tw="pl-8 py-6 w-full text-gray-300">
+          <p>Account unchanged.</p>
         </div>
       ) : (
         <>

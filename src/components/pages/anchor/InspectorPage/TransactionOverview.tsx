@@ -1,7 +1,7 @@
 import type { Message } from "@solana/web3.js";
 import { useMemo } from "react";
 
-import { AttributeList } from "../../../common/AttributeList";
+import { TableCardBody } from "../../../common/card/TableCardBody";
 import { Card } from "../../../common/governance/Card";
 import { AddressWithContext } from "../../../common/program/AddressWithContext";
 import { SolAmount } from "../../../common/program/SolAmount";
@@ -31,17 +31,34 @@ export const TransactionOverview: React.FC<Props> = ({
 
   return (
     <Card title="Transaction Overview" tw="pb-2">
-      <AttributeList
-        attributes={{
-          "Serialized Size": `${size} bytes`,
-          Fees: <SolAmount lamports={fee} />,
-          "Fee Payer": !feePayer ? (
-            "No Fee Payer"
-          ) : (
-            <AddressWithContext pubkey={feePayer} />
-          ),
-        }}
-      />
+      <div tw="whitespace-nowrap overflow-x-auto">
+        <TableCardBody>
+          <tr>
+            <td>Serialized Size</td>
+            <td>
+              <div tw="flex flex-col items-end">{size} bytes</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Fees</td>
+            <td>
+              <div tw="flex flex-col items-end">
+                <SolAmount lamports={fee} />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Fee Payer</td>
+            <td>
+              {!feePayer ? (
+                "No Fee Payer"
+              ) : (
+                <AddressWithContext pubkey={feePayer} />
+              )}
+            </td>
+          </tr>
+        </TableCardBody>
+      </div>
     </Card>
   );
 };

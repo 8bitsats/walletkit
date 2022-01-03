@@ -65,6 +65,7 @@ const onError = (err: Error) => {
 };
 
 const SOLE_NETWORKS: Record<string, Network> = {
+  "dao.saber.so": "mainnet-beta",
   "goki.so": "mainnet-beta",
   "tribeca.so": "mainnet-beta",
   "anchor.so": "mainnet-beta",

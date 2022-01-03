@@ -11,7 +11,7 @@ interface Props {
 
 export const ColoredDiff: React.FC<Props> = ({ parsed }: Props) => {
   return (
-    <div tw="grid font-mono py-4">
+    <div tw="grid font-mono py-4 w-full">
       {parsed.prevStr && !parsed.nextStr && (
         <pre tw="bg-red-500 bg-opacity-20 text-red-500 px-8 py-4">
           {parsed.prevStr}
@@ -23,7 +23,7 @@ export const ColoredDiff: React.FC<Props> = ({ parsed }: Props) => {
         </pre>
       )}
       {parsed.diff && (
-        <pre tw="py-4">
+        <pre tw="w-full py-4">
           {parsed.diff.map((line, i) => {
             return (
               <div
@@ -34,6 +34,8 @@ export const ColoredDiff: React.FC<Props> = ({ parsed }: Props) => {
                   line.removed && tw`bg-red-500 bg-opacity-20 text-red-500`,
                 ]}
               >
+                {line.added && "+ "}
+                {line.removed && "- "}
                 {line.value}
               </div>
             );

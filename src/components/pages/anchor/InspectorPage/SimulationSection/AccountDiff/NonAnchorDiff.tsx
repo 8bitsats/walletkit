@@ -7,7 +7,7 @@ import {
   TokenAccountLayout,
 } from "@saberhq/token-utils";
 import type { SimulatedTransactionAccountInfo } from "@solana/web3.js";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, SystemProgram } from "@solana/web3.js";
 
 import { ColoredDiff } from "./ColoredDiff";
 import { makeBufferDiff, makeObjectDiff } from "./makeDiff";
@@ -17,6 +17,27 @@ interface Props {
   prevInfo: AccountDatum;
   nextInfo: SimulatedTransactionAccountInfo;
 }
+
+export const getAccountType = (
+  owner: PublicKey,
+  data: Buffer
+): string | null => {
+  if (owner.equals(TOKEN_PROGRAM_ID)) {
+    if (data.length === TokenAccountLayout.span) {
+      return "Token Account";
+    } else if (data.length === MintLayout.span) {
+      return "Mint";
+    }
+  }
+  if (data.length === 0) {
+    if (owner.equals(SystemProgram.programId)) {
+      return "System Account";
+    } else {
+      return "PDA";
+    }
+  }
+  return null;
+};
 
 const tryToDiff = (props: Props) => {
   const { prevInfo, nextInfo } = props;
@@ -36,7 +57,6 @@ const tryToDiff = (props: Props) => {
         prevObj = deserializeAccount(prevInfo.accountInfo.data);
       }
       nextObj = deserializeAccount(nextData);
-      console.log({ prevObj, nextObj });
     } else if (nextData.length === MintLayout.span) {
       if (prevInfo) {
         prevObj = deserializeMint(prevInfo.accountInfo.data);
@@ -60,11 +80,7 @@ const tryToDiff = (props: Props) => {
 export const NonAnchorDiff: React.FC<Props> = (props: Props) => {
   const diff = tryToDiff(props);
   if (diff) {
-    return (
-      <div tw="whitespace-nowrap overflow-x-auto">
-        <ColoredDiff parsed={diff} />
-      </div>
-    );
+    return <ColoredDiff parsed={diff} />;
   }
   return <div>test</div>;
 };

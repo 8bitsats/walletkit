@@ -11,17 +11,23 @@ interface Props {
 export const AccountsDiff: React.FC<Props> = ({ message, response }: Props) => {
   return (
     <Card title="Simulated Changes">
-      {response.accounts?.map((value, i) => {
-        const isWritable = message.isAccountWritable(i);
-        if (!isWritable) {
-          return null;
-        }
-        const accountId = message.accountKeys[i];
-        if (!accountId) {
-          return null;
-        }
-        return <AccountDiff key={i} accountId={accountId} nextInfo={value} />;
-      })}
+      <div tw="w-full whitespace-nowrap overflow-x-auto">
+        <div tw="grid">
+          {response.accounts?.map((value, i) => {
+            const isWritable = message.isAccountWritable(i);
+            if (!isWritable) {
+              return null;
+            }
+            const accountId = message.accountKeys[i];
+            if (!accountId) {
+              return null;
+            }
+            return (
+              <AccountDiff key={i} accountId={accountId} nextInfo={value} />
+            );
+          })}
+        </div>
+      </div>
     </Card>
   );
 };

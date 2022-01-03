@@ -8,7 +8,7 @@ interface Props {
 export const AnchorLayout: React.FC<Props> = ({ title, children }: Props) => {
   return (
     <div tw="w-full pb-8 px-4">
-      <div tw="w-11/12 mx-auto mt-16">
+      <div tw="w-full md:w-11/12 mx-auto mt-16">
         <div>
           <h1 tw="text-white text-2xl font-bold mb-1">{title}</h1>
         </div>

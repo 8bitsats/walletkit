@@ -2,6 +2,7 @@ import { useAccountData } from "@saberhq/sail";
 import type { KeyedAccountInfo, PublicKey } from "@solana/web3.js";
 import { SystemProgram } from "@solana/web3.js";
 
+import { SYSVAR_OWNER } from "../../../utils/programs";
 import { AddressLink } from "../AddressLink";
 import { ProgramLabel } from "./ProgramLabel";
 import { SolAmount } from "./SolAmount";
@@ -38,15 +39,25 @@ interface Props {
 }
 
 export const AddressWithContext = ({ pubkey, validator }: Props) => {
+  const info = useAccountData(pubkey);
   return (
     <div tw="flex items-end flex-col gap-0.5">
-      <AddressLink
-        tw="dark:text-primary hover:text-opacity-80 font-mono"
-        address={pubkey}
-        showCopy
-        showRaw={false}
-        shorten={false}
-      />
+      {info.data?.accountInfo.executable ? (
+        <ProgramLabel
+          address={pubkey}
+          showCopy
+          showRaw={false}
+          shorten={false}
+        />
+      ) : (
+        <AddressLink
+          tw="dark:text-primary hover:text-opacity-80 font-mono"
+          address={pubkey}
+          showCopy
+          showRaw={false}
+          shorten={false}
+        />
+      )}
       <AccountInfo pubkey={pubkey} validator={validator} />
     </div>
   );
@@ -63,7 +74,7 @@ export const AccountInfo = ({ pubkey, validator }: Props) => {
   if (!info.data) {
     if (info.loading) {
       return (
-        <span className="text-muted">
+        <span tw="text-gray-300">
           <span className="spinner-grow spinner-grow-sm me-2"></span>
           Loading
         </span>
@@ -77,17 +88,23 @@ export const AccountInfo = ({ pubkey, validator }: Props) => {
   if (errorMessage) return <span className="text-warning">{errorMessage}</span>;
 
   if (info.data.accountInfo.executable) {
-    return <span className="text-muted">Executable Program</span>;
+    return <span tw="text-gray-300">Executable Program</span>;
   }
 
   const owner = info.data.accountInfo.owner;
 
   return (
-    <span className="text-muted">
+    <span tw="text-gray-300">
       {owner ? (
         <>
-          Owned by <ProgramLabel address={owner} />. Balance is{" "}
-          <SolAmount lamports={info.data.accountInfo.lamports} />.
+          {owner.equals(SYSVAR_OWNER) ? (
+            "Sysvar."
+          ) : (
+            <>
+              Owned by <ProgramLabel address={owner} />.
+            </>
+          )}{" "}
+          Balance is <SolAmount lamports={info.data.accountInfo.lamports} />.
         </>
       ) : (
         "Account doesn't exist"

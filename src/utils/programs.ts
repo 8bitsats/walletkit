@@ -2,6 +2,7 @@ import type { TokenInfo } from "@saberhq/token-utils";
 import {
   BPF_LOADER_DEPRECATED_PROGRAM_ID,
   BPF_LOADER_PROGRAM_ID,
+  PublicKey,
   Secp256k1Program,
   StakeProgram,
   SystemProgram,
@@ -154,6 +155,10 @@ export const LOADER_IDS = {
   [BPF_LOADER_PROGRAM_ID.toBase58()]: "BPF Loader 2",
   BPFLoaderUpgradeab1e11111111111111111111111: "BPF Upgradeable Loader",
 } as const;
+
+export const SYSVAR_OWNER = new PublicKey(
+  "Sysvar1111111111111111111111111111111111111"
+);
 
 export const SPECIAL_IDS: { [key: string]: string } = {
   "1nc1nerator11111111111111111111111111111111": "Incinerator",

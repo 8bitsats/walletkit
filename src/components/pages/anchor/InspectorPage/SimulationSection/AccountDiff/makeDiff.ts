@@ -11,6 +11,9 @@ const replacer = (_: string, value: unknown) => {
   return value;
 };
 
+export const fmtObject = (object: Record<string, unknown>) =>
+  yaml.dump(object, { replacer });
+
 /**
  * Diffs two objects.
  * @param prev

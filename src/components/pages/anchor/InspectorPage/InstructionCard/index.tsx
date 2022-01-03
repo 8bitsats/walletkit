@@ -1,5 +1,6 @@
 import { Coder } from "@project-serum/anchor";
 import type { ProposalInstruction } from "@tribecahq/tribeca-sdk";
+import { startCase } from "lodash";
 import React, { useMemo } from "react";
 import tw from "twin.macro";
 
@@ -37,13 +38,13 @@ export const InstructionCard: React.FC<Props> = ({ ix, index }: Props) => {
     }
     const parsed = coder.instruction.format(decoded, ix.keys);
     if (parsed) {
-      return parsed;
+      return { decoded, parsed };
     }
     if (idl.idl.state) {
       const methodSoap = idl.idl.state.methods.find(
         (m) => m.name === decoded.name
       );
-      return new Coder({
+      const parsed = new Coder({
         ...idl.idl,
         instructions: methodSoap
           ? [
@@ -61,9 +62,17 @@ export const InstructionCard: React.FC<Props> = ({ ix, index }: Props) => {
             ]
           : [],
       }).instruction.format(decoded, ix.keys);
+      if (!parsed) {
+        return null;
+      }
+      return { decoded, parsed };
     }
     return null;
   }, [idl?.idl, ix]);
+
+  const ixLabel = parsedIX
+    ? `${label}: ${startCase(parsedIX.decoded.name)}`
+    : `${label} Instruction`;
 
   return (
     <Card
@@ -74,7 +83,7 @@ export const InstructionCard: React.FC<Props> = ({ ix, index }: Props) => {
             <Badge tw="bg-teal-700 text-teal-300 font-semibold text-sm h-auto px-2">
               #{index + 1}
             </Badge>
-            {label} Instruction
+            {ixLabel}
           </h3>
 
           <Button
@@ -89,15 +98,16 @@ export const InstructionCard: React.FC<Props> = ({ ix, index }: Props) => {
         </>
       }
     >
-      <div className="card" id={`instruction-index-${index + 1}`} key={index}>
-        <div
-          className={`card-header${!expanded ? " border-bottom-none" : ""}`}
-        ></div>
+      <div
+        tw="whitespace-nowrap overflow-x-auto"
+        id={`instruction-index-${index + 1}`}
+        key={index}
+      >
         {expanded && (
           <TableCardBody>
             <tr>
               <td>Program</td>
-              <td className="text-lg-end">
+              <td tw="lg:text-right">
                 {programId && (
                   <AddressWithContext
                     pubkey={programId}
@@ -108,7 +118,7 @@ export const InstructionCard: React.FC<Props> = ({ ix, index }: Props) => {
             </tr>
             {ix.keys.map(
               ({ pubkey: accountId, isSigner, isWritable }, index) => {
-                const parsedIXAccount = parsedIX?.accounts?.[index];
+                const parsedIXAccount = parsedIX?.parsed.accounts?.[index];
                 const label = parsedIXAccount?.name ?? `Account #${index + 1}`;
                 return (
                   <tr key={index}>
@@ -138,10 +148,28 @@ export const InstructionCard: React.FC<Props> = ({ ix, index }: Props) => {
             )}
             <tr>
               <td>
-                Instruction Data <span tw="text-gray-500">(Hex)</span>
+                Instruction Data{" "}
+                {!parsedIX && <span tw="text-gray-500">(Hex)</span>}
               </td>
               <td>
-                <HexData raw={Buffer.from(ix.data)} />
+                {parsedIX ? (
+                  <Card tw="flex flex-col items-end">
+                    <TableCardBody>
+                      {parsedIX.parsed.args.map(({ name, type, data }, i) => {
+                        return (
+                          <tr key={i}>
+                            <td tw="pr-6">
+                              {name} <span tw="text-gray-500">({type})</span>
+                            </td>
+                            <td>{data}</td>
+                          </tr>
+                        );
+                      })}
+                    </TableCardBody>
+                  </Card>
+                ) : (
+                  <HexData raw={Buffer.from(ix.data)} />
+                )}
               </td>
             </tr>
           </TableCardBody>
