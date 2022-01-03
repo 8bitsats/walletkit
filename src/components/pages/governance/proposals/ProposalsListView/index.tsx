@@ -35,7 +35,7 @@ export const ProposalsListView: React.FC = () => {
             <ProposalBadgeWrapper tw="flex gap-4 w-auto md:(w-[140px] justify-end)">
               <Switch.Group>
                 <div tw="flex items-center text-sm">
-                  <Switch
+                  <Switch<"button">
                     checked={showDrafts}
                     onChange={setShowDrafts}
                     css={[
@@ -43,14 +43,12 @@ export const ProposalsListView: React.FC = () => {
                       tw`relative inline-flex items-center h-6 rounded-full w-11 transition-colors`,
                     ]}
                   >
-                    <>
-                      <span
-                        css={[
-                          showDrafts ? tw`translate-x-6` : tw`translate-x-1`,
-                          tw`inline-block w-4 h-4 transform bg-white rounded-full transition-transform`,
-                        ]}
-                      />
-                    </>
+                    <span
+                      css={[
+                        showDrafts ? tw`translate-x-6` : tw`translate-x-1`,
+                        tw`inline-block w-4 h-4 transform bg-white rounded-full transition-transform`,
+                      ]}
+                    />
                   </Switch>
                   <Switch.Label tw="ml-2 font-medium text-warmGray-400">
                     Show Drafts

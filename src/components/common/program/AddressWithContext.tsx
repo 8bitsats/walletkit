@@ -1,7 +1,6 @@
 import { useAccountData } from "@saberhq/sail";
 import type { KeyedAccountInfo, PublicKey } from "@solana/web3.js";
 import { SystemProgram } from "@solana/web3.js";
-import React from "react";
 
 import { AddressLink } from "../AddressLink";
 import { ProgramLabel } from "./ProgramLabel";

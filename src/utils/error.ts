@@ -6,8 +6,8 @@ import { notify } from "./notifications";
 
 export class CapturedError extends Error {
   constructor(
-    readonly name: string,
-    readonly message: string,
+    override readonly name: string,
+    override readonly message: string,
     readonly source: string,
     readonly originalError: unknown
   ) {

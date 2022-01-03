@@ -103,7 +103,7 @@ export class ProgramError extends Error {
     return this.errorInfo.name;
   }
 
-  toString(): string {
+  override toString(): string {
     return this.errorInfo.displayMessage;
   }
 }
