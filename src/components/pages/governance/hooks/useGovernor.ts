@@ -85,9 +85,11 @@ const useGovernorInner = () => {
   const { data: lockerData } = useParsedLocker(
     governorData ? governorData.accountInfo.data.electorate : governorData
   );
-  const govToken = useToken(
+  const backupGovToken = useToken(
     lockerData ? lockerData.accountInfo.data.tokenMint : lockerData
   );
+
+  const govToken = meta?.govToken ? new Token(meta.govToken) : backupGovToken;
   const veToken = govToken
     ? new Token({
         ...govToken.info,
