@@ -71,11 +71,12 @@ export const ProposalCreateInner: React.FC = () => {
           />
         </label>
         <label tw="flex flex-col gap-1" htmlFor="description">
-          <span tw="text-sm">Description</span>
+          <span tw="text-sm">Description (max 750 characters)</span>
           <Textarea
             id="description"
             tw="h-auto"
             rows={4}
+            maxLength={750}
             placeholder={`## Summary\nYour proposal will be formatted using Markdown.`}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
