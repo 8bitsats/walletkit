@@ -1,3 +1,4 @@
+import { ZERO } from "@quarryprotocol/quarry-sdk";
 import { useUserAssociatedTokenAccounts } from "@quarryprotocol/react-quarry";
 import { SliderHandle, SliderRange, SliderTrack } from "@reach/slider";
 import { useSail } from "@saberhq/sail";
@@ -323,7 +324,8 @@ export const LockEscrowModal: React.FC<Props> = ({
                       governor
                     );
                     const tx = await lockerW.lockTokens({
-                      amount: depositAmount.toU64(),
+                      amount:
+                        variant === "extend" ? ZERO : depositAmount.toU64(),
                       duration: new BN(parsedDurationSeconds),
                     });
                     const { pending, success } = await handleTX(
