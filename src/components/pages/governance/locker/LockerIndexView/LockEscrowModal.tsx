@@ -116,7 +116,7 @@ export const LockEscrowModal: React.FC<Props> = ({
     ? nicePresets(durations[0], durations[1])
     : [];
 
-  const [depositAmountStr, setDepositAmountStr] = useState<string>("");
+  const [depositAmountStr, setDepositAmountStr] = useState<string>("0");
   const depositAmount = useParseTokenAmount(govToken, depositAmountStr);
 
   const prevUnlockTime = escrow ? tsToDate(escrow.escrow.escrowEndsAt) : null;
@@ -308,7 +308,7 @@ export const LockEscrowModal: React.FC<Props> = ({
                     !!isInvalidUnlockTime ||
                     !parsedDurationSeconds ||
                     !depositAmount ||
-                    depositAmount.toU64().isZero()
+                    (variant !== "extend" && depositAmount.toU64().isZero())
                   }
                   onClick={async () => {
                     invariant(
