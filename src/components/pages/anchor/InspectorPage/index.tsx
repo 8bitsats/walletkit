@@ -33,7 +33,7 @@ export const InspectorPage: React.FC = () => {
     <AnchorLayout title="Transaction Inspector">
       {raw && message && (
         <div tw="flex flex-col gap-8">
-          <TransactionOverview raw={raw} message={message} />
+          <TransactionOverview message={message} />
           <SimulationSection message={message} />
           <InstructionsSection message={message} />
         </div>

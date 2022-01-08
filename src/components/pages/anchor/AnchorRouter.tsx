@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { IndexView } from "../landing";
 import { InspectorPage } from "./InspectorPage";
+import { TransactionInspectPage } from "./tx/InspectPage";
 
 export const AnchorRouter: React.FC = () => {
   useEffect(() => {
@@ -14,6 +15,7 @@ export const AnchorRouter: React.FC = () => {
 
   return (
     <BrowserRouter basename="/">
+      <Route path="/tx/:txid/inspect" component={TransactionInspectPage} />
       <Route exact path="/tx/inspector" component={InspectorPage} />
       <Route exact path="/" component={IndexView} />
     </BrowserRouter>

@@ -7,7 +7,6 @@ import { AddressWithContext } from "../../../common/program/AddressWithContext";
 import { SolAmount } from "../../../common/program/SolAmount";
 
 interface Props {
-  raw: Buffer;
   message: Message;
 }
 
@@ -15,10 +14,8 @@ const DEFAULT_FEES = {
   lamportsPerSignature: 5000,
 };
 
-export const TransactionOverview: React.FC<Props> = ({
-  raw,
-  message,
-}: Props) => {
+export const TransactionOverview: React.FC<Props> = ({ message }: Props) => {
+  const raw = useMemo(() => message.serialize(), [message]);
   const size = useMemo(() => {
     const sigBytes = 1 + 64 * message.header.numRequiredSignatures;
     return sigBytes + raw.length;
