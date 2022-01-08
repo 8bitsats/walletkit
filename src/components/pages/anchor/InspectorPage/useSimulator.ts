@@ -53,7 +53,11 @@ export const useSimulator = (message: Message) => {
         );
 
         // Simulate without signers to skip signer verification
-        const resp = await connection.simulateTransaction(tx, undefined, true);
+        const resp = await connection
+          .simulateTransaction(tx, undefined, true)
+          .catch(() => {
+            return connection.simulateTransaction(tx, undefined);
+          });
 
         // Prettify logs
         setLogs(parseProgramLogs(resp.value.logs, resp.value.err));
