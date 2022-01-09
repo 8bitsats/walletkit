@@ -1,41 +1,83 @@
-import type { Network } from "@saberhq/solana-contrib";
-import type { TokenList } from "@saberhq/token-utils";
-import { RAW_SOL, WRAPPED_SOL } from "@saberhq/token-utils";
-import { useMemo } from "react";
+import {
+  findReplicaMintAddress,
+  QUARRY_ADDRESSES,
+} from "@quarryprotocol/quarry-sdk";
+import type { TokenInfo, TokenList } from "@saberhq/token-utils";
+import { useConnectionContext } from "@saberhq/use-solana";
+import * as Sentry from "@sentry/react";
+import { PublicKey } from "@solana/web3.js";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
 
-import tokenListDevnet from "./data/token-list.devnet.json";
-import tokenListMainnet from "./data/token-list.mainnet.json";
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export const useTokenList = (
-  network: Network
-): {
+const TOKEN_LIST_URLS: Record<string, string> = {
+  "mainnet-beta":
+    "https://raw.githubusercontent.com/QuarryProtocol/rewarder-list-build/master/mainnet-beta/token-list.json",
+  devnet:
+    "https://raw.githubusercontent.com/QuarryProtocol/rewarder-list-build/master/devnet/token-list.json",
+};
+
+export const useTokenList = (): {
   loading: boolean;
-  data: TokenList;
+  data: TokenList | null | undefined;
 } => {
-  const data: TokenList | null = useMemo(() => {
-    const list: TokenList | null =
-      network === "mainnet-beta"
-        ? tokenListMainnet
-        : network === "devnet"
-        ? tokenListDevnet
-        : null;
-    if (!list) {
-      return null;
-    }
-    const sol = RAW_SOL[network];
-    const wsol = WRAPPED_SOL[network];
-    return {
-      ...list,
-      tokens: [...list.tokens, sol.info, wsol.info],
-    };
-  }, [network]);
-
+  const { network } = useConnectionContext();
+  const { data } = useSWR<TokenList>(TOKEN_LIST_URLS[network] ?? "", fetcher);
   if (data === null) {
-    throw new Error(`unsupported network: ${network}`);
+    Sentry.captureException(new Error(`Invalid network ${network}`));
   }
 
+  const [tokenList, setTokenList] = useState<TokenList | null | undefined>(
+    data
+  );
+  useEffect(() => {
+    if (!data) {
+      setTokenList(data);
+      return;
+    }
+
+    let cancelled = false;
+    void (async () => {
+      const tokens = (
+        await Promise.all(
+          data.tokens.map(async (token): Promise<TokenInfo[]> => {
+            const [replicaMint] = await findReplicaMintAddress({
+              primaryMint: new PublicKey(token.address),
+              programId: QUARRY_ADDRESSES.MergeMine,
+            });
+            return [
+              token,
+              {
+                ...token,
+                symbol: `qr${token.symbol}`,
+                name: `${token.name} (Replica)`,
+                address: replicaMint.toString(),
+                tags: [...(token.tags ?? []), "quarry-merge-mine-replica"],
+                extensions: {
+                  ...token.extensions,
+                  underlyingTokens: [token.address],
+                },
+              },
+            ];
+          })
+        )
+      ).flat();
+      if (cancelled) {
+        return;
+      }
+      setTokenList({
+        ...data,
+        tokens,
+      });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [data]);
+
   return {
-    loading: false,
-    data,
+    loading: tokenList === undefined,
+    data: tokenList,
   };
 };

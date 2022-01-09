@@ -15,6 +15,7 @@ import { Button } from "../../../../../common/Button";
 import { ContentLoader } from "../../../../../common/ContentLoader";
 import { Meter } from "../../../../../common/Meter";
 import { TokenIcon } from "../../../../../common/TokenIcon";
+import { useGovernor } from "../../../hooks/useGovernor";
 import { useCommitVotes } from "../../hooks/useCommitVotes";
 import { useGaugemeister } from "../../hooks/useGaugemeister";
 import type { UserGaugeInfo } from "../../hooks/useMyGauges";
@@ -29,6 +30,7 @@ export const UserGauge: React.FC<Props> = ({ className, gaugeVote }: Props) => {
   const { data: gm } = useParsedGaugemeister(gaugemeister);
   const { data: gauge } = useParsedGauge(gaugeVote.gauge);
   const { data: quarry } = useParsedQuarry(gauge?.accountInfo.data.quarry);
+  const { veToken } = useGovernor();
   const stakedToken = useToken(quarry?.accountInfo.data.tokenMintKey);
   const { data: epochGaugeVoteKey } = useQuery(
     ["epochGaugeVoteKey", gaugeVote.gauge.toString(), gm?.accountId.toString()],
@@ -61,10 +63,11 @@ export const UserGauge: React.FC<Props> = ({ className, gaugeVote }: Props) => {
         </div>
       </td>
       <td>
-        {epochGaugeVote ? (
-          epochGaugeVote.accountInfo.data.allocatedPower
-            .toNumber()
-            .toLocaleString()
+        {epochGaugeVote && veToken ? (
+          (
+            epochGaugeVote.accountInfo.data.allocatedPower.toNumber() /
+            10 ** veToken.decimals
+          ).toLocaleString()
         ) : epochGaugeVote === undefined ? (
           <ContentLoader tw="w-20 h-4" />
         ) : (

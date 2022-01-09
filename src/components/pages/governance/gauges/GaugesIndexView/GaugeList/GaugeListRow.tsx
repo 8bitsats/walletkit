@@ -14,6 +14,7 @@ import {
 } from "../../../../../../utils/parsers";
 import { TokenAmountDisplay } from "../../../../../common/TokenAmountDisplay";
 import { TokenIcon } from "../../../../../common/TokenIcon";
+import { useGovernor } from "../../../hooks/useGovernor";
 import { useGaugemeister } from "../../hooks/useGaugemeister";
 
 interface Props {
@@ -28,6 +29,7 @@ export const GaugeListRow: React.FC<Props> = ({
   const gaugemeister = useGaugemeister();
   const { data: gm } = useParsedGaugemeister(gaugemeister);
   const votingEpoch = gm ? gm.accountInfo.data.currentRewardsEpoch + 1 : null;
+  const { veToken } = useGovernor();
 
   const { data: epochGaugeKey } = useQuery(
     ["epochGaugeKey", gaugeKey.toString()],
@@ -86,7 +88,12 @@ export const GaugeListRow: React.FC<Props> = ({
         </div>
       </td>
       <td>
-        {epochGauge?.accountInfo.data.totalPower.toNumber().toLocaleString()}
+        {epochGauge && veToken
+          ? (
+              epochGauge.accountInfo.data.totalPower.toNumber() /
+              10 ** veToken.decimals
+            ).toLocaleString()
+          : "--"}
       </td>
     </tr>
   );

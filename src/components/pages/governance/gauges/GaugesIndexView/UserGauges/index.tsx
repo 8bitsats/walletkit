@@ -113,9 +113,9 @@ export const UserGauges: React.FC = () => {
       {!sdkMut ? (
         <EmptyStateConnectWallet />
       ) : hasNoGauges ? (
-        <EmptyState title="You don't have any gauges.">
+        <EmptyState title="You haven't voted on any gauges yet.">
           <Link to={`${path}/gauges/weights`}>
-            <Button variant="outline">Edit Gauges</Button>
+            <Button variant="outline">Edit Gauge Weights</Button>
           </Link>
         </EmptyState>
       ) : (

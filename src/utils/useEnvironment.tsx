@@ -43,10 +43,10 @@ const useEnvironmentInternal = (): UseEnvironment => {
 
   const environment: IEnvironment = environments[network];
   const chainId: ChainId = useMemo(() => networkToChainId(network), [network]);
-  const { data } = useTokenList(network);
+  const { data } = useTokenList();
   const tokenList = useMemo(
-    () => data.tokens.map((token) => new Token(token)),
-    [data.tokens]
+    () => data?.tokens.map((token) => new Token(token)) ?? [],
+    [data?.tokens]
   );
 
   const tokenMap: Record<string, Token> | null = useMemo(() => {

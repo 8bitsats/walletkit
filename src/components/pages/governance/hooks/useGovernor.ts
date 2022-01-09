@@ -1,7 +1,7 @@
 import { useToken } from "@quarryprotocol/react-quarry";
 import { useAccountData, usePubkey } from "@saberhq/sail";
 import { Token, TokenAmount } from "@saberhq/token-utils";
-import { PublicKey } from "@solana/web3.js";
+import type { PublicKey } from "@solana/web3.js";
 import { GovernorWrapper } from "@tribecahq/tribeca-sdk";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
@@ -50,10 +50,7 @@ export const useGovernorInfo = (): GovernorInfo | null => {
 
   const key = usePubkey(governorMeta?.address ?? governorStr);
 
-  // const gaugemeister = usePubkey(governorMeta?.gauge?.gaugemeister);
-  const gaugemeister = new PublicKey(
-    "ERufcsQwu7e67uTtuaNyJmy14Gfn2kPSfFvdjy3g94uo"
-  );
+  const gaugemeister = usePubkey(governorMeta?.gauge?.gaugemeister);
 
   const loading = isLoading || !isFetched;
   if (loading && !key) {

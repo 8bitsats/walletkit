@@ -1,13 +1,11 @@
 import { ZERO } from "@quarryprotocol/quarry-sdk";
 import { RewarderProvider } from "@quarryprotocol/react-quarry";
-import { FaExclamationCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 import { useParsedGaugemeister } from "../../../../../utils/parsers";
 import { Card } from "../../../../common/governance/Card";
 import { GovernancePage } from "../../../../common/governance/GovernancePage";
 import { LoadingPage } from "../../../../common/LoadingPage";
-import { MouseoverTooltip } from "../../../../common/MouseoverTooltip";
 import { ExternalLink } from "../../../../common/typography/ExternalLink";
 import { useUserEscrow } from "../../hooks/useEscrow";
 import { useGovernor, useGovWindowTitle } from "../../hooks/useGovernor";
