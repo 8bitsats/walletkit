@@ -1,8 +1,9 @@
 import type { GaugeData } from "@quarryprotocol/gauge";
-import { GaugeSDK } from "@quarryprotocol/gauge";
+import { findEpochGaugeAddress, GaugeSDK } from "@quarryprotocol/gauge";
 import type { QuarryData } from "@quarryprotocol/quarry-sdk";
 import { QuarrySDK } from "@quarryprotocol/quarry-sdk";
 import { useSail } from "@saberhq/sail";
+import type { TransactionEnvelope } from "@saberhq/solana-contrib";
 import { chunk } from "lodash";
 import invariant from "tiny-invariant";
 import tw from "twin.macro";
@@ -30,12 +31,35 @@ export const AllGauges: React.FC = () => {
     invariant(sdkMut && gm && gaugeKeys);
     const gaugeSDK = GaugeSDK.load({ provider: sdkMut.provider });
 
+    const gaugeData: (GaugeData | null)[] =
+      (await gaugeSDK.programs.Gauge.account.gauge.fetchMultiple(
+        gaugeKeys
+      )) as (GaugeData | null)[];
+
+    const gmData = await gaugeSDK.gauge.fetchGaugemeister(gm.accountId);
+    if (!gmData) {
+      throw new Error("gaugemeister data not found");
+    }
     const syncTXs = await Promise.all(
-      gaugeKeys.map(async (gauge) => {
+      gaugeKeys.map(async (gauge, i) => {
+        if (!gaugeData[i]) {
+          return null;
+        }
+        const [epochGauge] = await findEpochGaugeAddress(
+          gauge,
+          gmData.currentRewardsEpoch
+        );
+        // skip over null epochs
+        if (!(await gaugeSDK.provider.connection.getAccountInfo(epochGauge))) {
+          return null;
+        }
         return await gaugeSDK.gauge.syncGauge({ gauge });
       }) ?? []
     );
-    const { pending, success } = await handleTXs(syncTXs, "Sync Gauges");
+    const { pending, success } = await handleTXs(
+      syncTXs.filter((tx): tx is TransactionEnvelope => !!tx),
+      "Sync Gauges"
+    );
     await Promise.all(pending.map((p) => p.wait()));
     if (!success) {
       return;
@@ -46,13 +70,9 @@ export const AllGauges: React.FC = () => {
       gm.accountInfo.data.rewarder
     );
 
-    const gaugeData: GaugeData[] =
-      (await gaugeSDK.programs.Gauge.account.gauge.fetchMultiple(
-        gaugeKeys
-      )) as GaugeData[];
     const quarryData: QuarryData[] =
       (await quarrySDK.programs.Mine.account.quarry.fetchMultiple(
-        gaugeData.map((g) => g.quarry)
+        gaugeData.filter((g): g is GaugeData => !!g).map((g) => g.quarry)
       )) as QuarryData[];
 
     const quarrySyncTXs = await Promise.all(

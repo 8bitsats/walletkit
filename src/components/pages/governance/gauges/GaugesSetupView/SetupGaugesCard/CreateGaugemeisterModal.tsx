@@ -12,11 +12,13 @@ import { useGovernor } from "../../../hooks/useGovernor";
 interface Props {
   operator: ParsedAccountInfo<OperatorData>;
   rewarder: ParsedAccountInfo<RewarderData>;
+  startTime: Date;
 }
 
 export const CreateGaugemeisterModal: React.FC<Props> = ({
   operator,
   rewarder,
+  startTime,
 }: Props) => {
   const { handleTX } = useSail();
   const { lockerData } = useGovernor();
@@ -26,7 +28,7 @@ export const CreateGaugemeisterModal: React.FC<Props> = ({
     const gauge = GaugeSDK.load({ provider: sdkMut.provider });
     const { gaugemeister, tx: createGMTX } =
       await gauge.gauge.createGaugemeister({
-        firstEpochStartsAt: new Date(Date.now() + 1_000 * 30),
+        firstEpochStartsAt: startTime,
         locker: lockerData.accountId,
         operator: operator.accountId,
       });
@@ -56,6 +58,9 @@ export const CreateGaugemeisterModal: React.FC<Props> = ({
           attributes={{
             Rewarder: rewarder.accountId,
             Operator: operator.accountId,
+            "Start Time": startTime.toLocaleString(undefined, {
+              timeZoneName: "short",
+            }),
           }}
         />
       </div>

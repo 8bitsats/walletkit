@@ -18,6 +18,7 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
 }: Props) => {
   const { handleTXs } = useSail();
   const [nextTX, setNextTX] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
 
   const [plan, setPlan] = useState<TransactionPlan | null>(null);
   useEffect(() => {
@@ -38,6 +39,7 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
       {plan ? (
         <div tw="text-sm flex flex-col border border-warmGray-800 rounded w-full">
           {plan.steps.map(({ title, txs }, i) => {
+            const errorMsg = i === nextTX ? error : null;
             return (
               <div
                 key={i}
@@ -49,16 +51,23 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
                     <FaCheckCircle tw="text-primary" />
                   ) : (
                     <Button
+                      variant={errorMsg ? "secondary" : "outline"}
                       disabled={i !== nextTX}
                       onClick={async () => {
-                        const { pending, success } = await handleTXs(
+                        const { pending, success, errors } = await handleTXs(
                           txs,
                           title
                         );
                         if (!success) {
+                          setError(
+                            errors?.map((err) => err.message).join(", ") ??
+                              "Error"
+                          );
                           return;
                         }
                         await Promise.all(pending.map((p) => p.wait()));
+
+                        setError(null);
                         if (i === plan.steps.length - 1) {
                           onComplete?.();
                         } else {
@@ -66,7 +75,7 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
                         }
                       }}
                     >
-                      Execute
+                      {errorMsg ? "Retry" : "Execute"}
                     </Button>
                   )}
                 </div>

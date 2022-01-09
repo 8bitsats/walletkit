@@ -52,7 +52,7 @@ export const useGovernorInfo = (): GovernorInfo | null => {
 
   // const gaugemeister = usePubkey(governorMeta?.gauge?.gaugemeister);
   const gaugemeister = new PublicKey(
-    "7sJxXbxivHpPYACaJ99ixQL9of4WkG8vBCwkRAjv3HmR"
+    "ERufcsQwu7e67uTtuaNyJmy14Gfn2kPSfFvdjy3g94uo"
   );
 
   const loading = isLoading || !isFetched;
