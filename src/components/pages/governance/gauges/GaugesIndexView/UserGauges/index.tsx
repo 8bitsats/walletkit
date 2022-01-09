@@ -2,6 +2,7 @@ import {
   findEpochGaugeVoterAddress,
   findGaugeVoterAddress,
 } from "@quarryprotocol/gauge";
+import { ZERO } from "@quarryprotocol/quarry-sdk";
 import { FaExclamationCircle } from "react-icons/fa";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
@@ -24,6 +25,7 @@ import { Card } from "../../../../../common/governance/Card";
 import { MouseoverTooltip } from "../../../../../common/MouseoverTooltip";
 import { useUserEscrow } from "../../../hooks/useEscrow";
 import { useGovernor } from "../../../hooks/useGovernor";
+import { LockupTooShortTooltip } from "../../GaugesSetupView/lockupTooShortTooltip";
 import { useCommitVotes } from "../../hooks/useCommitVotes";
 import { useGaugemeister, useGMData } from "../../hooks/useGaugemeister";
 import { useMyGauges } from "../../hooks/useMyGauges";
@@ -73,12 +75,19 @@ export const UserGauges: React.FC = () => {
         epochGaugeVoter.accountInfo.data.weightChangeSeqno
       ));
 
+  const lockupTooShort = escrow?.escrow.escrowEndsAt.lt(
+    gmData?.accountInfo.data.nextEpochStartsAt ?? ZERO
+  );
+
   return (
     <Card
       titleStyles={tw`flex items-center justify-between`}
       title={
         <>
-          <span>Your Gauge Votes</span>
+          <div tw="flex">
+            <span>Your Gauge Votes</span>
+            {lockupTooShort && <LockupTooShortTooltip />}
+          </div>
           {isDirty && (
             <Button
               onClick={async () => {
