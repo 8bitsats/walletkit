@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useParsedGaugemeister } from "../../../../../utils/parsers";
 import { Card } from "../../../../common/governance/Card";
 import { GovernancePage } from "../../../../common/governance/GovernancePage";
+import { LoadingPage } from "../../../../common/LoadingPage";
 import { ExternalLink } from "../../../../common/typography/ExternalLink";
 import { useGovernor, useGovWindowTitle } from "../../hooks/useGovernor";
 import { useGaugemeister } from "../hooks/useGaugemeister";
@@ -13,8 +14,8 @@ import { UpdateGaugeWeightsProvider } from "./useUpdateGaugeWeights";
 export const GaugeWeightsView: React.FC = () => {
   const gaugemeister = useGaugemeister();
   const gm = useParsedGaugemeister(gaugemeister);
-  const rewarderKey = gm.data?.accountInfo.data.rewarder;
   const { govToken, veToken, path } = useGovernor();
+  const rewarderKey = gm.data?.accountInfo.data.rewarder;
 
   useGovWindowTitle(`Update Gauge Weights`);
   return (
@@ -27,12 +28,16 @@ export const GaugeWeightsView: React.FC = () => {
     >
       <div tw="flex flex-col gap-4">
         <Card title="All Gauges">
-          {rewarderKey && (
-            <RewarderProvider initialState={{ rewarderKey }}>
-              <UpdateGaugeWeightsProvider>
-                <GaugeWeightsForm />
-              </UpdateGaugeWeightsProvider>
-            </RewarderProvider>
+          {gm.loading ? (
+            <LoadingPage tw="p-16" />
+          ) : (
+            rewarderKey && (
+              <RewarderProvider initialState={{ rewarderKey }}>
+                <UpdateGaugeWeightsProvider>
+                  <GaugeWeightsForm />
+                </UpdateGaugeWeightsProvider>
+              </RewarderProvider>
+            )
           )}
         </Card>
         <Card title="Gauge Weight Voting">

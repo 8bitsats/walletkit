@@ -1,14 +1,19 @@
 import { useRewarder } from "@quarryprotocol/react-quarry";
 
 import { TableCardBody } from "../../../../common/card/TableCardBody";
+import { LoadingPage } from "../../../../common/LoadingPage";
 import { ModalButton } from "../../../../common/Modal/ModalButton";
 import { GaugeWeightRow } from "./GaugeWeightRow";
 import { SetWeightsModal } from "./SetWeightsModal";
 import { useUpdateGaugeWeights } from "./useUpdateGaugeWeights";
 
 export const GaugeWeightsForm: React.FC = () => {
-  const { quarries } = useRewarder();
+  const { quarries, quarriesLoading } = useRewarder();
   const { sharesDiff } = useUpdateGaugeWeights();
+  if (quarriesLoading) {
+    return <LoadingPage tw="p-16" />;
+  }
+
   return (
     <>
       <div tw="overflow-x-auto">
