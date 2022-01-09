@@ -3,7 +3,7 @@ import { FaGripLines } from "react-icons/fa";
 import { NavLink, useParams } from "react-router-dom";
 import tw, { css } from "twin.macro";
 
-import { NAV_LINKS } from "./Nav";
+import { useNavLinks } from "./Nav";
 
 interface Props {
   className?: string;
@@ -12,6 +12,7 @@ interface Props {
 export const MobileNav: React.FC<Props> = ({ className }: Props) => {
   const { governor } = useParams<{ governor: string }>();
   const [showNav, setShowNav] = useState<boolean>(false);
+  const navLinks = useNavLinks();
   return (
     <div className={className}>
       <div
@@ -33,7 +34,7 @@ export const MobileNav: React.FC<Props> = ({ className }: Props) => {
       >
         <div tw="flex flex-grow items-center justify-center">
           <div tw="flex flex-col items-center font-bold text-base text-white">
-            {NAV_LINKS.map(({ title, href, exact }) => (
+            {navLinks.map(({ title, href, exact }) => (
               <NavLink
                 exact={exact}
                 activeClassName="active"

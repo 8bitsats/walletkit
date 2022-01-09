@@ -32,14 +32,9 @@ export const NAV_LINKS = [
   // },
 ];
 
-interface Props {
-  className?: string;
-}
-
-export const Nav: React.FC<Props> = ({ className }: Props) => {
-  const { governor } = useParams<{ governor: string }>();
+export const useNavLinks = () => {
   const gm = useGaugemeister();
-  const navLinks = useMemo(
+  return useMemo(
     () => [
       ...NAV_LINKS,
       ...(gm
@@ -53,6 +48,15 @@ export const Nav: React.FC<Props> = ({ className }: Props) => {
     ],
     [gm]
   );
+};
+
+interface Props {
+  className?: string;
+}
+
+export const Nav: React.FC<Props> = ({ className }: Props) => {
+  const { governor } = useParams<{ governor: string }>();
+  const navLinks = useNavLinks();
   return (
     <nav tw="flex gap-2" className={className}>
       {navLinks.map(({ title, href, exact }) => (
