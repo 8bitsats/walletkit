@@ -5,7 +5,6 @@ import {
 import { ZERO } from "@quarryprotocol/quarry-sdk";
 import { FaExclamationCircle } from "react-icons/fa";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
 import invariant from "tiny-invariant";
 import tw from "twin.macro";
 
