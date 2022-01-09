@@ -104,7 +104,7 @@ export const UserGauges: React.FC = () => {
       link={
         sdkMut
           ? {
-              title: "Edit gauges",
+              title: `${hasNoGauges ? "Cast Votes" : "Edit gauges"}`,
               href: `${path}/gauges/weights`,
             }
           : undefined
@@ -113,11 +113,7 @@ export const UserGauges: React.FC = () => {
       {!sdkMut ? (
         <EmptyStateConnectWallet />
       ) : hasNoGauges ? (
-        <EmptyState title="You haven't voted on any gauges yet.">
-          <Link to={`${path}/gauges/weights`}>
-            <Button variant="outline">Edit Gauge Weights</Button>
-          </Link>
-        </EmptyState>
+        <EmptyState title="You haven't voted on any gauges yet." />
       ) : (
         <div tw="text-sm w-full whitespace-nowrap overflow-x-auto">
           <TableCardBody
