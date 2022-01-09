@@ -11,20 +11,22 @@ export const GaugeWeightsForm: React.FC = () => {
   const { sharesDiff } = useUpdateGaugeWeights();
   return (
     <>
-      <TableCardBody
-        head={
-          <tr>
-            <th>Token</th>
-            <th>Current Share (%)</th>
-            <th>Weight</th>
-            <th>New Share (%)</th>
-          </tr>
-        }
-      >
-        {quarries.map((quarry) => (
-          <GaugeWeightRow key={quarry.key.toString()} quarry={quarry} />
-        ))}
-      </TableCardBody>
+      <div tw="overflow-x-auto">
+        <TableCardBody
+          head={
+            <tr>
+              <th>Token</th>
+              <th>Current Share (%)</th>
+              <th>Weight</th>
+              <th>New Share (%)</th>
+            </tr>
+          }
+        >
+          {quarries.map((quarry) => (
+            <GaugeWeightRow key={quarry.key.toString()} quarry={quarry} />
+          ))}
+        </TableCardBody>
+      </div>
       <div tw="w-full flex flex-col items-center p-8">
         <ModalButton
           buttonLabel="Update Gauge Weights"

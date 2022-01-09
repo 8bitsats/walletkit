@@ -78,7 +78,9 @@ export const AllGauges: React.FC = () => {
         </>
       }
     >
-      <GaugeList />
+      <div tw="whitespace-nowrap overflow-x-auto">
+        <GaugeList />
+      </div>
     </Card>
   );
 };

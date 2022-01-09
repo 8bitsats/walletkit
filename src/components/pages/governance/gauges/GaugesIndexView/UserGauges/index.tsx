@@ -78,7 +78,7 @@ export const UserGauges: React.FC = () => {
       titleStyles={tw`flex items-center justify-between`}
       title={
         <>
-          <span>My Gauge Votes</span>
+          <span>Your Gauge Votes</span>
           {isDirty && (
             <Button
               onClick={async () => {
@@ -110,7 +110,7 @@ export const UserGauges: React.FC = () => {
           </Link>
         </EmptyState>
       ) : (
-        <div tw="text-sm">
+        <div tw="text-sm w-full whitespace-nowrap overflow-x-auto">
           <TableCardBody
             head={
               <tr>
@@ -118,13 +118,13 @@ export const UserGauges: React.FC = () => {
                 <th>
                   {isDirty ? (
                     <div tw="flex items-center gap-2">
-                      <span>Votes Allocated</span>
+                      <span>Your Votes</span>
                       <MouseoverTooltip text="Your votes have yet to be committed. Please click the 'Sync' button to the right.">
                         <FaExclamationCircle tw="text-yellow-500" />
                       </MouseoverTooltip>
                     </div>
                   ) : (
-                    <>Votes Allocated</>
+                    <>Your Votes</>
                   )}
                 </th>
                 <th>Weight</th>

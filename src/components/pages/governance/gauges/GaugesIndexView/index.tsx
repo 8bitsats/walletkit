@@ -21,7 +21,7 @@ export const GaugesIndexView: React.FC = () => {
 
   return (
     <GovernancePage title="Gauges">
-      <div tw="flex flex-wrap md:flex-nowrap gap-4 items-start">
+      <div tw="flex flex-col md:flex-row gap-4">
         <div tw="w-full md:flex-basis[300px] flex flex-col gap-4 flex-shrink-0">
           <GaugemeisterInfo />
         </div>
