@@ -5,6 +5,7 @@ import invariant from "tiny-invariant";
 
 import { Button } from "../Button";
 import { ContentLoader } from "../ContentLoader";
+import { LoadingSpinner } from "../LoadingSpinner";
 import type { TransactionPlan } from "./plan";
 
 interface Props {
@@ -19,6 +20,7 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
   const { handleTXs } = useSail();
   const [nextTX, setNextTX] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState<boolean>(false);
 
   const [plan, setPlan] = useState<TransactionPlan | null>(null);
   useEffect(() => {
@@ -49,11 +51,14 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
                 <div>
                   {i < nextTX ? (
                     <FaCheckCircle tw="text-primary" />
+                  ) : i === nextTX && pending ? (
+                    <LoadingSpinner />
                   ) : (
                     <Button
                       variant={errorMsg ? "secondary" : "outline"}
                       disabled={i !== nextTX}
                       onClick={async () => {
+                        setError(null);
                         const { pending, success, errors } = await handleTXs(
                           txs,
                           title
@@ -67,7 +72,6 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
                         }
                         await Promise.all(pending.map((p) => p.wait()));
 
-                        setError(null);
                         if (i === plan.steps.length - 1) {
                           onComplete?.();
                         } else {
@@ -108,13 +112,21 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
             if (tx.txs.length === 0) {
               continue;
             }
-            const { pending, success } = await handleTXs(tx.txs, tx.title);
+            setError(null);
+            setPending(true);
+            const { pending, success, errors } = await handleTXs(
+              tx.txs,
+              tx.title
+            );
             if (!success) {
+              setError(errors?.map((err) => err.message).join(", ") ?? "Error");
+              setPending(false);
               return;
             }
             await Promise.all(pending.map((p) => p.wait()));
             setNextTX(i + 1);
           }
+          setPending(false);
           onComplete?.();
         }}
       >

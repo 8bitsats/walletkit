@@ -29,13 +29,12 @@ export const SetWeightsModal: React.FC = () => {
   const { close } = useModal();
 
   const makePlan = async () => {
-    const plan: TransactionPlan = { steps: [] };
-
     invariant(sdkMut, "sdk missing");
     invariant(rewarderKey, "rewarder key");
     invariant(escrowKey, "escrow key");
     invariant(gaugemeister && gaugeKeys, "gaugemeister");
 
+    const plan: TransactionPlan = { steps: [] };
     const gauge = GaugeSDK.load({ provider: sdkMut.provider });
     const [gaugeVoterKey] = await findGaugeVoterAddress(
       gaugemeister,
@@ -129,6 +128,7 @@ export const SetWeightsModal: React.FC = () => {
     const voteTXs = await gauge.gauge.commitVotes({
       gaugemeister,
       gauges: gaugeKeys,
+      checkGaugeVotesExist: false,
     });
     plan.steps.push({
       txs: voteTXs.filter((txEnv): txEnv is TransactionEnvelope => !!txEnv),

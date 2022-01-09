@@ -20,11 +20,18 @@ import { useGaugemeister } from "../../hooks/useGaugemeister";
 interface Props {
   quarry: QuarryInfo;
   gauge: ParsedAccountInfo<GaugeData>;
+  /**
+   * If null, the total shares are stil loading.
+   */
+  totalShares: BN | null;
+  dailyRewardsRate: BN | null | undefined;
 }
 
 export const GaugeListRow: React.FC<Props> = ({
   quarry,
   gauge: { accountId: gaugeKey },
+  totalShares,
+  dailyRewardsRate,
 }: Props) => {
   const gaugemeister = useGaugemeister();
   const { data: gm } = useParsedGaugemeister(gaugemeister);
@@ -60,6 +67,20 @@ export const GaugeListRow: React.FC<Props> = ({
       )
     : null;
 
+  const nextPercent =
+    epochGauge && totalShares
+      ? new Percent(epochGauge.accountInfo.data.totalPower, totalShares)
+      : null;
+  const nextRewardsRate =
+    rewardToken && dailyRewardsRate && epochGauge && totalShares
+      ? new TokenAmount(
+          rewardToken,
+          dailyRewardsRate
+            .mul(epochGauge.accountInfo.data.totalPower)
+            .div(totalShares)
+        )
+      : null;
+
   return (
     <tr>
       <td>
@@ -88,12 +109,26 @@ export const GaugeListRow: React.FC<Props> = ({
         </div>
       </td>
       <td>
-        {epochGauge && veToken
-          ? (
-              epochGauge.accountInfo.data.totalPower.toNumber() /
-              10 ** veToken.decimals
-            ).toLocaleString()
-          : "--"}
+        <div tw="flex flex-col gap-1">
+          <span tw="text-white font-medium">
+            {nextPercent?.toFixed(2)}%{" "}
+            <span tw="text-warmGray-400 font-normal">
+              (
+              {epochGauge && veToken
+                ? (
+                    epochGauge.accountInfo.data.totalPower.toNumber() /
+                    10 ** veToken.decimals
+                  ).toLocaleString()
+                : "--"}
+              )
+            </span>
+          </span>
+          <span tw="text-xs">
+            {nextRewardsRate && (
+              <TokenAmountDisplay amount={nextRewardsRate} suffix="/day" />
+            )}
+          </span>
+        </div>
       </td>
     </tr>
   );

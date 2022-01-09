@@ -7,7 +7,7 @@ import type { VoteEscrow } from "@tribecahq/tribeca-sdk";
 import { LockerWrapper } from "@tribecahq/tribeca-sdk";
 import BN from "bn.js";
 import formatDuration from "date-fns/formatDuration";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowDown } from "react-icons/fa";
 import invariant from "tiny-invariant";
 import tw from "twin.macro";
@@ -104,6 +104,15 @@ export const LockEscrowModal: React.FC<Props> = ({
   const parsedDurationSeconds = lockDurationSeconds
     ? parseFloat(lockDurationSeconds)
     : null;
+
+  useEffect(() => {
+    if (lockerData && parsedDurationSeconds === null) {
+      setDurationSeconds(
+        lockerData.accountInfo.data.params.minStakeDuration.toString()
+      );
+    }
+  }, [lockerData, parsedDurationSeconds]);
+
   const { handleTX } = useSail();
 
   const durations = locker
@@ -183,7 +192,7 @@ export const LockEscrowModal: React.FC<Props> = ({
               <div tw="flex flex-col gap-2">
                 <span tw="font-medium text-sm">Lock Period</span>
                 <div
-                  tw="text-4xl my-6"
+                  tw="text-4xl my-6 h-12"
                   css={[isInvalidUnlockTime && tw`text-red-500`]}
                 >
                   {parsedDurationSeconds ? (
@@ -191,7 +200,7 @@ export const LockEscrowModal: React.FC<Props> = ({
                       zero: true,
                     })
                   ) : (
-                    <ContentLoader tw="h-4 w-8" />
+                    <ContentLoader tw="h-8 w-16" />
                   )}
                 </div>
                 <div tw="w-11/12 mx-auto my-4">

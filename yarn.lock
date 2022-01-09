@@ -3392,8 +3392,8 @@ __metadata:
     "@headlessui/react": ^1.4.2
     "@highlight-run/react": ^1.0.5
     "@popperjs/core": ^2.11.2
-    "@project-serum/anchor": ^0.20.0
-    "@quarryprotocol/gauge": ^0.1.5
+    "@project-serum/anchor": ^0.20.1
+    "@quarryprotocol/gauge": ^0.1.6
     "@quarryprotocol/quarry-sdk": ^1.11.9
     "@quarryprotocol/react-quarry": ^0.12.18
     "@reach/dialog": ^0.16.2
@@ -4365,9 +4365,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@project-serum/anchor@npm:^0.20.0":
-  version: 0.20.0
-  resolution: "@project-serum/anchor@npm:0.20.0"
+"@project-serum/anchor@npm:^0.20.1":
+  version: 0.20.1
+  resolution: "@project-serum/anchor@npm:0.20.1"
   dependencies:
     "@project-serum/borsh": ^0.2.2
     "@solana/web3.js": ^1.17.0
@@ -4383,7 +4383,7 @@ __metadata:
     pako: ^2.0.3
     snake-case: ^3.0.4
     toml: ^3.0.0
-  checksum: 91758e0dbf6dda10e7236c5d975f4c2337634ce4785225a855322e5634855d486eda3b52729fecfeddb6e8cb99c182c6f524b0bd529ae6264f039372338621da
+  checksum: b5468690df330d72e4cc5461faf3afd43c0383da004d8dda46ba11dbb092c1c754a694e8dd3d9094617040417d38ec1cb486113cfeb4465ce8ff3f184202238f
   languageName: node
   linkType: hard
 
@@ -4411,14 +4411,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@quarryprotocol/gauge@npm:^0.1.5":
-  version: 0.1.5
-  resolution: "@quarryprotocol/gauge@npm:0.1.5"
+"@quarryprotocol/gauge@npm:^0.1.6":
+  version: 0.1.6
+  resolution: "@quarryprotocol/gauge@npm:0.1.6"
   dependencies:
     tiny-invariant: ^1.2.0
     tslib: ^2.3.1
   peerDependencies:
-    "@gokiprotocol/client": ^0.5
     "@project-serum/anchor": ">=0.19"
     "@quarryprotocol/quarry-sdk": ^1.11.5
     "@saberhq/anchor-contrib": ^1.10.6
@@ -4426,7 +4425,7 @@ __metadata:
     "@saberhq/token-utils": ^1.10.6
     "@solana/web3.js": ^1.29.2
     bn.js: ^5.2.0
-  checksum: 48e798a9fd90359ba2a622dfd2c7d0d6d9fffd79b7f3e245d7a1c4eceb8101ace08fe1fe8d21eef90fb8faba130b89eae4cae3097f56c75fb5fa443bf58e306a
+  checksum: 9d0bdba5a99064b6ea317b4f0f763e72e60009a666122f029359c1aec84d2d0267dbd912c4469e0dad4a93fba3543776d5c024b0a95f8ab55961732b232720c6
   languageName: node
   linkType: hard
 
