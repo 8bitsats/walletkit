@@ -2,11 +2,13 @@ import { ConnectWalletButton } from "@gokiprotocol/walletkit";
 import { TokenAmount } from "@saberhq/token-utils";
 import type { VoteSide } from "@tribecahq/tribeca-sdk";
 import { VOTE_SIDE_LABELS } from "@tribecahq/tribeca-sdk";
+import { FaExclamationTriangle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 import { useSDK } from "../../../../../../contexts/sdk";
 import { Button } from "../../../../../common/Button";
 import { Card } from "../../../../../common/governance/Card";
+import { MouseoverTooltip } from "../../../../../common/MouseoverTooltip";
 import { useUserEscrow } from "../../../hooks/useEscrow";
 import { useGovernor } from "../../../hooks/useGovernor";
 import type { ProposalInfo } from "../../../hooks/useProposals";
@@ -37,8 +39,36 @@ export const ProposalVote: React.FC<Props> = ({ proposalInfo }: Props) => {
         )
       : null;
 
+  const lockupTooShort =
+    escrow &&
+    escrow.escrow.escrowEndsAt.lt(proposalInfo.proposalData.votingEndsAt);
+
   return (
-    <Card title="Vote">
+    <Card
+      title={
+        <div tw="flex">
+          <span>Vote</span>
+          {lockupTooShort && (
+            <MouseoverTooltip
+              text={
+                <div tw="max-w-sm">
+                  <p>
+                    Your voting escrow expires before the period which voting
+                    ends. Please extend your lockup to cast your vote.
+                  </p>
+                </div>
+              }
+              placement="bottom-start"
+            >
+              <FaExclamationTriangle
+                tw="h-4 cursor-pointer inline-block align-middle mx-2 mb-0.5"
+                color="#9945FF"
+              />
+            </MouseoverTooltip>
+          )}
+        </div>
+      }
+    >
       <div tw="py-8">
         <div tw="flex flex-col items-center gap-4">
           {!sdkMut ? (
