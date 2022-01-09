@@ -13,6 +13,9 @@ export interface GovernorMeta {
   network: Network;
   iconURL: string;
   govToken?: TokenInfo;
+  gauge?: {
+    gaugemeister: string;
+  };
 }
 
 const REGISTRY_URL =

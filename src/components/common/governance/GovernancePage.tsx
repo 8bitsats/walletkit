@@ -15,6 +15,10 @@ interface Props {
   contentStyles?: React.CSSProperties;
   containerStyles?: React.CSSProperties;
   hideDAOName?: boolean;
+  backLink?: {
+    label: string;
+    href: string;
+  };
 }
 
 export const GovernancePage: React.FC<Props> = ({ ...props }: Props) => {

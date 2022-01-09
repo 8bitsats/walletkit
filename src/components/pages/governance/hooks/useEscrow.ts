@@ -26,7 +26,7 @@ export const useEscrow = (owner?: PublicKey) => {
     ? governorData.accountInfo.data.electorate
     : governorData;
 
-  const escrowKey = useQuery(
+  const { data: escrowKey } = useQuery(
     ["escrowKey", network, lockerKey?.toString(), owner?.toString()],
     async () => {
       invariant(lockerKey && owner);
@@ -37,7 +37,7 @@ export const useEscrow = (owner?: PublicKey) => {
       enabled: !!(lockerKey && owner),
     }
   );
-  const { data: escrow } = useParsedEscrow(escrowKey.data);
+  const { data: escrow } = useParsedEscrow(escrowKey);
 
   const canLoadEscrow =
     !!governorData && !!(lockerKey && owner && tribecaMut && escrow);
@@ -88,6 +88,7 @@ export const useEscrow = (owner?: PublicKey) => {
     veBalance,
     govTokensLocked,
     escrow: escrow === null ? null : result.data,
+    escrowKey,
   };
 };
 

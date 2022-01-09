@@ -9,7 +9,7 @@ import BN from "bn.js";
 import { useState } from "react";
 import { FaDice } from "react-icons/fa";
 import { useQuery } from "react-query";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import invariant from "tiny-invariant";
 
 import { useSDK } from "../../../../../contexts/sdk";
@@ -174,15 +174,6 @@ export const DAOStep4LockerView: React.FC = () => {
             >
               Launch DAO
             </AsyncButton>
-            <span tw="text-sm">
-              Already have a wallet?{" "}
-              <Link
-                to="/user"
-                tw="text-primary hover:text-primary-300 transition-colors"
-              >
-                Select your wallet
-              </Link>
-            </span>
           </div>
         </div>
       </div>

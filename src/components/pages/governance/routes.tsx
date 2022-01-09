@@ -1,5 +1,9 @@
 import { Route, Switch } from "react-router-dom";
 
+import { GaugesAdminView } from "./gauges/GaugesAdminView";
+import { GaugesIndexView } from "./gauges/GaugesIndexView";
+import { GaugesSetupView } from "./gauges/GaugesSetupView";
+import { GaugeWeightsView } from "./gauges/GaugeWeightsView";
 import { GovernanceDetailsView } from "./GovernanceDetailsView";
 import { GovernanceOverviewView } from "./GovernanceOverviewView";
 import { LockerIndexView } from "./locker/LockerIndexView";
@@ -11,6 +15,13 @@ import { ProposalsListView } from "./proposals/ProposalsListView";
 export const GovernanceRoutes: React.FC = () => {
   return (
     <Switch>
+      <Route component={GaugesSetupView} path="/gov/:governor/gauges/setup" />
+      <Route
+        component={GaugeWeightsView}
+        path="/gov/:governor/gauges/weights"
+      />
+      <Route component={GaugesAdminView} path="/gov/:governor/gauges/admin" />
+      <Route component={GaugesIndexView} path="/gov/:governor/gauges" />
       <Route component={GovernanceDetailsView} path="/gov/:governor/details" />
       <Route
         component={LockerIndexView}

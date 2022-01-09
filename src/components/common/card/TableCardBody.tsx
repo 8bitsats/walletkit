@@ -14,9 +14,21 @@ export const TableCardBody: React.FC<Props> = ({ children }: Props) => {
             td {
               ${tw`align-middle p-4 border-t border-t-warmGray-800`}
             }
-            td:first-child {
-              ${tw`pl-6 text-white font-semibold`}
+            th {
+              ${tw`text-left align-middle p-4 border-t border-t-warmGray-800`}
+              ${tw`text-white font-semibold`}
             }
+            tr:first-child {
+              th,
+              td {
+                ${tw`border-none`}
+              }
+            }
+            th:first-child,
+            td:first-child {
+              ${tw`pl-6 text-white`}
+            }
+            th:last-child,
             td:last-child {
               ${tw`pr-6`}
             }

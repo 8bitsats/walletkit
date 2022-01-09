@@ -1,7 +1,7 @@
 import { useToken } from "@quarryprotocol/react-quarry";
 import { useAccountData, usePubkey } from "@saberhq/sail";
 import { Token, TokenAmount } from "@saberhq/token-utils";
-import type { PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { GovernorWrapper } from "@tribecahq/tribeca-sdk";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
@@ -14,7 +14,11 @@ import { useWindowTitle } from "../../../../hooks/useWindowTitle";
 import { useParsedGovernor, useParsedLocker } from "../../../../utils/parsers";
 import { formatDurationSeconds } from "../locker/LockerIndexView/LockEscrowModal";
 
-type GovernorInfo =
+export interface GaugeSettings {
+  gaugemeister: PublicKey;
+}
+
+type GovernorInfo = (
   | {
       key: PublicKey;
       meta: GovernorMeta | null;
@@ -26,7 +30,10 @@ type GovernorInfo =
       meta: GovernorMeta | null;
       slug: string;
       loading: true;
-    };
+    }
+) & {
+  gauge: GaugeSettings | null;
+};
 
 export const useGovernorInfo = (): GovernorInfo | null => {
   const { governor: governorStr } = useParams<{ governor: string }>();
@@ -43,6 +50,11 @@ export const useGovernorInfo = (): GovernorInfo | null => {
 
   const key = usePubkey(governorMeta?.address ?? governorStr);
 
+  // const gaugemeister = usePubkey(governorMeta?.gauge?.gaugemeister);
+  const gaugemeister = new PublicKey(
+    "7sJxXbxivHpPYACaJ99ixQL9of4WkG8vBCwkRAjv3HmR"
+  );
+
   const loading = isLoading || !isFetched;
   if (loading && !key) {
     return {
@@ -50,6 +62,7 @@ export const useGovernorInfo = (): GovernorInfo | null => {
       meta: governorMeta,
       slug,
       loading: true,
+      gauge: null,
     };
   }
 
@@ -63,6 +76,7 @@ export const useGovernorInfo = (): GovernorInfo | null => {
     meta: governorMeta,
     slug,
     loading,
+    gauge: gaugemeister ? { gaugemeister } : null,
   };
 };
 
@@ -71,7 +85,7 @@ const useGovernorInner = () => {
   if (!info) {
     throw new Error(`governor not found`);
   }
-  const { meta, key: governor, slug } = info;
+  const { meta, key: governor, slug, gauge } = info;
   if (!governor) {
     throw new Error("Governor not loaded.");
   }
@@ -144,6 +158,7 @@ const useGovernorInner = () => {
     proposalCount,
     smartWallet,
     iconURL,
+    gauge,
   };
 };
 
