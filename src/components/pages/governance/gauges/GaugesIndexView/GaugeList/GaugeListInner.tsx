@@ -14,7 +14,7 @@ export const GaugeListInner: React.FC = () => {
         <tr>
           <th>Gauge</th>
           <th>Current Share</th>
-          <th>Next Votes</th>
+          <th>Next Share</th>
         </tr>
       }
     >
