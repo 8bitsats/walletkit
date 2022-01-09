@@ -111,23 +111,26 @@ export const UserGauges: React.FC = () => {
         </EmptyState>
       ) : (
         <div tw="text-sm">
-          <TableCardBody>
-            <tr>
-              <th>Gauge</th>
-              <th>
-                {isDirty ? (
-                  <div tw="flex items-center gap-2">
-                    <span>Votes Allocated</span>
-                    <MouseoverTooltip text="Your votes have yet to be committed. Please click the 'Sync' button to the right.">
-                      <FaExclamationCircle tw="text-yellow-500" />
-                    </MouseoverTooltip>
-                  </div>
-                ) : (
-                  <>Votes Allocated</>
-                )}
-              </th>
-              <th>Weight</th>
-            </tr>
+          <TableCardBody
+            head={
+              <tr>
+                <th>Gauge</th>
+                <th>
+                  {isDirty ? (
+                    <div tw="flex items-center gap-2">
+                      <span>Votes Allocated</span>
+                      <MouseoverTooltip text="Your votes have yet to be committed. Please click the 'Sync' button to the right.">
+                        <FaExclamationCircle tw="text-yellow-500" />
+                      </MouseoverTooltip>
+                    </div>
+                  ) : (
+                    <>Votes Allocated</>
+                  )}
+                </th>
+                <th>Weight</th>
+              </tr>
+            }
+          >
             {myGauges.length === 0 ? (
               <tr>
                 <td>

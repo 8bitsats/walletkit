@@ -11,13 +11,16 @@ export const GaugeWeightsForm: React.FC = () => {
   const { sharesDiff } = useUpdateGaugeWeights();
   return (
     <>
-      <TableCardBody>
-        <tr>
-          <th>Token</th>
-          <th>Current Share (%)</th>
-          <th>Weight</th>
-          <th>New Share (%)</th>
-        </tr>
+      <TableCardBody
+        head={
+          <tr>
+            <th>Token</th>
+            <th>Current Share (%)</th>
+            <th>Weight</th>
+            <th>New Share (%)</th>
+          </tr>
+        }
+      >
         {quarries.map((quarry) => (
           <GaugeWeightRow key={quarry.key.toString()} quarry={quarry} />
         ))}

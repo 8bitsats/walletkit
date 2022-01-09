@@ -9,12 +9,15 @@ export const GaugeListInner: React.FC = () => {
   const { gauges } = useAllGauges();
 
   return (
-    <TableCardBody>
-      <tr>
-        <th>Gauge</th>
-        <th>Current Votes</th>
-        <th>Next Votes</th>
-      </tr>
+    <TableCardBody
+      head={
+        <tr>
+          <th>Gauge</th>
+          <th>Current Share</th>
+          <th>Next Votes</th>
+        </tr>
+      }
+    >
       {quarries.map((quarry) => {
         const gauge = gauges.find((g) =>
           g?.accountInfo.data.quarry.equals(quarry.key)

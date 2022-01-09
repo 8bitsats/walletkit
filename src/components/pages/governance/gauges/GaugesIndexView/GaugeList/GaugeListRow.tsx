@@ -1,7 +1,10 @@
 import type { GaugeData } from "@quarryprotocol/gauge";
 import { findEpochGaugeAddress } from "@quarryprotocol/gauge";
 import type { QuarryInfo } from "@quarryprotocol/react-quarry";
+import { useRewarder } from "@quarryprotocol/react-quarry";
 import type { ParsedAccountInfo } from "@saberhq/sail";
+import { Percent, TokenAmount } from "@saberhq/token-utils";
+import BN from "bn.js";
 import { useQuery } from "react-query";
 import invariant from "tiny-invariant";
 
@@ -9,6 +12,7 @@ import {
   useParsedEpochGauge,
   useParsedGaugemeister,
 } from "../../../../../../utils/parsers";
+import { TokenAmountDisplay } from "../../../../../common/TokenAmountDisplay";
 import { TokenIcon } from "../../../../../common/TokenIcon";
 import { useGaugemeister } from "../../hooks/useGaugemeister";
 
@@ -39,6 +43,21 @@ export const GaugeListRow: React.FC<Props> = ({
 
   const { data: epochGauge } = useParsedEpochGauge(epochGaugeKey);
 
+  const { rewardToken, rewarder } = useRewarder();
+  const rewardsRate = rewardToken
+    ? new TokenAmount(
+        rewardToken,
+        quarry.quarry.accountInfo.data.annualRewardsRate.div(new BN(365))
+      )
+    : rewardToken;
+
+  const percent = rewarder
+    ? new Percent(
+        quarry.quarry.accountInfo.data.rewardsShare,
+        rewarder.accountInfo.data.totalRewardsShares
+      )
+    : null;
+
   return (
     <tr>
       <td>
@@ -48,9 +67,23 @@ export const GaugeListRow: React.FC<Props> = ({
         </div>
       </td>
       <td>
-        {quarry.quarry.accountInfo.data.rewardsShare
-          .toNumber()
-          .toLocaleString()}
+        <div tw="flex flex-col gap-1">
+          <span tw="text-white font-medium">
+            {percent?.toFixed(2)}%{" "}
+            <span tw="text-warmGray-400 font-normal">
+              (
+              {quarry.quarry.accountInfo.data.rewardsShare
+                .toNumber()
+                .toLocaleString()}
+              )
+            </span>
+          </span>
+          <span tw="text-xs">
+            {rewardsRate && (
+              <TokenAmountDisplay amount={rewardsRate} suffix="/day" />
+            )}
+          </span>
+        </div>
       </td>
       <td>
         {epochGauge?.accountInfo.data.totalPower.toNumber().toLocaleString()}
