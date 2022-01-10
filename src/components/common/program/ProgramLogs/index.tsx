@@ -1,14 +1,15 @@
-import type { Message, ParsedMessage, PublicKey } from "@solana/web3.js";
+import type { InstructionLogs } from "@saberhq/solana-contrib";
+import type { Message, ParsedMessage } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { darken } from "polished";
 import React, { useMemo } from "react";
 import invariant from "tiny-invariant";
-import { css } from "twin.macro";
+import { css, theme } from "twin.macro";
 
 import { useProgramMetas } from "../../../../hooks/useProgramMeta";
 import { programLabel } from "../../../../utils/programs";
-import type { InstructionLogs } from "../../../pages/anchor/InspectorPage/programLogsV2";
-import { styleColor } from "../../../pages/anchor/InspectorPage/programLogsV2";
 import { Badge } from "../../Badge";
+import { TableCardBody } from "../../card/TableCardBody";
 import { RenderedLogEntry } from "./RenderedLogEntry";
 
 interface Props {
@@ -39,8 +40,8 @@ export const ProgramLogs: React.FC<Props> = ({ message, logs }: Props) => {
 
   const ixMetas = useProgramMetas(programIDs);
   return (
-    <div tw="px-5 py-3 overflow-x-auto whitespace-nowrap">
-      <table>
+    <div tw="overflow-x-auto whitespace-nowrap">
+      <TableCardBody>
         {instructions.map(({ programId }, index) => {
           const programName =
             ixMetas.find((m) => m.data?.programID.equals(programId))?.data?.meta
@@ -49,19 +50,22 @@ export const ProgramLogs: React.FC<Props> = ({ message, logs }: Props) => {
             "Unknown Program";
           const programLogs: InstructionLogs | undefined = logs[index];
 
-          let badgeColor: "white" | "warning" | "success" = "white";
+          let badgeColor: string = theme`colors.white`;
           if (programLogs) {
-            badgeColor = programLogs.failed ? "warning" : "success";
+            badgeColor = programLogs.failed
+              ? theme`colors.accent`
+              : theme`colors.primary`;
           }
 
+          const cpiStack: PublicKey[] = [programId];
           return (
             <tr key={index}>
               <td>
                 <div tw="flex items-center gap-2 text-sm">
                   <Badge
                     css={css`
-                      background-color: ${darken(0.3, styleColor(badgeColor))};
-                      color: ${styleColor(badgeColor)};
+                      background-color: ${darken(0.3, badgeColor)};
+                      color: ${badgeColor};
                     `}
                     tw="h-auto"
                   >
@@ -74,7 +78,18 @@ export const ProgramLogs: React.FC<Props> = ({ message, logs }: Props) => {
                 {programLogs && (
                   <div tw="flex items-start flex-col font-mono p-2 text-sm">
                     {programLogs.logs.map((log, key) => {
-                      return <RenderedLogEntry key={key} entry={log} />;
+                      if (log.type === "cpi" && log.programAddress) {
+                        cpiStack.push(new PublicKey(log.programAddress));
+                      } else if (log.type === "success") {
+                        cpiStack.pop();
+                      }
+                      return (
+                        <RenderedLogEntry
+                          key={key}
+                          entry={log}
+                          currentProgramId={cpiStack[cpiStack.length - 1]}
+                        />
+                      );
                     })}
                   </div>
                 )}
@@ -82,7 +97,7 @@ export const ProgramLogs: React.FC<Props> = ({ message, logs }: Props) => {
             </tr>
           );
         })}
-      </table>
+      </TableCardBody>
     </div>
   );
 };

@@ -1,13 +1,13 @@
 import { usePubkey } from "@saberhq/sail";
+import type { InstructionLogEntry } from "@saberhq/solana-contrib";
 
 import { useProgramMeta } from "../../../../../hooks/useProgramMeta";
 import { programLabel } from "../../../../../utils/programs";
-import type { LogEntry } from "../../../../pages/anchor/InspectorPage/programLogsV2";
 import { styleColor } from "../../../../pages/anchor/InspectorPage/programLogsV2";
 import { prefixBuilder } from ".";
 
 interface Props {
-  entry: LogEntry & { type: "cpi" };
+  entry: InstructionLogEntry & { type: "cpi" };
 }
 
 export const RenderedCPI: React.FC<Props> = ({ entry }: Props) => {
@@ -26,7 +26,7 @@ export const RenderedCPI: React.FC<Props> = ({ entry }: Props) => {
   return (
     <span>
       <span>{prefixBuilder(entry.depth)}</span>
-      <span style={{ color: styleColor(entry.style) }}>Invoking {label}</span>
+      <span style={{ color: styleColor(entry.type) }}>Invoking {label}</span>
     </span>
   );
 };

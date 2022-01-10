@@ -1,10 +1,10 @@
+import type { InstructionLogs } from "@saberhq/solana-contrib";
 import type { Message } from "@solana/web3.js";
 import tw from "twin.macro";
 
 import { Button } from "../../../../common/Button";
 import { Card } from "../../../../common/governance/Card";
 import { ProgramLogs } from "../../../../common/program/ProgramLogs";
-import type { InstructionLogs } from "../programLogsV2";
 
 interface Props {
   simulate: () => void;

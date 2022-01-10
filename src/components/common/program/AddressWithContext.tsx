@@ -1,7 +1,12 @@
+import { ACCOUNT_DISCRIMINATOR_SIZE } from "@project-serum/anchor/dist/cjs/coder";
+import { SuperCoder } from "@saberhq/anchor-contrib";
 import { useAccountData } from "@saberhq/sail";
 import type { KeyedAccountInfo, PublicKey } from "@solana/web3.js";
 import { SystemProgram } from "@solana/web3.js";
+import { useMemo } from "react";
+import { Link } from "react-router-dom";
 
+import { useIDL } from "../../../hooks/useIDLs";
 import { SYSVAR_OWNER } from "../../../utils/programs";
 import { AddressLink } from "../AddressLink";
 import { ProgramLabel } from "./ProgramLabel";
@@ -70,6 +75,18 @@ interface Props {
 
 export const AccountInfo = ({ pubkey, validator }: Props) => {
   const info = useAccountData(pubkey);
+  const { data: idl } = useIDL(info.data?.accountInfo.owner);
+
+  const accountName = useMemo(() => {
+    if (!idl?.idl || !info.data) {
+      return null;
+    }
+    const discriminator = info.data.accountInfo.data
+      .slice(0, ACCOUNT_DISCRIMINATOR_SIZE)
+      .toString("hex");
+    const sc = new SuperCoder(idl.programID, idl.idl);
+    return sc.discriminators[discriminator] ?? null;
+  }, [idl?.idl, idl?.programID, info.data]);
 
   if (!info.data) {
     if (info.loading) {
@@ -85,7 +102,7 @@ export const AccountInfo = ({ pubkey, validator }: Props) => {
   }
 
   const errorMessage = validator && validator(info.data);
-  if (errorMessage) return <span className="text-warning">{errorMessage}</span>;
+  if (errorMessage) return <span tw="text-accent">{errorMessage}</span>;
 
   if (info.data.accountInfo.executable) {
     return <span tw="text-gray-300">Executable Program</span>;
@@ -101,7 +118,20 @@ export const AccountInfo = ({ pubkey, validator }: Props) => {
             "Sysvar."
           ) : (
             <>
-              Owned by <ProgramLabel address={owner} />.
+              {accountName ? (
+                <>
+                  <Link
+                    tw="text-primary hover:text-white transition-colors"
+                    to={`/address/${info.data.accountId.toString()}`}
+                  >
+                    {accountName}
+                  </Link>{" "}
+                  o
+                </>
+              ) : (
+                "O"
+              )}
+              wned by <ProgramLabel address={owner} />.
             </>
           )}{" "}
           Balance is <SolAmount lamports={info.data.accountInfo.lamports} />.

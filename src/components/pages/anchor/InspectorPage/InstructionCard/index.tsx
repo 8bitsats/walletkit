@@ -155,16 +155,20 @@ export const InstructionCard: React.FC<Props> = ({ ix, index }: Props) => {
                 {parsedIX ? (
                   <Card tw="flex flex-col items-end">
                     <TableCardBody>
-                      {parsedIX.parsed.args.map(({ name, type, data }, i) => {
-                        return (
-                          <tr key={i}>
-                            <td tw="pr-6">
-                              {name} <span tw="text-gray-500">({type})</span>
-                            </td>
-                            <td>{data}</td>
-                          </tr>
-                        );
-                      })}
+                      {parsedIX.parsed.args.length === 0 ? (
+                        <div>No data</div>
+                      ) : (
+                        parsedIX.parsed.args.map(({ name, type, data }, i) => {
+                          return (
+                            <tr key={i}>
+                              <td tw="pr-6">
+                                {name} <span tw="text-gray-500">({type})</span>
+                              </td>
+                              <td>{data}</td>
+                            </tr>
+                          );
+                        })
+                      )}
                     </TableCardBody>
                   </Card>
                 ) : (

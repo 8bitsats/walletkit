@@ -1,12 +1,10 @@
-import type { Network } from "@saberhq/solana-contrib";
+import type { InstructionLogs, Network } from "@saberhq/solana-contrib";
+import { parseTransactionLogs } from "@saberhq/solana-contrib";
 import { useSolana } from "@saberhq/use-solana";
 import type { Message, SimulatedTransactionResponse } from "@solana/web3.js";
 import { Connection, Transaction } from "@solana/web3.js";
 import bs58 from "bs58";
 import React, { useState } from "react";
-
-import type { InstructionLogs } from "./programLogsV2";
-import { parseProgramLogs } from "./programLogsV2";
 
 const PROJECT_SERUM_RPC_ENDPOINT = "https://solana-api.projectserum.com";
 
@@ -60,7 +58,7 @@ export const useSimulator = (message: Message) => {
           });
 
         // Prettify logs
-        setLogs(parseProgramLogs(resp.value.logs, resp.value.err));
+        setLogs(parseTransactionLogs(resp.value.logs, resp.value.err));
         setResponse(resp.value);
       } catch (err) {
         console.error(err);

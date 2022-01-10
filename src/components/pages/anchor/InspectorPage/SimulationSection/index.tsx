@@ -76,7 +76,9 @@ export const SimulationSection: React.FC<Props> = ({ message }: Props) => {
         logs={logs}
         simulate={simulate}
       />
-      {response && <AccountsDiff message={message} response={response} />}
+      {response && !response.err && (
+        <AccountsDiff message={message} response={response} />
+      )}
     </>
   );
 };
