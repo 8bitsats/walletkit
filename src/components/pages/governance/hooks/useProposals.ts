@@ -36,7 +36,7 @@ export class ProposalStatus {
   }
 
   get executed() {
-    return this.state === ProposalState.Queued && !this.executionTime.isZero();
+    return this.state === ProposalState.Queued && this.executionTime.gt(ZERO);
   }
 }
 
