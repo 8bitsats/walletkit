@@ -1,6 +1,9 @@
+import { useSolana } from "@saberhq/use-solana";
 import type { KeyedAccountInfo } from "@solana/web3.js";
+import tw from "twin.macro";
 
 import { AddressLink } from "../../../common/AddressLink";
+import { Button } from "../../../common/Button";
 import { TableCardBody } from "../../../common/card/TableCardBody";
 import { Card } from "../../../common/governance/Card";
 import { ProgramLabel } from "../../../common/program/ProgramLabel";
@@ -11,15 +14,36 @@ interface Props {
 }
 
 export const OverviewCard: React.FC<Props> = ({ account }: Props) => {
+  const { network } = useSolana();
   return (
-    <Card title="Overview" tw="pb-2">
+    <Card
+      titleStyles={tw`w-full flex items-center justify-between`}
+      title={
+        <>
+          <span>Overview</span>
+          <a
+            href={`https://explorer.solana.com/address/${account.accountId.toString()}?cluster=${network}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button variant="outline">View on Solana Explorer</Button>
+          </a>
+        </>
+      }
+      tw="pb-2"
+    >
       <div tw="whitespace-nowrap overflow-x-auto">
         <TableCardBody>
           <tr>
             <td>Address</td>
             <td>
               <div tw="flex flex-col items-end">
-                <AddressLink address={account.accountId} />
+                <AddressLink
+                  tw="dark:text-primary hover:text-white"
+                  address={account.accountId}
+                  showCopy
+                  shorten={false}
+                />
               </div>
             </td>
           </tr>
