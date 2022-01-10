@@ -4,7 +4,9 @@ import type { QuarryInfo } from "@quarryprotocol/react-quarry";
 import { useRewarder } from "@quarryprotocol/react-quarry";
 import type { ParsedAccountInfo } from "@saberhq/sail";
 import { Percent, TokenAmount } from "@saberhq/token-utils";
+import { useSolana } from "@saberhq/use-solana";
 import BN from "bn.js";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import { useQuery } from "react-query";
 import invariant from "tiny-invariant";
 
@@ -27,6 +29,10 @@ interface Props {
   dailyRewardsRate: BN | null | undefined;
 }
 
+/**
+ * Row in the "All Gauges" section of the Gauges homepage.
+ * @returns
+ */
 export const GaugeListRow: React.FC<Props> = ({
   quarry,
   gauge: { accountId: gaugeKey },
@@ -52,7 +58,7 @@ export const GaugeListRow: React.FC<Props> = ({
 
   const { data: epochGauge } = useParsedEpochGauge(epochGaugeKey);
 
-  const { rewardToken, rewarder } = useRewarder();
+  const { rewardToken, rewarder, rewarderKey } = useRewarder();
   const rewardsRate = rewardToken
     ? new TokenAmount(
         rewardToken,
@@ -81,12 +87,40 @@ export const GaugeListRow: React.FC<Props> = ({
         )
       : null;
 
+  const { network } = useSolana();
+  const quarryLink = `https://${
+    network === "mainnet-beta"
+      ? "app"
+      : network === "devnet"
+      ? "devnet"
+      : network === "testnet"
+      ? "testnet"
+      : "app"
+  }.quarry.so/#/rewarders/${rewarderKey.toString()}/quarries/${quarry.key.toString()}`;
+
   return (
     <tr>
       <td>
         <div tw="flex gap-2 items-center">
           <TokenIcon token={quarry.stakedToken} />
-          {quarry.stakedToken.name}
+          <a
+            tw="font-medium hover:underline"
+            href={quarryLink}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {quarry.stakedToken.name}
+          </a>
+          {quarry.stakedToken.info.extensions?.website ? (
+            <a
+              tw="text-primary hover:text-white transition-colors"
+              href={quarry.stakedToken.info.extensions.website}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaExternalLinkAlt />
+            </a>
+          ) : null}
         </div>
       </td>
       <td>
