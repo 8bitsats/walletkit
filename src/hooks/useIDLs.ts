@@ -1,3 +1,4 @@
+import { useSolana } from "@saberhq/use-solana";
 import type { PublicKey } from "@solana/web3.js";
 import { useQueries } from "react-query";
 import invariant from "tiny-invariant";
@@ -5,6 +6,7 @@ import invariant from "tiny-invariant";
 import { fetchIDL } from "../utils/fetchers";
 
 export const useIDLs = (idls: (PublicKey | null | undefined)[]) => {
+  const { connection } = useSolana();
   return useQueries(
     idls.map((pid) => ({
       queryKey: ["idl", pid?.toString()],
@@ -12,7 +14,7 @@ export const useIDLs = (idls: (PublicKey | null | undefined)[]) => {
         invariant(pid);
         return {
           programID: pid,
-          idl: await fetchIDL(pid.toString()),
+          idl: await fetchIDL(connection, pid.toString()),
         };
       },
       enabled: !!pid,

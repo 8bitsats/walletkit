@@ -71,7 +71,7 @@ export const AnchorDataCard: React.FC<Props> = ({ account, idl }: Props) => {
                         <span tw="font-medium">{startCase(k)}</span>
                         {idlType && (
                           <span tw="text-warmGray-300">
-                            {formatIdlType(idlType)}
+                            <code>{formatIdlType(idlType)}</code>
                           </span>
                         )}
                       </div>

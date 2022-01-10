@@ -2,10 +2,13 @@ import { isPublicKey } from "@saberhq/solana-contrib";
 import { Percent, Price, Token, TokenAmount } from "@saberhq/token-utils";
 import { PublicKey } from "@solana/web3.js";
 import BN, { isBN } from "bn.js";
+import { startCase } from "lodash";
 import React from "react";
 
 import { formatPercent } from "../../utils/format";
+import { fmtObject } from "../pages/anchor/InspectorPage/SimulationSection/AccountDiff/makeDiff";
 import { AddressLink } from "./AddressLink";
+import { TableCardBody } from "./card/TableCardBody";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { AddressWithContext } from "./program/AddressWithContext";
 import { TokenAmountDisplay } from "./TokenAmountDisplay";
@@ -78,8 +81,25 @@ export const DisplayValue: React.FC<Props> = ({
             <DisplayValue key={i} value={v} />
           ))}
         </div>
+      ) : typeof value === "object" ? (
+        <TableCardBody>
+          {Object.entries(value).map(([k, v]) => {
+            return (
+              <tr key={k}>
+                <td>{startCase(k)}</td>
+                <td>
+                  <div tw="flex flex-col items-end">
+                    <DisplayValue value={v as unknown} />
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </TableCardBody>
       ) : (
-        "unknown"
+        <pre>
+          <code>{fmtObject(value as Record<string, unknown>)}</code>
+        </pre>
       )}
     </div>
   );
