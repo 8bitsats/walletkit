@@ -1,9 +1,5 @@
-import { startCase } from "lodash";
-
 import type { ProgramInfo } from "../../../../../hooks/useAuthorityPrograms";
-import { useIDL } from "../../../../../hooks/useIDLs";
-import { programLabel } from "../../../../../utils/programs";
-import { shortenAddress } from "../../../../../utils/utils";
+import { useProgramLabel } from "../../../../../hooks/useProgramMeta";
 import { AddressLink } from "../../../../common/AddressLink";
 import { SlotLink } from "../../../../common/SlotLink";
 
@@ -13,12 +9,7 @@ interface Props {
 }
 
 export const ProgramCard: React.FC<Props> = ({ program, actions }: Props) => {
-  const idl = useIDL(program.programID);
-  const label =
-    programLabel(program.programID.toString()) ??
-    (idl.data?.idl
-      ? startCase(idl.data.idl.name)
-      : shortenAddress(program.programID.toString()));
+  const label = useProgramLabel(program.programID);
   return (
     <div tw="text-sm flex items-center justify-between py-5 px-6 border-l-2 border-l-transparent border-b border-b-warmGray-800">
       <div tw="flex flex-grow w-2/3">
@@ -26,7 +17,7 @@ export const ProgramCard: React.FC<Props> = ({ program, actions }: Props) => {
           <span tw="font-medium text-white">{label}</span>
           <div tw="text-xs flex gap-1 text-secondary">
             <span>ID:</span>
-            <AddressLink address={program.programID} />
+            <AddressLink address={program.programID} showCopy />
           </div>
         </div>
         <div tw="invisible lg:flex lg:ml-12 lg:visible items-center gap-1 text-secondary">

@@ -1,4 +1,8 @@
-import { SolanaProvider, TransactionEnvelope } from "@saberhq/solana-contrib";
+import {
+  RECENT_BLOCKHASH_STUB,
+  SolanaProvider,
+  TransactionEnvelope,
+} from "@saberhq/solana-contrib";
 import { useSolana } from "@saberhq/use-solana";
 import { PublicKey } from "@solana/web3.js";
 import type { ProposalInstruction } from "@tribecahq/tribeca-sdk";
@@ -40,13 +44,19 @@ export const TransactionPreviewLink: React.FC<Props> = ({
     );
   }, [instructions, network, provider.connection, providerMut]);
 
-  if (!(txEnv && network !== "localnet")) {
+  const inspectLink = useMemo(() => {
+    const t = txEnv.build();
+    t.recentBlockhash = RECENT_BLOCKHASH_STUB;
+    return `https://${
+      network === "mainnet-beta" ? "" : `${network}.`
+    }anchor.so/tx/inspector?message=${encodeURIComponent(
+      t.serializeMessage().toString("base64")
+    )}`;
+  }, [network, txEnv]);
+
+  if (network === "localnet") {
     return <></>;
   }
 
-  return (
-    <ExternalLink href={txEnv.generateInspectLink(network)}>
-      Preview on Solana Explorer
-    </ExternalLink>
-  );
+  return <ExternalLink href={inspectLink}>Preview on Anchor.so</ExternalLink>;
 };

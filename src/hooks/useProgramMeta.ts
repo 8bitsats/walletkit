@@ -49,10 +49,12 @@ export const useProgramMeta = (address: PublicKey | null | undefined) => {
 };
 
 export const useProgramLabel = (programId: PublicKey | null | undefined) => {
-  const { data: meta } = useProgramMeta(programId);
+  const { data: meta, isLoading } = useProgramMeta(programId);
   const label =
     meta?.meta?.label ??
-    (programId
+    (isLoading
+      ? "Loading..."
+      : programId
       ? programLabel(programId.toString()) ??
         `Unknown (${programId.toString()}) Program`
       : "Unknown Program");
