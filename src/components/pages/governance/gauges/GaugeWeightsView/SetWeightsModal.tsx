@@ -1,6 +1,7 @@
 import {
   findEpochGaugeVoterAddress,
   findGaugeAddress,
+  findGaugeVoteAddress,
   findGaugeVoterAddress,
   GaugeSDK,
 } from "@quarryprotocol/gauge";
@@ -40,6 +41,7 @@ export const SetWeightsModal: React.FC = () => {
       gaugemeister,
       escrowKey
     );
+
     const gv = await gauge.gauge.fetchGaugeVoter(gaugeVoterKey);
     if (!gv) {
       const { tx: createGVTX } = await gauge.gauge.createGaugeVoter({
@@ -76,6 +78,32 @@ export const SetWeightsModal: React.FC = () => {
       });
     }
 
+    const gaugeVoteKeys = await Promise.all(
+      gaugeKeys.map(async (gaugeKey) => {
+        const [gaugeVoteKey] = await findGaugeVoteAddress(
+          gaugeVoterKey,
+          gaugeKey
+        );
+        return gaugeVoteKey;
+      })
+    );
+    const gaugeVotes = await sdkMut.provider.connection.getMultipleAccountsInfo(
+      gaugeVoteKeys
+    );
+
+    const gaugesDiffed = await Promise.all(
+      sharesDiff.map(async (diff) => {
+        const [gaugeKey] = await findGaugeAddress(
+          gaugemeister,
+          diff.quarry.accountId
+        );
+        return gaugeKey;
+      })
+    );
+    const gaugesToUpdate = gaugeKeys.filter((k, i) => {
+      return gaugeVotes[i] || gaugesDiffed.find((gd) => gd.equals(k));
+    });
+
     const gmData = await gauge.gauge.fetchGaugemeister(gaugemeister);
     if (!gmData) {
       throw new Error("gaugemeister not found");
@@ -97,7 +125,7 @@ export const SetWeightsModal: React.FC = () => {
       if (!epochGaugeVoterData.allocatedPower.isZero()) {
         const revertTXs = await gauge.gauge.revertVotes({
           gaugemeister,
-          gauges: gaugeKeys,
+          gauges: gaugesToUpdate,
         });
         plan.steps.push({
           title: "Revert Votes",
@@ -127,7 +155,7 @@ export const SetWeightsModal: React.FC = () => {
 
     const voteTXs = await gauge.gauge.commitVotes({
       gaugemeister,
-      gauges: gaugeKeys,
+      gauges: gaugesToUpdate,
       checkGaugeVotesExist: false,
     });
     plan.steps.push({

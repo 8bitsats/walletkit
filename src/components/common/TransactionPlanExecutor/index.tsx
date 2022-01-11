@@ -47,7 +47,10 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
                 key={i}
                 tw="flex items-center justify-between py-4 px-4 border-t border-t-warmGray-800"
               >
-                <div>{title}</div>
+                <div>
+                  {title}
+                  {txs.length > 1 ? ` (${txs.length} TXs)` : ""}
+                </div>
                 <div>
                   {i < nextTX ? (
                     <FaCheckCircle tw="text-primary" />
@@ -75,7 +78,7 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
                         if (i === plan.steps.length - 1) {
                           onComplete?.();
                         } else {
-                          setNextTX(i + 1);
+                          setNextTX((n) => n + 1);
                         }
                       }}
                     >
@@ -108,7 +111,7 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
         disabled={!plan}
         onClick={async () => {
           invariant(plan);
-          for (const [i, tx] of plan.steps.slice(nextTX).entries()) {
+          for (const tx of plan.steps.slice(nextTX)) {
             if (tx.txs.length === 0) {
               continue;
             }
@@ -124,7 +127,7 @@ export const TransactionPlanExecutor: React.FC<Props> = ({
               return;
             }
             await Promise.all(pending.map((p) => p.wait()));
-            setNextTX(i + 1);
+            setNextTX((n) => n + 1);
           }
           setPending(false);
           onComplete?.();
