@@ -3,6 +3,7 @@ import {
   findGaugeVoterAddress,
 } from "@quarryprotocol/gauge";
 import { ZERO } from "@quarryprotocol/quarry-sdk";
+import BN from "bn.js";
 import { FaExclamationCircle } from "react-icons/fa";
 import { useQuery } from "react-query";
 import invariant from "tiny-invariant";
@@ -67,12 +68,30 @@ export const UserGauges: React.FC = () => {
     epochGaugeVoterKey?.epochGaugeVoter
   );
 
+  const expectedPower =
+    gmData && escrow
+      ? escrow.calculateVotingPower(
+          gmData.accountInfo.data.nextEpochStartsAt.toNumber()
+        )
+      : null;
+  const isVotesChanged =
+    gaugeVoter &&
+    epochGaugeVoter &&
+    expectedPower &&
+    !expectedPower
+      .sub(epochGaugeVoter.accountInfo.data.allocatedPower)
+      .abs()
+      // rounding error can be up to the number of gauges
+      .lt(new BN(myGauges.length));
+
   const isDirty =
     gaugeVoter &&
     (!epochGaugeVoter ||
       !gaugeVoter.accountInfo.data.weightChangeSeqno.eq(
         epochGaugeVoter.accountInfo.data.weightChangeSeqno
       ));
+
+  const showSyncButton = isVotesChanged || isDirty;
 
   const lockupTooShort = escrow?.escrow.escrowEndsAt.lt(
     gmData?.accountInfo.data.nextEpochStartsAt ?? ZERO
@@ -87,7 +106,7 @@ export const UserGauges: React.FC = () => {
             <span>Your Gauge Votes</span>
             {lockupTooShort && <LockupTooShortTooltip />}
           </div>
-          {isDirty && (
+          {showSyncButton && (
             <Button
               onClick={async () => {
                 await revertVotes();
@@ -120,10 +139,16 @@ export const UserGauges: React.FC = () => {
               <tr>
                 <th>Gauge</th>
                 <th>
-                  {isDirty ? (
+                  {isDirty || isVotesChanged ? (
                     <div tw="flex items-center gap-2">
                       <span>Your Votes</span>
-                      <MouseoverTooltip text="Your votes have yet to be committed. Please click the 'Sync' button to the right.">
+                      <MouseoverTooltip
+                        text={
+                          isDirty
+                            ? "Your votes have yet to be committed. Please click the 'Sync' button to the right."
+                            : "Your voting escrow balance has changed. Please click the 'Sync' button to the right to maximize your voting power."
+                        }
+                      >
                         <FaExclamationCircle tw="text-yellow-500" />
                       </MouseoverTooltip>
                     </div>
