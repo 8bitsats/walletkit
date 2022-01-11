@@ -11,6 +11,7 @@ const parserHooks = makeParserHooks({
   ...GAUGE_CODERS.Gauge.accountParsers,
   ...QUARRY_CODERS.Mine.accountParsers,
   ...QUARRY_CODERS.Operator.accountParsers,
+  ...QUARRY_CODERS.MintWrapper.accountParsers,
 });
 
 export const {
@@ -52,4 +53,8 @@ export const {
   rewarder: { useData: useParsedRewarders, useSingleData: useParsedRewarder },
   quarry: { useData: useParsedQuarries, useSingleData: useParsedQuarry },
   operator: { useData: useParsedOperators, useSingleData: useParsedOperator },
+  mintWrapper: {
+    useData: useParsedMintWrappers,
+    useSingleData: useParsedMintWrapper,
+  },
 } = parserHooks;

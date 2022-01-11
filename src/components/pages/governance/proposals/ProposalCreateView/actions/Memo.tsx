@@ -2,6 +2,7 @@ import {
   buildStubbedTransaction,
   createMemoInstruction,
 } from "@saberhq/solana-contrib";
+import { useSolana } from "@saberhq/use-solana";
 import { useState } from "react";
 import invariant from "tiny-invariant";
 
@@ -18,6 +19,7 @@ interface Props {
 export const Memo: React.FC<Props> = ({ setError, setTxRaw }: Props) => {
   const [memo, setMemo] = useState<string>("");
   const { smartWallet } = useGovernor();
+  const { network } = useSolana();
 
   return (
     <>
@@ -38,9 +40,10 @@ export const Memo: React.FC<Props> = ({ setError, setTxRaw }: Props) => {
             invariant(smartWallet);
             setMemo(e.target.value);
             try {
-              const txStub = buildStubbedTransaction("devnet", [
-                createMemoInstruction(e.target.value, [smartWallet]),
-              ]);
+              const txStub = buildStubbedTransaction(
+                network !== "localnet" ? network : "devnet",
+                [createMemoInstruction(e.target.value, [smartWallet])]
+              );
               setTxRaw(serializeToBase64(txStub));
               setError(null);
             } catch (ex) {

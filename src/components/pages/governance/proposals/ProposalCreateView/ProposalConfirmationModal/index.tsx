@@ -1,4 +1,5 @@
 import { useSail } from "@saberhq/sail";
+import { buildStubbedTransaction } from "@saberhq/solana-contrib";
 import { useSolana } from "@saberhq/use-solana";
 import type { TransactionInstruction } from "@solana/web3.js";
 import { GovernorWrapper } from "@tribecahq/tribeca-sdk";
@@ -28,7 +29,7 @@ export const ProposalConfirmModal: React.FC<Props> = ({
   ...modalProps
 }: Props) => {
   const { network } = useSolana();
-  const { sdk, tribecaMut } = useSDK();
+  const { tribecaMut } = useSDK();
   const { governor, path, minActivationThreshold } = useGovernor();
   const { votingPeriodFmt } = useGovernorParams();
   const { handleTX } = useSail();
@@ -97,13 +98,17 @@ export const ProposalConfirmModal: React.FC<Props> = ({
           {network !== "localnet" && proposal.instructions.length > 0 && (
             <a
               tw="text-sm text-primary hover:text-white transition-colors flex items-center gap-2"
-              href={sdk.provider
-                .newTX(proposal.instructions)
-                .generateInspectLink(network)}
+              href={`https://${
+                network === "mainnet-beta" ? "" : `${network}.`
+              }anchor.so/tx/inspector?message=${encodeURIComponent(
+                buildStubbedTransaction(network, proposal.instructions)
+                  .serializeMessage()
+                  .toString("base64")
+              )}`}
               target="_blank"
               rel="noreferrer"
             >
-              <span>Inspect on Solana Explorer</span>
+              <span>Preview on Anchor.so</span>
               <FaExternalLinkAlt />
             </a>
           )}

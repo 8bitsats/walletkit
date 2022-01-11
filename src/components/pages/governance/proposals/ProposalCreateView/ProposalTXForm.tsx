@@ -2,12 +2,15 @@ import { useState } from "react";
 
 import { serializeToBase64 } from "../../../../../utils/makeTransaction";
 import { Select } from "../../../../common/inputs/InputText";
+import { useGovernor } from "../../hooks/useGovernor";
+import { IssueTokensAction } from "./actions/IssueTokensAction";
 import { Memo } from "./actions/Memo";
 import { RawTX } from "./actions/RawTX";
 import { UpgradeProgramForm } from "./actions/UpgradeProgramForm";
 
 const ACTION_TYPES = [
   "Memo",
+  "Issue Tokens",
   "Upgrade Program",
   "Raw Transaction (base64)",
 ] as const;
@@ -26,6 +29,7 @@ export const ProposalTXForm: React.FC<Props> = ({
   setTxRaw,
 }: Props) => {
   const [actionType, setActionType] = useState<ActionType>("Memo");
+  const { meta } = useGovernor();
 
   return (
     <div tw="grid gap-4">
@@ -39,6 +43,9 @@ export const ProposalTXForm: React.FC<Props> = ({
           }}
         >
           {ACTION_TYPES.map((actionType) => {
+            if (!meta?.minter && actionType === "Issue Tokens") {
+              return null;
+            }
             return (
               <option key={actionType} value={actionType}>
                 {actionType}
@@ -59,6 +66,9 @@ export const ProposalTXForm: React.FC<Props> = ({
       )}
       {actionType === "Raw Transaction (base64)" && (
         <RawTX setError={setError} txRaw={txRaw} setTxRaw={setTxRaw} />
+      )}
+      {actionType === "Issue Tokens" && (
+        <IssueTokensAction setError={setError} setTxRaw={setTxRaw} />
       )}
     </div>
   );
