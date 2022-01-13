@@ -1,9 +1,7 @@
-import { tryGetName } from "@cardinal/namespaces";
-import { useConnectionContext } from "@saberhq/use-solana";
 import type { PublicKey } from "@solana/web3.js";
 import makeBlockie from "ethereum-blockies-base64";
-import { useMemo, useState } from "react";
 
+import { useWalletName } from "../../../hooks/useWalletName";
 import { displayAddress } from "../../../utils/programs";
 import { AddressLink } from "../AddressLink";
 
@@ -13,16 +11,7 @@ interface Props {
 
 export const Profile: React.FC<Props> = ({ address }: Props) => {
   const addressStr = address.toString();
-  const [displayName, setDisplayName] = useState<string | undefined>(undefined);
-  const connectionContext = useConnectionContext();
-
-  void useMemo(async () => {
-    try {
-      setDisplayName(await tryGetName(connectionContext.connection, address));
-    } catch (e) {
-      console.log(e);
-    }
-  }, [connectionContext, address]);
+  const displayName = useWalletName(address);
 
   return (
     <div tw="bg-warmGray-850 p-3 text-sm rounded">

@@ -1,8 +1,9 @@
-import { useSolana } from "@saberhq/use-solana";
+import { useConnectedWallet, useSolana } from "@saberhq/use-solana";
 import { startCase } from "lodash";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
+import { useWalletName } from "../../../../hooks/useWalletName";
 import { Button } from "../../../common/Button";
 import { LinkTwitter } from "./LinkTwitter";
 import { MobileNav } from "./MobileNav";
@@ -11,9 +12,12 @@ import { ReactComponent as Rook } from "./Rook.svg";
 import { WalletDropdown } from "./WalletDropdown";
 
 export const Header: React.FC = () => {
+  const wallet = useConnectedWallet();
+  const displayName = useWalletName(wallet?.publicKey);
   const { governor } = useParams<{ governor: string }>();
   const { network } = useSolana();
   const [linkingTwitter, setLinkingTwitter] = useState<boolean>(false);
+  console.log(displayName);
   return (
     <div tw="bg-warmGray-900 w-screen">
       <div tw="flex items-center justify-between h-20 mx-auto w-11/12 max-w-7xl">
@@ -34,9 +38,11 @@ export const Header: React.FC = () => {
             </span>
           )}
           <WalletDropdown />
-          <Button tw="ml-4" onClick={() => setLinkingTwitter(true)}>
-            Connect Twitter
-          </Button>
+          {wallet && !displayName && (
+            <Button tw="ml-4" onClick={() => setLinkingTwitter(true)}>
+              Connect Twitter
+            </Button>
+          )}
           <MobileNav tw="ml-4 md:hidden" />
           <LinkTwitter
             isOpen={linkingTwitter}
