@@ -17,7 +17,6 @@ export const Header: React.FC = () => {
   const { governor } = useParams<{ governor: string }>();
   const { network } = useSolana();
   const [linkingTwitter, setLinkingTwitter] = useState<boolean>(false);
-  console.log(displayName);
   return (
     <div tw="bg-warmGray-900 w-screen">
       <div tw="flex items-center justify-between h-20 mx-auto w-11/12 max-w-7xl">
