@@ -43,5 +43,8 @@
     "@react-spring/core": {
       "built": false
     }
+  },
+  "dependencies": {
+    "@gokiprotocol/walletkit": "workspace:^"
   }
 }
